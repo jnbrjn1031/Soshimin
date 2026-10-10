@@ -47,8 +47,8 @@ Done:
   orchestras, injuries, the second act, and the livelihood split (art, in-field work, part-time).
 - All ten §6 decisions. `artsGo` (「계속할까, 그만둘까」) is the only way from a path into an ordinary job.
 - Hooks in JOBS, ADMISSIONS, MONEY (`inc.art`, `inc.adj`) and STATE.status.
-- §8: 98 `arts` event templates across the eight fields and every stage. The `arts` category is weighted in
-  `DATA.EVENT_BANDS`. MEMORY keeps arts moments more often (kind `arts`), the road back reserves two stops for them,
+- §8: 98 field event templates across the eight fields and every stage: 94 in the `arts` category (weighted in
+  `DATA.EVENT_BANDS`) and 4 later-life ones in `people` and `health` so they do not crowd the years after a path. MEMORY keeps arts moments more often (kind `arts`), the road back reserves two stops for them,
   REPORT adds the path's stations, a §9 row and an epitaph, and a 예체능 childhood dream counts as achieved.
 - §10 UI: the work tab becomes 「활동」 for a person on a path (stage, 실력 bars, 인지도 with the audience number,
   contract, the next audition or game, works, the income split). The money panel shows art and in-field segments and
@@ -58,15 +58,22 @@ Done:
 - §11: `HARNESS.artsRows`. Rows with too few lives for a verdict show as 참고.
 
 Calibration (4,000 lives, seed 1, measured with scratch scripts that use the same tick as the harness):
-entry 8.2% (5–10), 첫 발 32% (30–60), 도약 4.3–4.6% (1–5), half of income in the field at 40: 54% (35–55),
-KBO applications drafted 10.2% (8.7 ± 2), office jobs 17% and all through decision 7 (under 25%). Forced-field runs:
-webtoon artists' years with income averaged 4,972만 with a median of 3,227만 (4,268 / 3,400); creators averaged
-8,034만, bottom half 2,093만, top 1% 14억 (7,100 / 2,463 / 12.9억). The artists-overall row (survey definition: no
-sport, design studios or broadcast PDs, top 1% removed) was about 1,300–1,440만 against 1,055만 ± 20%. It depends on a
-handful of orchestra seats and star actors, so it is noisy below a few thousand lives.
+entry 8.2% (5–10), 첫 발 30.8% (30–60), 도약 4.0% (1–5), half of income in the field at 40: 53.7% (35–55),
+KBO applications drafted 8.3% (8.7 ± 2), office jobs 18% and all through decision 7 (under 25%), artists' art income
+(survey definition: no sport, design studios or broadcast PDs, top 1% removed) 1,153만 (1,055만 ± 20%). Forced-field
+runs: webtoon artists' years with income averaged 4,972만 with a median of 3,227만 (4,268 / 3,400); creators averaged
+8,034만, bottom half 2,093만, top 1% 14억 (7,100 / 2,463 / 12.9억). With `runMany(2000)` only about 160 lives take a
+path, so the income rows for one field show as 참고. The artists-overall row moves with a few orchestra seats and
+stars (seeds 0–1999 give about 1,408만, seeds 2000–3999 about 900만), so it prints a standard error clustered by
+life and passes within ±20% or within two standard errors.
+
+`runMany(2000)` before this stage could not finish (the `startPending` crash below). With that one guard, it failed
+five rows: 고교 유형, 독립 가구 순자산 (NaN), 부채, 임금 중위값, 계열별 취업률. Now only 계열별 졸업 첫해 취업률 is
+outside its band (예체능 80%, 자연 75%; it was 87% and 77%).
 
 Also fixed: a child in care (보호 아동) had no parents to average, so `eduAvg` was 0/0 and the NaN reached the
-aptitudes, skill, pay and 독립 가구 평균 순자산. A pending pro contract whose team was cleared crashed `startPending`.
+aptitudes, skill, pay and 독립 가구 평균 순자산. A pending pro contract whose team was cleared crashed `startPending`. A 재수생 who signed a pro contract still sat
+the 수능 and enrolled; signing now ends the retake. A student holding a team or field job was labelled 「프리랜서」.
 
 Not done:
 - 연습생 자퇴 (leaving high school for a debut) needs ADMISSIONS support for a dropout and a 검정고시 route.

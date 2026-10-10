@@ -1496,11 +1496,11 @@ DATA.ARTS = {
       adj: ['보컬 레슨 강사', '댄스 학원 강사', '행사 무대', '뮤지컬 앙상블'], second: ['보컬 트레이너', '안무가', '뮤지컬 배우', '기획사 A&R', '솔로 가수'], secondJob: [85, 85, 81, 87, 81] },
     acting: { name: '연기', skills: ['연기', '발성'], apt: ['artistic', 'verbal'], job: 53, peak: [22, 64], aud: ['SNS 팔로워', '명', 40],
       words: { aspire: '배우 지망생', first: '이름 있는 첫 배역', active: '배우 활동', leap: '주연의 시간', fade: '오디션을 기다리는 시기', second: '두 번째 막' },
-      inc: { aspire: [80, 1.1], first: [250, 1.0], active: [450, 1.2], leap: [25000, 1.0], fade: [300, 1.1], second: [200, 1.0] }, firstP: 0.24, leapP: 0.003,
+      inc: { aspire: [80, 1.1], first: [250, 1.0], active: [350, 1.2], leap: [25000, 1.0], fade: [300, 1.1], second: [200, 1.0] }, firstP: 0.24, leapP: 0.003,
       adj: ['단역·보조출연', '연기 학원 강사', '행사 MC', '광고 모델'], second: ['연기 학원 강사', '성우', '연극 연출가', '캐스팅 디렉터'], secondJob: [85, 53, 87, 87] },
     visual: { name: '미술·디자인', skills: ['표현', '기획'], apt: ['artistic', 'logical'], job: 50, peak: [26, 70], aud: ['SNS 팔로워', '명', 25],
       words: { aspire: '작가 지망생', first: '첫 개인전', active: '작가 활동', leap: '주목받는 작가', fade: '작업이 뜸한 시기', second: '두 번째 막' },
-      inc: { aspire: [40, 1.2], first: [250, 1.0], active: [420, 1.05], leap: [5000, 0.9], fade: [200, 1.1], second: [100, 1.0] }, firstP: 0.3, leapP: 0.0032,
+      inc: { aspire: [40, 1.2], first: [220, 1.0], active: [380, 1.05], leap: [5000, 0.9], fade: [200, 1.1], second: [100, 1.0] }, firstP: 0.3, leapP: 0.0032,
       adj: ['미술 학원 강사', '방과후 강사', '일러스트 외주', '벽화 작업', '굿즈 판매'], second: ['미술 학원 원장', '디자인 스튜디오 운영', '공방 운영', '전시 기획자'], secondJob: [85, 87, 87, 87] },
     webtoon: { name: '웹툰·일러스트', skills: ['작화', '이야기'], apt: ['artistic', 'verbal'], job: 54, peak: [23, 48], aud: ['관심 독자', '명', 60],
       words: { aspire: '웹툰 지망생', first: '첫 연재', active: '연재 활동', leap: '히트작', fade: '차기작을 준비하는 시기', second: '두 번째 막' },
@@ -8458,7 +8458,7 @@ const ARTS = (() => {
     if (A.org && A.org.salary && st !== 'second') return A.org.salary;
     const [m, sd] = f.inc[st] || [0, 0];
     if (!m) return 0;
-    const sub = A.field === 'film' && A.sub !== 'creator' ? 0.6 : A.field === 'webtoon' && A.sub === 'novel' ? 0.75 : A.field === 'music' && A.sub === 'classic' ? 1.1 : 1;
+    const sub = A.field === 'film' && A.sub !== 'creator' ? 0.6 : A.field === 'webtoon' && A.sub === 'novel' ? 0.75 : A.field === 'music' && A.sub === 'classic' ? 0.9 : 1;
     const settle = A.field === 'idol' && A.org && A.org.debut != null && s.clock.y - A.org.debut < 2 ? 0.25 : 1;   // 정산 after the debut costs are recouped (§5.1)
     const time = st === 'second' ? 1 : clamp(0.5 + 0.25 * a, 0.5, 1.25);
     return m * Math.exp(sd * A.z + 0.3 * skZ(s) + 0.2 * recZ(s)) * sub * settle * time;
@@ -13330,11 +13330,17 @@ const HARNESS = (() => {
     const W = ['first', 'active', 'leap'];
     const years = (f, st, pos) => A.filter(l => f(l.arts)).flatMap(l => l.arts.yrs.filter(y => st.includes(y.st) && (!pos || y.art > 0)).map(y => y.art)).sort((a, b) => a - b);
     const med = v => v.length ? v[Math.floor(v.length / 2)] : 0, top1 = v => { const t = v.slice(Math.floor(v.length * 0.99)); return mean(t); };
-    const low50 = v => mean(v.slice(0, Math.floor(v.length / 2))), trim = v => mean(v.slice(0, Math.floor(v.length * 0.99)));
+    const low50 = v => mean(v.slice(0, Math.floor(v.length / 2)));
     const W2 = v => v >= 10000 ? (v / 10000).toFixed(1) + '억' : Math.round(v).toLocaleString('ko-KR') + '만';
     const near = (v, c) => Math.abs(v / c - 1) <= 0.2;
     const toon = years(a => a.field === 'webtoon' && a.sub === 'toon', W, true), cre = years(a => a.field === 'film' && a.sub === 'creator', W, true);
-    const all = years(a => a.field !== 'sport', ['aspire', 'first', 'active', 'leap', 'fade'], false);
+    // the survey counts artists, not athletes, salaried designers or broadcast PDs
+    const all = years(a => a.field !== 'sport' && !(a.field === 'visual' && a.sub === 'design') && !(a.field === 'film' && a.sub === 'broadcast'), ['aspire', 'first', 'active', 'leap', 'fade'], false);
+    // a few orchestra seats and stars move this mean, so its standard error is clustered by life (ratio estimator)
+    const artistOk = a => a.field !== 'sport' && !(a.field === 'visual' && a.sub === 'design') && !(a.field === 'film' && a.sub === 'broadcast');
+    const cut = all.length ? all[Math.floor(all.length * 0.99)] : 0, per = A.filter(l => artistOk(l.arts)).map(l => l.arts.yrs.filter(y => y.art < cut || !cut).map(y => y.art)).filter(v => v.length);
+    const nY = per.reduce((a, v) => a + v.length, 0), mT = per.reduce((a, v) => a + v.reduce((x, y) => x + y, 0), 0) / Math.max(1, nY);
+    const seT = Math.sqrt(per.reduce((a, v) => a + (v.reduce((x, y) => x + y, 0) - mT * v.length) ** 2, 0)) / Math.max(1, nY);
     const fields = Object.keys(DATA.ARTS.fields).map(f => `${DATA.ARTS.fields[f].name} ${A.filter(l => l.arts.field === f).length}`).join(' · ');
     return [
       row('예체능의 길에 진지하게 들어선 삶 (20세 이상)', `${pc(entry)} (${A.length}명)`, '5~10% (예체능 패치 §11 게임 설정)', adults.length < 200 ? null : entry >= 5 && entry <= 10),
@@ -13344,7 +13350,7 @@ const HARNESS = (() => {
       row('KBO 드래프트 지명률 (지원 기준)', `${pc(drafted)} (${dr.length}회 · 평균 확률 ${pc(mean(dr.map(d => d.p)) * 100)})`, '8.7% ± 2%p (2026 드래프트, §9)', dr.length < 30 ? null : within(drafted, [8.7, 2])),
       row('웹툰 작가 연 수입 · 평균 / 중앙값', `${W2(mean(toon))} / ${W2(med(toon))} (${toon.length}명·해) · 상위 1% ${W2(top1(toon))}`, '4,268만 / 3,400만 ± 20% (2024 웹툰산업 실태조사)', toon.length < 150 ? null : near(mean(toon), 4268) && near(med(toon), 3400)),
       row('1인 미디어 창작자 연 수입 · 평균 / 하위 50%', `${W2(mean(cre))} / ${W2(low50(cre))} (${cre.length}명·해) · 상위 1% ${W2(top1(cre))}`, '7,100만 / 2,463만 ± 20% · 상위 1% 12.9억 (국세청 2024)', cre.length < 150 ? null : near(mean(cre), 7100) && near(low50(cre), 2463)),
-      row('예술인 예술 활동 수입 (스포츠 제외, 상위 1% 제외 평균)', `${W2(trim(all))} · 전체 평균 ${W2(mean(all))} · 상위 1% ${W2(top1(all))} (${all.length}명·해)`, '1,055만 ± 20% (2024 예술인 실태조사; 상위 1%는 따로 극단적으로)', all.length < 300 ? null : near(trim(all), 1055)),
+      row('예술인 예술 활동 수입 (스포츠·디자인 회사·방송사 제외, 상위 1% 제외 평균)', `${W2(mT)} (표준오차 ${W2(seT)}) · 전체 평균 ${W2(mean(all))} · 상위 1% ${W2(top1(all))} (${all.length}명·해)`, '1,055만 ± 20%, 또는 표준오차 2배 안 (2024 예술인 실태조사; 상위 1%는 따로 극단적으로)', all.length < 300 ? null : near(mT, 1055) || Math.abs(mT - 1055) <= 2 * seT),
       row('예체능의 길에서 사무직으로 옮긴 비율 (30세 이상)', `${pc(office)} · 결정 7을 거치지 않은 경우 ${sideDoor}명`, '25% 미만, 「계속할까」 결정으로만 (§11)', A30.length < 40 ? (sideDoor === 0 ? null : false) : office < 25 && sideDoor === 0),
     ];
   }
