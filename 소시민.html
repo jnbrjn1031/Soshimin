@@ -1287,13 +1287,13 @@ DATA.FOCUS_FX = {
 // §7.2 — category weights for the fill events, by age band (게임 설정).
 DATA.EVENT_BANDS = [
   { from: 0, to: 6, cats: { family: 40, health: 25, growth: 25, means: 10 } },
-  { from: 7, to: 18, cats: { school: 30, friends: 25, family: 20, hobby: 15, health: 10 } },
-  { from: 19, to: 29, cats: { career: 25, love: 25, money: 15, family: 15, health: 10, chance: 10 } },
-  { from: 30, to: 49, cats: { family: 30, work: 25, home: 20, people: 15, health: 10 } },
-  { from: 50, to: 64, cats: { health: 25, work: 20, parents: 20, kids: 20, money: 15 } },
-  { from: 65, to: 999, cats: { health: 35, people: 25, grand: 25, living: 15 } },
+  { from: 7, to: 18, cats: { school: 30, friends: 25, family: 20, hobby: 15, health: 10, arts: 22 } },
+  { from: 19, to: 29, cats: { career: 25, love: 25, money: 15, family: 15, health: 10, chance: 10, arts: 32 } },
+  { from: 30, to: 49, cats: { family: 30, work: 25, home: 20, people: 15, health: 10, arts: 30 } },
+  { from: 50, to: 64, cats: { health: 25, work: 20, parents: 20, kids: 20, money: 15, arts: 18 } },
+  { from: 65, to: 999, cats: { health: 35, people: 25, grand: 25, living: 15, arts: 8 } },
 ];
-DATA.CAT_NAME = { family: '가족', health: '건강', growth: '성장', means: '집안 형편', school: '학교·학업', friends: '친구', hobby: '취미·성취', career: '학업·취업', love: '연애·친구', money: '돈', chance: '기회·여행', work: '일', home: '돈·집', people: '주변인', parents: '부모', kids: '자녀', grand: '가족·손주', living: '돈·생활', milestone: '이정표', network: '주변 사람', season: '계절' };
+DATA.CAT_NAME = { arts: '예체능', family: '가족', health: '건강', growth: '성장', means: '집안 형편', school: '학교·학업', friends: '친구', hobby: '취미·성취', career: '학업·취업', love: '연애·친구', money: '돈', chance: '기회·여행', work: '일', home: '돈·집', people: '주변인', parents: '부모', kids: '자녀', grand: '가족·손주', living: '돈·생활', milestone: '이정표', network: '주변 사람', season: '계절' };
 // Network life rates per year (게임 설정; marriage timing loosely follows A.2's first-marriage ages).
 DATA.NET_RATES = {
   marry: (sex, a) => a < 23 ? 0 : a < 28 ? 0.04 : a < 34 ? (sex === 'F' ? 0.11 : 0.08) : a < 39 ? (sex === 'F' ? 0.05 : 0.09) : a < 46 ? 0.03 : 0.01,
@@ -1488,35 +1488,35 @@ DATA.ARTS = {
   fields: {
     music: { name: '음악', skills: ['연주', '음악성'], apt: ['artistic', 'logical'], job: 51, peak: [24, 52], aud: ['관객 평균', '명', 12],
       words: { aspire: '음악 지망생', first: '첫 무대', active: '연주 활동', leap: '주목받는 음악가', fade: '활동이 뜸한 시기', second: '두 번째 막' },
-      inc: { aspire: [40, 1.2], first: [380, 0.9], active: [820, 0.95], leap: [9000, 0.9], fade: [300, 1.0], second: [120, 1.0] }, firstP: 0.15, leapP: 0.0045,
+      inc: { aspire: [40, 1.2], first: [300, 0.9], active: [600, 0.95], leap: [6000, 0.9], fade: [300, 1.0], second: [120, 1.0] }, firstP: 0.25, leapP: 0.0036,
       adj: ['레슨 강사', '세션 연주자', '행사·웨딩 연주', '교회 반주자', '실용음악 학원 강사'], second: ['음악 학원 원장', '레슨 강사', '음악 감독', '공연 기획자', '음향 엔지니어'], secondJob: [85, 85, 87, 87, 87] },
     idol: { name: '아이돌·가수', skills: ['보컬', '댄스'], apt: ['artistic', 'social'], job: 81, peak: [17, 29], aud: ['팬카페', '명', 30],
       words: { aspire: '연습생', first: '데뷔', active: '활동기', leap: '정상의 시간', fade: '공백기', second: '두 번째 막' },
-      inc: { aspire: [0, 0], first: [150, 1.0], active: [1100, 1.15], leap: [60000, 1.0], fade: [500, 1.1], second: [150, 1.0] }, firstP: 0.15, leapP: 0.006,
+      inc: { aspire: [0, 0], first: [150, 1.0], active: [1100, 1.15], leap: [60000, 1.0], fade: [500, 1.1], second: [150, 1.0] }, firstP: 0.25, leapP: 0.0048,
       adj: ['보컬 레슨 강사', '댄스 학원 강사', '행사 무대', '뮤지컬 앙상블'], second: ['보컬 트레이너', '안무가', '뮤지컬 배우', '기획사 A&R', '솔로 가수'], secondJob: [85, 85, 81, 87, 81] },
     acting: { name: '연기', skills: ['연기', '발성'], apt: ['artistic', 'verbal'], job: 53, peak: [22, 64], aud: ['SNS 팔로워', '명', 40],
       words: { aspire: '배우 지망생', first: '이름 있는 첫 배역', active: '배우 활동', leap: '주연의 시간', fade: '오디션을 기다리는 시기', second: '두 번째 막' },
-      inc: { aspire: [80, 1.1], first: [600, 1.0], active: [2000, 1.15], leap: [40000, 1.0], fade: [500, 1.1], second: [200, 1.0] }, firstP: 0.14, leapP: 0.004,
+      inc: { aspire: [80, 1.1], first: [250, 1.0], active: [450, 1.2], leap: [25000, 1.0], fade: [300, 1.1], second: [200, 1.0] }, firstP: 0.24, leapP: 0.003,
       adj: ['단역·보조출연', '연기 학원 강사', '행사 MC', '광고 모델'], second: ['연기 학원 강사', '성우', '연극 연출가', '캐스팅 디렉터'], secondJob: [85, 53, 87, 87] },
     visual: { name: '미술·디자인', skills: ['표현', '기획'], apt: ['artistic', 'logical'], job: 50, peak: [26, 70], aud: ['SNS 팔로워', '명', 25],
       words: { aspire: '작가 지망생', first: '첫 개인전', active: '작가 활동', leap: '주목받는 작가', fade: '작업이 뜸한 시기', second: '두 번째 막' },
-      inc: { aspire: [40, 1.2], first: [300, 1.0], active: [560, 1.05], leap: [8000, 0.9], fade: [200, 1.1], second: [100, 1.0] }, firstP: 0.12, leapP: 0.004,
+      inc: { aspire: [40, 1.2], first: [250, 1.0], active: [420, 1.05], leap: [5000, 0.9], fade: [200, 1.1], second: [100, 1.0] }, firstP: 0.3, leapP: 0.0032,
       adj: ['미술 학원 강사', '방과후 강사', '일러스트 외주', '벽화 작업', '굿즈 판매'], second: ['미술 학원 원장', '디자인 스튜디오 운영', '공방 운영', '전시 기획자'], secondJob: [85, 87, 87, 87] },
     webtoon: { name: '웹툰·일러스트', skills: ['작화', '이야기'], apt: ['artistic', 'verbal'], job: 54, peak: [23, 48], aud: ['관심 독자', '명', 60],
       words: { aspire: '웹툰 지망생', first: '첫 연재', active: '연재 활동', leap: '히트작', fade: '차기작을 준비하는 시기', second: '두 번째 막' },
-      inc: { aspire: [60, 1.1], first: [3000, 0.6], active: [3400, 0.67], leap: [30000, 0.8], fade: [900, 1.0], second: [300, 1.0] }, firstP: 0.14, leapP: 0.006,
+      inc: { aspire: [60, 1.1], first: [1900, 0.5], active: [1900, 0.5], leap: [6000, 0.8], fade: [900, 1.0], second: [300, 1.0] }, firstP: 0.24, leapP: 0.003,
       adj: ['웹툰 어시스턴트', '일러스트 외주', '그림 학원 강사', '굿즈 제작'], second: ['웹툰 스튜디오 운영', '만화 학원 강사', '웹툰 PD', '스토리 작가'], secondJob: [87, 85, 87, 54] },
     writing: { name: '문학', skills: ['문장', '구성'], apt: ['verbal', 'academic'], job: 55, peak: [25, 75], aud: ['누적 판매', '부', 30],
       words: { aspire: '작가 지망생', first: '등단', active: '작가 활동', leap: '사랑받는 작가', fade: '쓰지 못하는 시기', second: '두 번째 막' },
-      inc: { aspire: [20, 1.2], first: [230, 0.9], active: [420, 1.0], leap: [7000, 0.9], fade: [150, 1.0], second: [80, 1.0] }, firstP: 0.10, leapP: 0.004,
+      inc: { aspire: [20, 1.2], first: [230, 0.9], active: [420, 1.0], leap: [7000, 0.9], fade: [150, 1.0], second: [80, 1.0] }, firstP: 0.3, leapP: 0.0032,
       adj: ['글쓰기 강사', '출판 편집자', '방송작가', '카피라이터', '번역가'], second: ['글쓰기 강사', '출판 편집자', '문학 평론가', '방송작가'], secondJob: [85, 87, 55, 87] },
     film: { name: '영상·콘텐츠', skills: ['연출', '편집'], apt: ['artistic', 'logical'], job: 83, peak: [24, 55], aud: ['구독자', '명', 80],
       words: { aspire: '영상 지망생', first: '첫 작품 공개', active: '제작 활동', leap: '화제의 작품', fade: '조용한 시기', second: '두 번째 막' },
-      inc: { aspire: [60, 1.2], first: [1500, 0.95], active: [3600, 0.95], leap: [40000, 1.0], fade: [1200, 1.0], second: [300, 1.0] }, firstP: 0.15, leapP: 0.006,
+      inc: { aspire: [60, 1.2], first: [1000, 0.95], active: [2300, 0.9], leap: [15000, 1.0], fade: [900, 1.0], second: [300, 1.0] }, firstP: 0.25, leapP: 0.002,
       adj: ['외주 편집자', '웨딩·행사 촬영', '광고 조감독', '영상 편집자'], second: ['영상 프로덕션 운영', '영상 강사', '방송 PD', '콘텐츠 기획자'], secondJob: [87, 85, 83, 87] },
     sport: { name: '스포츠', skills: ['기술', '체력'], apt: ['physical', 'logical'], job: 84, peak: [21, 31], aud: ['응원하는 팬', '명', 30],
       words: { aspire: '선수 지망생', first: '프로 입단', active: '선수 생활', leap: '주전의 시간', fade: '선수 생활의 끝자락', second: '두 번째 막' },
-      inc: { aspire: [0, 0], first: [3300, 0.25], active: [6000, 0.6], leap: [40000, 0.8], fade: [3300, 0.4], second: [0, 0] }, firstP: 0.10, leapP: 0.008,
+      inc: { aspire: [0, 0], first: [3300, 0.25], active: [6000, 0.6], leap: [40000, 0.8], fade: [3300, 0.4], second: [0, 0] }, firstP: 0.17, leapP: 0.0064,
       adj: ['레슨 코치', '생활체육 지도자', '유소년 클럽 코치', '심판'], second: ['코치', '트레이너', '스카우트', '생활체육 지도자', '유소년 아카데미 운영', '해설위원'], secondJob: [86, 86, 86, 86, 87, 87] },
   },
   // subdivisions: sports by league (pro: how the first contract is won; pay: a year's pay for a first contract and the
@@ -1958,7 +1958,8 @@ const STATE = (() => {
     // 10. innate traits (hidden) — constitution stays the first 'traits' draw
     const T = RNG.stream(s, 'traits'), C = DATA.CONSTITUTION;
     const constitution = clamp(Math.exp(T.normal(0, C.sigma)), C.min, C.max);
-    const eduAvg = parents.reduce((a, p) => a + EDU_SCORE[p.edu], 0) / parents.length;
+    // a child in care (보호 아동) has no parents to average: take the neutral middle, not 0/0 (that NaN reached every aptitude and net worth)
+    const eduAvg = parents.length ? parents.reduce((a, p) => a + EDU_SCORE[p.edu], 0) / parents.length : 1.5;
     const apt0 = (eduAvg - 1.5) * 2.5 + (q - 3);
     const trait = shift => Math.round(clamp(T.normal(50 + shift, 15), 1, 99));
     const traits = {
@@ -3339,6 +3340,125 @@ const EVENTS = (() => {
     }
     return P;
   }
+  // ---------- arts & sports paths (arts patch §8): the field's own moments at every stage ----------
+  // Category 'arts' exists only for a person on a path (ARTS.is), so other lives draw exactly as before. Organisations
+  // named here are real only in neutral or happy moments; every bad turn with an organisation uses a 가상 one (§2).
+  const onPath = (fields, stages, sub) => s => ARTS.is(s, fields, stages) && !ARTS.youthNow(s) && !ARTS.studentNow(s) && !!s.career && s.career.status === 'art' && (!sub || s.arts.sub === sub);
+  const youngOn = fields => s => ARTS.is(s, fields) && ARTS.youthNow(s);
+  const studentOn = fields => s => ARTS.is(s, fields) && ARTS.studentNow(s);
+  const orgOf = (s, kind) => s.arts.org && (!kind || s.arts.org.kind === kind) ? ARTS.bare(s.arts.org.name) : null;
+  const ASP = ['aspire'], FIRST = ['first'], WORK = ['first', 'active', 'leap'], ACT = ['active', 'leap'], MID = ['first', 'active', 'leap', 'fade'], FADE = ['fade'], SECOND = ['second'], LEAP = ['leap'];
+  const rec = d => s => { s.arts.rec = STATE.clamp(s.arts.rec + d, 0, 100); };
+  const resolve = d => s => { s.arts.resolve = STATE.clamp(s.arts.resolve + d, 0, 100); };
+  const both = (...f) => (s, P) => f.forEach(g => g(s, P));
+  // any field
+  E('a-y-bus', 'arts', [9, 18], 2, { when: youngOn(), fx: { st: 1, sk: 1 } }, ['연습이 끝나고 돌아오는 버스에서 졸다가 내릴 정류장을 지나쳤다.', '방학 내내 연습실 열쇠를 필통에 넣고 다녔다.']);
+  E('a-y-fee', 'arts', [9, 18], 1.5, { when: youngOn(), need: ['parent'], note: 'artistsWork', fx: { rel: 2, st: 1 } }, ['{부모|이/가} 레슨비 봉투를 건네며 「열심히 해」라고만 했다. 봉투가 생각보다 두꺼웠다.', '대회 참가비를 내던 날, {부모|은/는} 지갑을 한참 들여다보았다.']);
+  E('a-y-friends', 'arts', [12, 18], 1.5, { when: youngOn(), fx: { rel: -1, st: 1 } }, ['친구들이 노래방에 가는 날에도 연습을 하러 갔다. 단톡방에는 사진만 올라왔다.', '수학여행 대신 대회 준비를 했다. 친구들이 사 온 기념품 열쇠고리를 받았다.']);
+  E('a-u-practice', 'arts', [18, 27], 2, { when: studentOn(['music', 'idol', 'acting', 'visual', 'webtoon', 'writing', 'film']), fx: { sk: 2, st: 2 } }, ['실기실 불이 꺼지기 직전까지 남아 있었다. 경비 아저씨가 이제 나가라고 손짓했다.', '졸업 작품 준비로 한 학기 내내 학교 근처를 벗어나지 못했다.']);
+  E('a-u-crit', 'arts', [18, 27], 1.5, { when: studentOn(['music', 'idol', 'acting', 'visual', 'webtoon', 'writing', 'film']), fx: { st: 3, sk: 2 } }, ['합평 시간에 교수님이 내 작품 앞에서 오래 말이 없었다. 그 침묵이 칭찬보다 무서웠다.', '실기 평가가 끝나고 동기들과 학교 앞 분식집에서 늦은 저녁을 먹었다.']);
+  E('a-asp-shift', 'arts', [19, 40], 2, { when: onPath(null, ASP), note: 'artistsWork', fx: { st: 2, h: -1 } }, ['편의점 야간 아르바이트를 마치고 그대로 연습실로 갔다.', '아르바이트 시간표를 짤 때 연습 시간부터 먼저 비워 두었다.']);
+  E('a-asp-family', 'arts', [22, 45], 1.5, { when: onPath(null, ['aspire', 'fade']), need: ['parent'], fx: { st: 2, rel: -1 } }, ['명절에 친척들이 「아직도 그거 하냐」고 물었다. 웃으며 고개를 끄덕였다.', '{부모|은/는} 요즘 무슨 일을 하느냐고 묻지 않았다. 대신 반찬을 한 보따리 싸 주었다.']);
+  E('a-asp-mail', 'arts', [19, 40], 2, { when: onPath(null, ASP), fx: { hap: -2, st: 2 }, make: resolve(-2) }, ['지원한 곳에서 「이번에는 함께하지 못하게 되었다」는 메일이 왔다. 같은 문장을 벌써 여러 번 읽었다.', '합격자 명단을 위에서부터 끝까지 두 번 읽었다. 내 이름은 없었다.']);
+  E('a-peer-quit', 'arts', [22, 40], 1.5, { when: onPath(null, ['aspire', 'first', 'active', 'fade']), note: 'artistsWork', fx: { hap: -2, rel: 1 } }, ['함께 시작한 동료가 그만두겠다고 했다. 마지막 날 둘이서 짜장면을 먹었다.', '오래 같이 연습하던 친구가 회사에 들어갔다. 축하한다고 말하는 목소리가 조금 떨렸다.']);
+  E('a-tax', 'arts', [22, 60], 1.5, { months: [5], when: onPath(null, MID), note: 'artistsWork', fx: { st: 2 } }, ['종합소득세 신고 기간, 한 해 치 영수증을 방바닥에 펼쳐 놓았다. 수입 칸이 생각보다 짧았다.']);
+  E('a-small-win', 'arts', [20, 60], 1.5, { when: onPath(null, MID), fx: { hap: 3 }, make: resolve(3) }, ['모르는 사람에게서 「덕분에 힘이 났다」는 메시지를 받았다. 캡처해서 저장해 두었다.', '오래전 작업을 기억하는 사람을 만났다. 그 사람은 제목까지 정확히 알고 있었다.']);
+  E('a-fade-desk', 'arts', [25, 65], 2, { when: onPath(null, FADE), fx: { st: 1, hap: -1 } }, ['연락이 뜸한 한 해였다. 그래도 매일 같은 시간에 작업대 앞에 앉았다.', '일이 없는 날이 길어졌다. 오래된 작업을 꺼내 처음부터 다시 보았다.']);
+  E('a-sec-student', 'arts', [28, 75], 2, { when: onPath(null, SECOND), fx: { hap: 4, rel: 2 } }, ['처음 가르친 학생이 대회에서 상을 받았다. 내가 받은 어떤 상보다 기뻤다.', '수업이 끝나고 한 학생이 「선생님처럼 되고 싶다」고 했다. 대답 대신 어깨를 두드려 주었다.']);
+  E('a-sec-alone', 'arts', [28, 75], 1.5, { when: onPath(null, SECOND), fx: { hap: 2, st: -2 } }, ['수업이 끝난 빈 교실에서 혼자 오래 연습했다. 손이 아직 기억하고 있었다.', '오랜만에 무대 뒤에 서서 다른 사람의 공연을 보았다. 박수 치는 쪽도 나쁘지 않았다.']);
+  E('a-sec-reunion', 'people', [35, 80], 0.8, { when: s => s.arts && s.arts.ever && s.arts.firstEver, fx: { rel: 2, hap: 2 } }, ['예전에 함께 활동하던 사람들과 오랜만에 모였다. 그 시절 이야기로 밤이 깊었다.']);
+  E('a-old-photo', 'people', [65, 110], 1, { when: s => s.arts && s.arts.ever && s.arts.firstEver, road: 'gift', fx: { hap: 3 } }, ['오래된 사진첩에서 무대 위의 젊은 나를 보았다. 그날의 조명이 아직 눈에 선했다.', '낡은 상자에서 그 시절의 기록을 꺼냈다. 종이 냄새가 그대로였다.']);
+  E('a-old-ever', 'people', [55, 110], 0.8, { when: s => s.arts && s.arts.ever && !s.arts.on && !!s.arts.left, fx: { hap: 1 } }, ['라디오에서 흘러나온 소리에 오래 잊고 지낸 꿈이 떠올랐다. 그 길을 계속 걸었다면 어땠을까 잠시 생각했다.']);
+  // 음악
+  E('mu-y-hands', 'arts', [9, 18], 2, { when: youngOn(['music']), fx: { sk: 2, st: 1 } }, ['하루 네 시간 연습. 손끝에 굳은살이 박였다.', '레슨 선생님이 메트로놈을 한 칸 더 올렸다.']);
+  E('mu-busk', 'arts', [17, 40], 2, { when: onPath(['music'], ['aspire', 'first', 'active'], 'pop'), road: 'stage', note: 'artistsField', fx: { hap: 3 }, make: rec(1) }, ['첫 버스킹. 기타 케이스에 만 원짜리 한 장이 들어왔다. 그 돈은 아직 쓰지 않았다.', '공원 버스킹에서 아이 하나가 끝까지 앉아 들었다. 마지막 곡이 끝나자 박수를 쳤다.']);
+  E('mu-club', 'arts', [19, 50], 2, { when: onPath(['music'], WORK, 'pop'), road: 'stage', note: 'artistsField', fx: { hap: 2, st: 1 } }, ['백 석짜리 클럽 공연. 관객은 서른두 명이었다. 맨 앞줄 사람들이 노래를 따라 불렀다.', '작은 공연장 대기실에서 세트리스트를 세 번 고쳐 썼다.']);
+  E('mu-cancel', 'arts', [19, 50], 1.5, { when: onPath(['music'], WORK), road: 'rain', fx: { hap: -2, st: 2 } }, ['비 예보로 야외 공연이 취소되었다. 장비를 다시 차에 실으며 하늘만 보았다.']);
+  E('mu-stolen', 'arts', [19, 50], 1, { when: onPath(['music'], ['aspire', 'first', 'active']), fx: { hap: -4, st: 4 } }, ['공연 뒤풀이 사이에 장비 가방이 사라졌다. 경찰서에서 진술서를 쓰는 손이 떨렸다.']);
+  E('mu-session', 'arts', [20, 55], 1.5, { when: onPath(['music'], ['aspire', 'first', 'active', 'fade']), note: 'artistsWork', fx: { st: 1, sk: 1 } }, ['하루에 세션 녹음을 세 곡 했다. 이름은 크레디트 맨 끝에 작게 실렸다.', '주말 웨딩홀 연주를 두 번 뛰었다. 축가가 끝나자 신랑이 고개를 숙여 인사했다.']);
+  E('mu-church', 'arts', [20, 70], 1.2, { when: onPath(['music'], null, 'classic'), fx: { hap: 1 } }, ['일요일마다 교회 반주를 했다. 성가대 지휘자가 자꾸 템포를 당겼다.']);
+  E('mu-repair', 'arts', [18, 60], 1.5, { when: s => onPath(['music'], null, 'classic')(s) || studentOn(['music'])(s), fx: { st: 3 } }, ['악기 수리비 견적서를 받고 한참 말이 없었다. 석 달 치 레슨비였다.']);
+  E('mu-concours', 'arts', [18, 32], 1.5, { when: s => (onPath(['music'], ['aspire', 'first', 'active'], 'classic')(s) || studentOn(['music'])(s)) && s.arts.sub === 'classic', road: 'hall', fx: { hap: 3, st: 3 }, make: rec(2) }, ['콩쿠르 본선 진출자 명단에 이름이 올랐다. 무대 뒤 대기실의 공기가 차가웠다.']);
+  E('mu-orch', 'arts', [24, 65], 2, { when: s => onPath(['music'], MID)(s) && !!orgOf(s, 'orchestra'), road: 'hall', fx: { hap: 2 } }, s => [`${orgOf(s, 'orchestra')} 정기 연주회 날, 무대 뒤에서 조율하는 소리가 파도처럼 번졌다.`, `${orgOf(s, 'orchestra')}의 여름 야외 공연. 마지막 곡에서 객석의 휴대전화 불빛이 하나둘 켜졌다.`]);
+  E('mu-chart', 'arts', [19, 55], 2, { when: onPath(['music'], LEAP), road: 'crowd', note: 'artistsField', fx: { hap: 5, st: 2 }, make: rec(3) }, ['음원 차트 순위를 캡처한 화면을 몇 번이나 다시 열어 보았다.', '공연 티켓이 오픈 몇 분 만에 매진되었다. 대기 화면의 숫자가 믿기지 않았다.']);
+  // 아이돌·가수
+  E('id-y-mirror', 'arts', [11, 18], 2, { when: youngOn(['idol']), road: 'stage', fx: { sk: 2, st: 2 } }, ['연습실 거울 앞에서 같은 동작을 백 번 반복했다. 발목에 붕대를 감고 집에 왔다.', '월말 평가 전날 밤, 연습실 불이 꺼지지 않았다.']);
+  E('id-y-school', 'arts', [12, 18], 1.5, { when: s => youngOn(['idol'])(s) && !!s.arts.org, note: 'trainees', fx: { st: 2, sk: -1 } }, ['조퇴하고 연습실에 가는 날이 늘었다. 담임 선생님이 출석부를 보며 한숨을 쉬었다.', '시험 기간에도 연습은 쉬지 않았다. 대기실 구석에서 단어장을 넘겼다.']);
+  E('id-dorm', 'arts', [15, 28], 1.5, { when: s => ARTS.is(s, ['idol'], ASP) && !!s.arts.org, fx: { rel: 2, hap: 2 } }, ['숙소 이층 침대에 누워 다른 연습생들과 데뷔하면 하고 싶은 일을 이야기했다.']);
+  E('id-reshuffle', 'arts', [14, 27], 1.5, { when: s => ARTS.is(s, ['idol'], ASP) && !!s.arts.org, note: 'trainees', fx: { st: 4, hap: -2 } }, ['데뷔조 명단이 바뀌었다는 소문이 돌았다. 아무도 먼저 그 이야기를 꺼내지 않았다.']);
+  E('id-showcase', 'arts', [15, 32], 2, { when: s => ARTS.is(s, ['idol'], FIRST), road: 'stage', fx: { st: 3, hap: 2 } }, ['쇼케이스 리허설에서 인이어가 말을 듣지 않았다. 본 무대에서는 다행히 괜찮았다.', '데뷔 첫 주, 음악 방송 대기실 복도에 우리 그룹 이름이 붙어 있었다.']);
+  E('id-fansign', 'arts', [16, 40], 2, { when: s => ARTS.is(s, ['idol'], ACT), road: 'crowd', note: 'singersPay', fx: { hap: 4, rel: 1 }, make: rec(1) }, ['팬사인회에서 한 팬이 손편지를 건넸다. 「힘들 때 노래를 들었어요」라고 적혀 있었다.', '공식 팬카페 회원 수가 처음으로 네 자리를 넘었다.']);
+  E('id-musicshow', 'arts', [16, 40], 1.5, { when: s => ARTS.is(s, ['idol'], ACT), fx: { st: 3, h: -1 } }, ['음악 방송 사전 녹화 때문에 새벽 다섯 시에 방송국 앞에 도착했다.', '지방 행사 세 곳을 하루에 돌았다. 차 안에서 화장을 고치다 잠들었다.']);
+  E('id-comment', 'arts', [16, 40], 1.5, { when: s => ARTS.is(s, ['idol', 'acting'], ACT), fx: { st: 4, hap: -2 } }, ['악성 댓글은 보지 않기로 했다. 그래도 가끔 손이 먼저 검색창으로 갔다.']);
+  E('id-concert', 'arts', [17, 45], 2, { when: s => ARTS.is(s, ['idol'], LEAP), road: 'crowd', note: 'singersPay', fx: { hap: 6, st: 2 } }, ['첫 단독 콘서트. 객석의 응원봉 불빛이 바다처럼 흔들렸다.', '해외 공연장에서 처음 보는 사람들이 우리 노래를 한국어로 따라 불렀다.']);
+  E('id-hiatus', 'arts', [19, 45], 1.5, { when: s => ARTS.is(s, ['idol'], FADE), fx: { st: 1, sk: 1 } }, ['그룹 활동이 없는 동안 혼자 보컬 레슨을 다녔다.', '공백기에 처음으로 직접 가사를 써 보았다.']);
+  E('id-tough', 'arts', [15, 30], 0.8, { when: s => ARTS.is(s, ['idol']) && !!s.arts.org && s.arts.org.real === false, note: 'trainees', fx: { st: 4, hap: -3 } }, s => [`${orgOf(s)}(가상 회사)에서 정산 이야기는 올해도 나오지 않았다. 숙소 관리비 고지서만 늘었다.`]);
+  // 연기
+  E('ac-y-tears', 'arts', [9, 18], 2, { when: youngOn(['acting']), fx: { sk: 2, hap: 1 } }, ['연기 학원에서 처음으로 우는 장면을 해 보았다. 끝나고도 한참 눈물이 멈추지 않았다.', '학교 연극제에서 주인공 친구 역을 맡았다. 대사 한 줄에 객석이 웃었다.']);
+  E('ac-extra', 'arts', [19, 40], 2, { when: onPath(['acting'], ASP), note: 'actorsPay', fx: { st: 3, h: -1 } }, ['보조출연 현장에서 대기만 열네 시간을 했다. 화면에는 뒷모습이 1초 나왔다.', '단역 촬영 날, 대사 없이 같은 길을 스무 번 걸었다.']);
+  E('ac-audition', 'arts', [19, 45], 2, { when: onPath(['acting'], ['aspire', 'fade']), fx: { st: 3 }, make: resolve(-1) }, ['오디션 대기실에서 같은 대사를 외우는 사람이 스무 명이었다.', '오디션 결과는 오지 않았다. 「연락이 없으면 불합격」이라는 말을 이제 알았다.']);
+  E('ac-daehakro', 'arts', [19, 60], 2, { when: onPath(['acting'], MID), road: 'stage', note: 'agencyPeople', fx: { hap: 3, rel: 2 } }, ['대학로 소극장 공연의 막공 날, 커튼콜에서 동료들과 손을 잡고 고개를 숙였다.', '공연이 끝나고 무대 철수를 하며 소품 하나를 몰래 챙겼다.']);
+  E('ac-line', 'arts', [19, 45], 1.5, { when: onPath(['acting'], ['first', 'active']), fx: { hap: 2, sk: 1 } }, ['대사가 두 줄인 배역을 맡았다. 집에서 백 번은 연습했다.', '촬영장 대기 열네 시간 끝에 내 장면을 찍었다. 감독이 「좋아요」라고 한마디 했다.']);
+  E('ac-ad', 'arts', [20, 55], 1.2, { when: onPath(['acting'], ACT), fx: { hap: 2 } }, ['광고 촬영 섭외가 들어왔다. 같은 장면을 마흔 번 찍었다.']);
+  E('ac-known', 'arts', [22, 70], 1.5, { when: onPath(['acting'], ACT), road: 'crowd', fx: { hap: 3 }, make: rec(1) }, ['식당에서 한 손님이 「드라마에 나오셨죠?」라고 물었다. 아니라고 할 뻔했다.']);
+  E('ac-wait', 'arts', [25, 65], 1.5, { when: onPath(['acting'], FADE), fx: { st: 1, sk: 1 } }, ['오디션 연락이 뜸했다. 연기 학원 수업을 하나 더 맡았다.']);
+  E('ac-late', 'arts', [42, 65], 1, { when: onPath(['acting'], ['active', 'fade']), fx: { hap: 3 } }, s => [`나이 든 ${s.person.sex === 'F' ? '어머니' : '아버지'} 역의 대본이 왔다. 젊을 때는 오지 않던 역할이었다.`]);
+  E('ac-voice', 'arts', [28, 70], 1.2, { when: onPath(['acting'], SECOND), fx: { hap: 2 } }, ['녹음실에서 목소리만으로 한 사람의 일생을 연기했다.', '연기 학원 수업에서 학생들의 첫 독백을 들었다. 예전의 내 목소리가 겹쳐 들렸다.']);
+  // 미술·디자인
+  E('vi-y-plaster', 'arts', [9, 18], 2, { when: youngOn(['visual']), fx: { sk: 2 } }, ['미술 학원에서 석고 데생을 하다 연필 한 자루를 다 썼다.', '실기 대회 전날, 물감 통을 씻다가 손톱 밑까지 파랗게 물들었다.']);
+  E('vi-group', 'arts', [19, 50], 2, { when: onPath(['visual'], ['aspire', 'first', 'active'], 'fine'), road: 'gallery', note: 'artistsField', fx: { hap: 2, rel: 1 }, make: rec(1) }, ['단체전에 작품 한 점을 걸었다. 오프닝 날 종이컵을 들고 어색하게 서 있었다.', '공모전 입선 소식을 받았다. 상금은 재료비로 금방 사라졌다.']);
+  E('vi-sold', 'arts', [22, 70], 1.5, { when: onPath(['visual'], WORK, 'fine'), road: 'gallery', note: 'artistsField', fx: { hap: 5 }, make: resolve(4) }, ['전시장에서 작품이 처음 팔렸다. 액자 옆에 붙은 빨간 스티커 하나를 오래 보았다.']);
+  E('vi-residency', 'arts', [24, 55], 1.2, { when: onPath(['visual'], ACT, 'fine'), road: 'studio', fx: { sk: 2, hap: 2 }, make: rec(2) }, ['레지던시에 선정되었다. 낯선 동네의 작업실 열쇠를 받았다.', '작업실 창문에 늦게까지 불이 켜져 있었다. 맞은편 건물의 불은 다 꺼진 뒤였다.']);
+  E('vi-academy', 'arts', [20, 60], 2, { when: onPath(['visual'], ['aspire', 'first', 'active', 'fade']), note: 'artistsWork', fx: { st: 1, rel: 1 } }, ['미술 학원 수업을 마치고 아이들이 남긴 그림을 하나씩 정리했다. 해 그림이 열두 장이었다.', '방과후 미술 수업에서 한 아이가 내 얼굴을 그려 주었다.']);
+  E('vi-mural', 'arts', [20, 55], 1.2, { months: [6, 7, 8], when: onPath(['visual'], ['aspire', 'first', 'active', 'fade']), fx: { fit: 1, hap: 2 } }, ['여름 내내 동네 담벼락에 벽화를 그렸다. 지나가던 할머니가 시원한 물을 건넸다.']);
+  E('vi-market', 'arts', [20, 50], 1.2, { when: onPath(['visual', 'webtoon'], ['aspire', 'first', 'active', 'fade']), fx: { hap: 2 } }, ['플리마켓에서 직접 만든 엽서와 굿즈를 팔았다. 첫 손님은 초등학생이었다.']);
+  E('vi-client', 'arts', [22, 55], 2, { when: onPath(['visual'], MID, 'design'), fx: { st: 3 } }, ['클라이언트가 「처음 시안이 제일 나았다」고 했다. 수정은 열두 번째였다.', '마감 전날 밤, 작업실 창문의 불이 마지막까지 켜져 있었다.']);
+  E('vi-brand', 'arts', [26, 55], 1, { when: onPath(['visual'], ACT, 'design'), road: 'gift', fx: { hap: 3 } }, ['거리에서 내가 만든 로고가 붙은 가게를 지나쳤다. 괜히 걸음을 늦췄다.']);
+  E('vi-gallery', 'arts', [26, 70], 1, { when: onPath(['visual'], ACT, 'fine'), road: 'gallery', note: 'artistsField', fx: { hap: 4 }, make: rec(3) }, s => [`${ARTS.R(s).pick(DATA.ARTS.orgs.gallery)} 기획전 도록에 내 작품 사진이 실렸다. 도록을 몇 권 더 샀다.`]);
+  // 웹툰·웹소설
+  E('wt-y-notes', 'arts', [9, 18], 2, { when: youngOn(['webtoon']), fx: { hap: 2, sk: 1 } }, ['공책 뒤쪽에 그린 만화를 반 친구들이 돌려 보았다. 다음 화를 기다리는 친구가 생겼다.', '밤늦게 SNS에 그림을 올렸다. 아침에 일어나니 하트가 열두 개였다.']);
+  E('wt-challenge', 'arts', [17, 35], 2, { when: onPath(['webtoon'], ASP), note: 'webtoonPay', fx: { hap: 2 }, make: rec(1) }, ['도전만화에 올린 만화에 처음으로 모르는 사람의 댓글이 달렸다.', '공모전 결과를 기다리며 다음 원고의 콘티를 짰다.']);
+  E('wt-assist', 'arts', [19, 35], 1.5, { when: onPath(['webtoon'], ['aspire', 'fade']), note: 'webtoonPay', fx: { sk: 2, st: 2 } }, ['선배 작가의 어시스턴트로 일했다. 남의 그림체로 배경을 그리는 법을 배웠다.']);
+  E('wt-deadline', 'arts', [19, 55], 2.5, { when: s => onPath(['webtoon'], WORK)(s) && !!s.arts.serial, road: 'studio', note: 'webtoonPay', fx: { st: 4, h: -1 } }, s => [`「${s.arts.serial.t}」 마감 세 시간 전, 마지막 컷의 배경을 칠했다.`, `「${s.arts.serial.t}」 이번 화를 올리고 나서야 저녁을 먹었다. 시계는 새벽 두 시였다.`]);
+  E('wt-hiatus', 'arts', [20, 55], 1.5, { when: s => onPath(['webtoon'], WORK)(s) && !!s.arts.serial, road: 'hospital', fx: { h: -3, st: -2 } }, ['손목 통증으로 휴재 공지를 올렸다. 「푹 쉬고 오세요」라는 댓글이 줄을 이었다.', '모니터를 오래 보다 눈이 침침해졌다. 안과에서 인공눈물 처방을 받았다.']);
+  E('wt-comments', 'arts', [19, 55], 2, { when: s => onPath(['webtoon'], WORK)(s) && !!s.arts.serial, fx: { st: 2, hap: 1 }, make: rec(1) }, ['새 화가 올라가자 댓글이 폭주했다. 좋은 말과 아픈 말이 반반이었다.', '베스트 댓글에 내가 숨겨 둔 복선을 알아챈 독자가 있었다.']);
+  E('wt-novel', 'arts', [19, 55], 1.5, { when: onPath(['webtoon'], WORK, 'novel'), fx: { hap: 3 } }, ['웹소설 연재 조회수가 하루 만에 두 배가 되었다. 다음 화 예약 버튼을 눌렀다.']);
+  E('wt-next', 'arts', [22, 60], 1.5, { when: s => onPath(['webtoon'], MID)(s) && !s.arts.serial, fx: { st: 2 } }, ['차기작 기획서를 세 번째로 고쳤다. 담당 PD는 「조금만 더」라고 했다.']);
+  E('wt-adapt', 'arts', [22, 60], 1.2, { when: onPath(['webtoon'], LEAP), road: 'crowd', note: 'webtoonPay', fx: { hap: 5 } }, ['드라마 촬영장에 초대받았다. 내가 그린 장면을 배우가 연기하고 있었다.']);
+  // 문학
+  E('wr-y-baek', 'arts', [9, 18], 2, { when: youngOn(['writing']), fx: { sk: 2, hap: 1 } }, ['백일장 원고지에 마지막 마침표를 찍고 손을 들었다.', '국어 선생님이 내 시를 교실 뒤 게시판에 붙여 주었다.']);
+  E('wr-reject', 'arts', [19, 50], 2, { months: [1], when: onPath(['writing'], ASP), note: 'publishing', fx: { hap: -3, st: 2 }, make: resolve(-2) }, ['1월 1일 아침, 신춘문예 당선작이 실린 신문을 펼쳤다. 내 이름은 없었다.', '신춘문예 낙선 소식은 따로 오지 않았다. 새해 첫날 신문이 대신 말해 주었다.']);
+  E('wr-cafe', 'arts', [19, 50], 1.5, { when: onPath(['writing'], ['aspire', 'fade']), fx: { sk: 1, st: 1 } }, ['카페 구석 자리에서 원고를 고쳤다. 커피는 식은 지 오래였다.', '문예지 공모 마감 날, 우체국 문 닫기 십 분 전에 봉투를 부쳤다.']);
+  E('wr-firstbook', 'arts', [22, 70], 1.5, { when: onPath(['writing'], ['first', 'active']), road: 'gift', note: 'publishing', fx: { hap: 5 } }, ['첫 책이 나왔다. 택배 상자를 열고 책 냄새를 오래 맡았다.']);
+  E('wr-store', 'arts', [22, 75], 1.5, { when: onPath(['writing'], WORK), road: 'books', note: 'publishing', fx: { hap: 4 } }, ['서점 매대에서 내 책을 보았다. 아무도 보지 않을 때 한 권을 앞으로 당겨 놓았다.']);
+  E('wr-reading', 'arts', [24, 75], 1.2, { when: onPath(['writing'], ACT), fx: { hap: 3, rel: 1 }, make: rec(1) }, ['작은 서점에서 낭독회를 열었다. 열두 명이 왔고, 한 사람은 끝까지 울었다.']);
+  E('wr-oop', 'arts', [26, 75], 1.2, { when: onPath(['writing'], FADE), note: 'publishing', fx: { hap: -3 } }, ['첫 책이 절판되었다는 연락을 받았다. 집에 남은 다섯 권을 책장 맨 위에 꽂았다.']);
+  E('wr-side', 'arts', [22, 65], 1.5, { when: onPath(['writing'], ['aspire', 'first', 'active', 'fade']), note: 'artistsWork', fx: { st: 1 } }, ['번역 일감으로 생활비를 벌었다. 남의 문장을 옮기며 내 문장을 생각했다.', '글쓰기 강의 첫 시간, 수강생들에게 「매일 한 줄」을 숙제로 냈다.']);
+  // 영상·콘텐츠
+  E('fi-y-edit', 'arts', [11, 18], 2, { when: youngOn(['film']), fx: { sk: 2, st: 1 } }, ['휴대전화로 찍은 영상을 편집하다 새벽이 되었다.', '학교 축제 영상을 맡았다. 엔딩 크레딧에 내 이름을 맨 마지막에 넣었다.']);
+  E('fi-short', 'arts', [18, 35], 2, { when: s => onPath(['film'], ASP)(s) && s.arts.sub !== 'creator', fx: { hap: 2, st: 2 } }, ['친구들과 주말마다 단편영화를 찍었다. 조명은 집에서 가져온 스탠드였다.', '연출부 막내로 일했다. 촬영장 콜타임은 새벽 네 시였다.']);
+  E('fi-gv', 'arts', [20, 55], 1.5, { when: onPath(['film'], WORK, 'film'), road: 'crowd', fx: { hap: 3 }, make: rec(1) }, ['영화제 관객과의 대화에서 첫 질문을 받았다. 대답이 생각보다 길어졌다.']);
+  E('fi-pd', 'arts', [24, 55], 1.5, { when: onPath(['film'], MID, 'broadcast'), fx: { st: 2, hap: 2 } }, ['생방송이 끝나고 조정실에서 다 같이 박수를 쳤다.', '편집실에서 사흘째 집에 가지 못했다. 방송은 예정대로 나갔다.']);
+  E('fi-upload', 'arts', [16, 45], 2, { when: s => ARTS.is(s, ['film'], ['aspire', 'first', 'active']) && s.arts.sub === 'creator' && !ARTS.youthNow(s), note: 'creatorsPay', fx: { st: 2 } }, ['업로드 주기를 지키느라 석 달 동안 쉬는 날이 없었다.', '썸네일 문구 하나를 두고 한 시간을 고민했다.']);
+  E('fi-algo', 'arts', [16, 50], 1.2, { when: s => ARTS.is(s, ['film'], ACT) && s.arts.sub === 'creator', road: 'crowd', note: 'creatorsPay', fx: { hap: 4 }, make: rec(4) }, ['알고리즘 추천에 영상이 걸려 조회수가 하루 만에 열 배가 되었다.']);
+  E('fi-stall', 'arts', [20, 55], 1.5, { when: s => ARTS.is(s, ['film'], FADE) && s.arts.sub === 'creator', note: 'creatorsPay', fx: { st: 3, hap: -2 } }, ['채널 조회수가 몇 달째 제자리였다. 썸네일만 스무 번 바꿨다.']);
+  E('fi-side', 'arts', [20, 55], 1.5, { when: onPath(['film'], ['aspire', 'first', 'active', 'fade']), note: 'artistsWork', fx: { st: 2 } }, ['외주 편집 일을 밤새 했다. 남의 영상 속 웃음소리를 수백 번 들었다.', '주말마다 웨딩 촬영을 다녔다. 신부 입장 장면은 이제 눈 감고도 찍을 수 있었다.']);
+  // 스포츠
+  E('sp-y-dawn', 'arts', [9, 18], 2.5, { when: youngOn(['sport']), road: 'stadium', fx: { fit: 3, st: 2, sk: -1 } }, ['새벽 훈련을 마치고 교실에 들어가면 첫 수업 종이 울렸다.', '동계 훈련 마지막 날, 운동장 열 바퀴를 돌고 그대로 누웠다.']);
+  E('sp-y-cup', 'arts', [10, 18], 2, { when: youngOn(['sport']), fx: { hap: -2, rel: 2 } }, ['전국 대회 예선에서 졌다. 돌아오는 버스 안이 조용했다.', '소년체전 지역 예선을 통과했다. 감독님이 처음으로 웃었다.']);
+  E('sp-y-scout', 'arts', [15, 18], 1.2, { when: youngOn(['sport']), fx: { st: 2 } }, ['관중석에 프로 구단 스카우트가 앉아 있다는 말을 들었다. 그날따라 몸이 무거웠다.']);
+  E('sp-u-league', 'arts', [19, 24], 2, { when: studentOn(['sport']), road: 'stadium', fx: { fit: 2, st: 2 } }, ['대학 리그 경기를 마치고 버스에서 동기들과 드래프트 이야기를 했다.', '대학 운동부 숙소에서 경기 영상을 돌려 보며 밤을 새웠다.']);
+  E('sp-indep', 'arts', [19, 30], 2, { when: s => onPath(['sport'], ASP)(s) && !!orgOf(s, 'indep'), road: 'stadium', fx: { st: 2 } }, s => [`${orgOf(s, 'indep')}(가상) 경기, 관중석의 스카우트를 찾느라 자꾸 고개를 돌렸다.`, '독립리그 원정 버스에서 컵라면으로 저녁을 때웠다. 다음 경기는 내일 오후였다.']);
+  E('sp-first', 'arts', [18, 30], 2.5, { when: onPath(['sport'], FIRST), road: 'stadium', note: 'kboPay', fx: { hap: 5, st: 2 } }, s => s.arts.sub === 'baseball' ? ['프로 첫 안타를 쳤다. 더그아웃에서 동료들이 기념구를 챙겨 주었다.', '처음으로 1군 엔트리에 이름이 올랐다. 관중석의 함성이 생각보다 멀리서 들렸다.'] : s.arts.sub === 'soccer' ? ['프로 첫 골을 넣었다. 골대 뒤 관중석으로 달려갔다.', '첫 출전 경기, 교체 사인을 받고 터치라인 앞에 섰다.'] : ['프로 무대 첫 경기에 나섰다. 관중석의 함성이 생각보다 멀리서 들렸다.']);
+  E('sp-camp', 'arts', [19, 36], 2, { months: [1, 2], when: onPath(['sport'], MID), road: 'stadium', fx: { fit: 3, st: 2 } }, ['전지훈련지에서 하루 세 번 훈련했다. 밤마다 얼음찜질을 했다.']);
+  E('sp-farm', 'arts', [19, 36], 1.5, { when: onPath(['sport'], ['first', 'active', 'fade']), fx: { hap: -2, st: 2 } }, ['2군 경기장에서 한 달을 보냈다. 관중은 선수 가족 몇이 전부였다.', '벤치에서 경기 전체를 지켜보았다. 몸을 풀어 둔 것이 아까웠다.']);
+  E('sp-trade', 'arts', [22, 36], 1, { when: s => onPath(['sport'], ACT)(s) && s.arts.org && s.arts.org.real !== false && !!(DATA.ARTS.orgs[ARTS.sportX(s).league]), note: 'kboPay', fx: { st: 4 }, make: s => { const L = DATA.ARTS.orgs[ARTS.sportX(s).league].filter(x => x[0] !== s.arts.org.name); if (L.length) { const [n, rg] = ARTS.R(s).pick(L); s.arts.org.name = n; s.arts.org.region = rg; ARTS.placeJob(s); } } }, ['트레이드 소식을 아침 뉴스로 들었다. 짐을 싸서 다른 도시로 갔다.']);
+  E('sp-fans', 'arts', [20, 38], 2, { when: onPath(['sport'], LEAP), road: 'crowd', fx: { hap: 5 } }, ['경기장 앞에서 아이들이 사인을 받으려고 줄을 섰다.', '내 이름이 적힌 유니폼을 입은 관중을 처음 보았다.']);
+  E('sp-rehab', 'arts', [19, 40], 2, { when: s => onPath(['sport'])(s) && !!s.arts.inj && s.arts.inj.serious, road: 'hospital', fx: { st: 3, fit: 1 } }, ['재활 센터에서 같은 동작을 하루에 수백 번 반복했다.', '재활 중에 동료들의 경기를 텔레비전으로 보았다. 화면 속 내 자리에 다른 이름이 있었다.']);
+  E('sp-sangmu', 'arts', [19, 30], 3, { when: s => ARTS.is(s, ['sport']) && !!s.career && s.career.status === 'military' && s.career.mil.branch === 'sangmu', road: 'stadium', fx: { fit: 2, st: 1 } }, ['상무에서 군복과 유니폼을 번갈아 입었다. 경기 감각은 잃지 않았다.']);
+  E('sp-coach', 'arts', [30, 70], 2, { when: onPath(['sport'], SECOND), road: 'stadium', fx: { hap: 3, rel: 2 } }, ['유소년 선수들에게 처음 공 다루는 법을 가르쳤다. 예전의 나를 보는 것 같았다.', '내가 가르친 아이가 처음으로 선발 명단에 올랐다는 소식을 들었다.']);
+  E('sp-body', 'health', [35, 70], 0.8, { when: s => s.arts && s.arts.field === 'sport' && s.arts.firstEver && STATE.age(s) >= 30, fx: { h: -1 } }, ['비 오는 날이면 오래전 다친 자리가 먼저 알았다.']);
+
   const workMates = (s, role) => s.career && s.career.status === 'employed' ? s.people.filter(p => p.alive && p.role === role && !p.former && (s.career.colleagues || []).includes(p.id)) : [];
   const textOf = (tpl, s, P, a) => { const t = typeof tpl.text === 'function' ? tpl.text(s, P, a) : tpl.text; return Array.isArray(t) ? t : [t]; };
   // templates whose fixed words name a parent (kept from a child without parents)
@@ -7820,15 +7940,15 @@ const ARTS = (() => {
   const jo = (w, a, b) => STATE.josa(bare(w), a, b);
   // calibration constants (게임 설정), tuned against the §11 rows with runMany
   const K = {
-    need: 9000,          // practice hours that take a discipline to about 65 at efficiency 1 (the prep patch's growth law)
+    need: 25000,         // practice hours that take a discipline to about 65 at efficiency 1 (the prep patch's growth law)
     skC: 60, skS: 14,    // the 실력 of a typical adult on a path, and its spread (for every odd that reads 실력)
-    serious: 0.11,       // how readily an eligible twelve-year-old takes a path seriously on their own
+    serious: 0,          // how readily an eligible twelve-year-old takes a path seriously on their own
     adjMin: 38,          // 실력 needed before lessons and session work pay (in-field side work)
     adjRate: 52,         // in-field side work a focus point a month (만 원); ordinary part-time pays 30
-    draftMid: 71, draftW: 5.2,   // KBO draft: the applicant's 실력 at a one-in-two chance and the spread (target 8.7% of applicants)
+    draftMid: 74, draftW: 5.2,   // KBO draft: the applicant's 실력 at a one-in-two chance and the spread (target 8.7% of applicants)
     proP: { contract: 0.16, test: 0.12, team: 0.32, draft: 0.3 },   // first contract outside the KBO draft, at an average 실력
     fadeBase: 0.05, disband: 0.15, cutYear: 0.12, debutYear: 0.17,
-    leave: 0.13, form: 0.24,      // the 「흐름에 맡긴다」 weights of decision 7
+    leave: 0.24, form: 0.24,      // the 「흐름에 맡긴다」 weights of decision 7
     injury: 0.006,       // an athlete's monthly chance of an injury (a third of them serious)
   };
 
@@ -7870,14 +7990,14 @@ const ARTS = (() => {
     const T = s.person.traits, ch = s.edu.childhood || {}, h = k => RNG.hash32(s.seed + ':artsField:' + k) / 4294967296;
     if (hint === 'sport') return 'sport';
     const sc = {
-      sport: T.physical + (ch.interest === 'physical' ? 10 : 0) + (ch.after === 'sport' ? 6 : 0) + 4,
-      music: 0.7 * T.artistic + 0.3 * T.logical + 2, idol: 0.5 * T.artistic + 0.5 * T.social - 2, acting: 0.4 * T.artistic + 0.3 * T.social + 0.3 * T.verbal - 3,
-      visual: T.artistic + (ch.after === 'art' ? 4 : 0), webtoon: 0.6 * T.artistic + 0.4 * T.verbal, writing: 0.85 * T.verbal + 0.15 * T.academic - 4, film: 0.4 * T.artistic + 0.3 * T.logical + 0.3 * T.verbal - 3,
+      sport: T.physical + (ch.interest === 'physical' ? 10 : 0) + (ch.after === 'sport' ? 6 : 0) + 2,
+      music: 0.7 * T.artistic + 0.3 * T.logical + 2, idol: 0.5 * T.artistic + 0.5 * T.social + 5, acting: 0.4 * T.artistic + 0.3 * T.social + 0.3 * T.verbal + 6,
+      visual: 0.7 * T.artistic + 0.3 * T.logical + 3 + (ch.after === 'art' ? 4 : 0), webtoon: 0.6 * T.artistic + 0.4 * T.verbal + 2, writing: 0.85 * T.verbal + 0.15 * T.academic - 4, film: 0.4 * T.artistic + 0.3 * T.logical + 0.3 * T.verbal + 6,
     };
     if (hint === 'art') delete sc.sport;
     if (ch.interest === 'artistic' || hint === 'art') sc.sport -= 12;
     let best = null, bv = -1e9;
-    for (const k in sc) { const v = sc[k] + 16 * h(k); if (v > bv) { bv = v; best = k; } }
+    for (const k in sc) { const v = sc[k] + 24 * h(k); if (v > bv) { bv = v; best = k; } }   // offsets and noise spread talents across the eight fields (게임 설정)
     return best;
   }
   function subFor(s, f) {
@@ -8076,10 +8196,14 @@ const ARTS = (() => {
     mem(s, deal.round ? `${bare(deal.name)}의 지명 전화를 받은 날` : `첫 계약서에 이름을 쓴 날`, 90);
     A.pend = { kind: 'pro', at: youthNow(s) || studentNow(s) ? nextMarch(s) : mi(s) + 1 };
     if (when === 'hs') A.noCollege = true;
+    // a 재수생 who signs in August leaves the next 수능 behind: the season starts first (§5.8)
+    const e = s.edu;
+    if (e && (e.stage === 'retake' || e.stage === 'post')) { e.stage = 'work'; e.path = 'work'; e.cycle = null; e.next = null; e.banSu = false; A.noCollege = true; }
   }
   function startPending(s, r) {
     const A = s.arts;
     A.pend = null;
+    if (!A.org) return;   // the contract fell through before the season (a second act or a new road began first)
     setStage(s, 'first');
     placeJob(s);
     station(s, `${bare(A.org.name)} 입단`);
@@ -8114,7 +8238,7 @@ const ARTS = (() => {
       if (A.field === 'idol' && A.org && A.org.kind === 'agency') trainee(s, r);
       if (A.field === 'idol' && !A.org && m === 4 && a <= 23) trainee(s, r);
     }
-    if (A.field === 'music' && A.sub === 'classic' && ['aspire', 'active', 'fade'].includes(A.stage) && !(A.org && A.org.salary) && m === 6 && r.chance(0.022 * Math.exp(1.3 * skZ(s)))) orchestra(s, r);
+    if (A.field === 'music' && A.sub === 'classic' && ['aspire', 'active', 'fade'].includes(A.stage) && !(A.org && A.org.salary) && m === 6 && r.chance(0.008 * Math.exp(1.3 * skZ(s)))) orchestra(s, r);
     if (A.field === 'film' && A.sub === 'broadcast' && A.stage === 'aspire' && m === 10 && r.chance(0.07 * Math.exp(skZ(s)))) firstStep(s, r, 'pd');
     // §6.3 — an audition programme, at most twice in a life
     if (['idol', 'acting'].includes(A.field) || (A.field === 'music' && A.sub === 'pop')) {
@@ -8147,7 +8271,7 @@ const ARTS = (() => {
   const f0 = s => FDof(s).firstP;
   function orchestra(s, r) {
     const A = s.arts, name = r.pick(O.orchestra);
-    A.org = { kind: 'orchestra', name, real: true, salary: Math.round(4200 + 600 * skZ(s)), y0: s.clock.y };
+    A.org = { kind: 'orchestra', name, real: true, salary: Math.round(3800 + 500 * skZ(s)), y0: s.clock.y };
     mile(s, `${name} 단원 오디션에 합격했다. 자리가 나는 일이 드문 곳이었다. 첫 리허설에서 활을 쥔 손이 조금 떨렸다.`, 90, { hap: 9, st: -4 }, 'hall', true, 'artistsField');
     mem(s, `${name}의 첫 리허설`, 86);
     work(s, `${name} 입단`);
@@ -8285,7 +8409,7 @@ const ARTS = (() => {
     const A = s.arts, f = FDof(s), r = R(s);
     const i = title0 != null ? title0 : Math.min(f.second.length - 1, Math.floor(RNG.hash32(s.seed + ':second:' + s.clock.y) / 4294967296 * f.second.length));
     A.second = { title: f.second[i], job: f.secondJob[i] };
-    A.org = null; A.serial = null;
+    A.org = null; A.serial = null; A.pend = null;
     setStage(s, 'second');
     station(s, `두 번째 막 · ${A.second.title}`);
     if (!youthNow(s) && !studentNow(s) && s.career.status === 'art') placeJob(s);
@@ -8434,13 +8558,33 @@ const ARTS = (() => {
     }
   }, 38.6);
 
+  // one life's path for the §11 rows (HARNESS.artsRows): the years on the path as an adult, the drafts, the exits
+  function sample(s) {
+    const A = s.arts;
+    if (!A || !A.ever) return null;
+    return { field: A.field, sub: A.sub, entry: A.entry, first: !!A.firstEver, leap: !!A.leapEver, at40: A.at40, office: !!A.office, officeExit: !!A.officeExit, left: !!A.left,
+      drafts: A.drafts.map(d => ({ p: d.p, ok: d.ok })), yrs: A.hist.filter(h => h.age >= 20 && ['aspire', 'first', 'active', 'leap', 'fade'].includes(h.st)).map(h => ({ st: h.st, art: h.art })) };
+  }
+
   // ---------------- readers ----------------
   function aud(s) { const A = s.arts, [lab, unit, sc] = FDof(s).aud, n = Math.round(sc * Math.pow(10, A.rec / 25)); const t = n >= 10000 ? `${(n / 10000).toFixed(n < 100000 ? 1 : 0)}만` : n.toLocaleString('ko-KR'); return `${lab} ${t}${unit}`; }
-  function stageWord(s) { const A = s.arts; return A.stage === 'second' && A.second ? `두 번째 막 · ${A.second.title}` : FD[A.field].words[A.stage] || ''; }
+  // a few subdivisions name their stages in their own words (a designer has no 개인전, a channel no 첫 작품 공개)
+  const SUB_WORDS = {
+    'visual/design': { aspire: '디자이너 지망생', first: '첫 클라이언트 작업', active: '디자이너 활동', leap: '주목받는 디자이너' },
+    'music/classic': { aspire: '연주자 지망생', first: '첫 독주회', active: '연주 활동' },
+    'film/creator': { aspire: '크리에이터 지망생', first: '구독자 1만', active: '채널 운영', leap: '화제의 채널', fade: '채널 정체기' },
+    'film/broadcast': { aspire: '방송 PD 지망생', first: 'PD 입사', active: '방송 제작' },
+    'webtoon/novel': { aspire: '웹소설 지망생', leap: '히트 연재작' },
+  };
+  function stageWord(s) { const A = s.arts, sw = SUB_WORDS[`${A.field}/${A.sub}`] || {}; return A.stage === 'second' && A.second ? `두 번째 막 · ${A.second.title}` : sw[A.stage] || FD[A.field].words[A.stage] || ''; }
   function label(s) {
     const A = s.arts, c = s.career;
-    if (!adultOn(s) || !c || c.status !== 'art') return null;
-    if (c.job && X[c.job.id].ladder === 'art') return `${c.job.emp && !['프리랜서', '자영', '1인 채널'].includes(c.job.emp) ? bare(c.job.emp) + ' ' : ''}${c.job.title}`;
+    if (!on(s) || youthNow(s) || !c) return null;
+    // a student who already plays for a team or works in the field is shown by that work (not as a 프리랜서)
+    const artJob = c.job && X[c.job.id].ladder === 'art';
+    if (studentNow(s) && !(artJob && c.status === 'art')) return null;
+    if (c.status !== 'art') return null;
+    if (artJob) return `${c.job.emp && !['프리랜서', '자영', '1인 채널'].includes(c.job.emp) ? bare(c.job.emp) + ' ' : ''}${c.job.title}`;
     return `${FDof(s).words.aspire}${subName(s) ? ` (${subName(s)})` : ''}${c.side && c.side.kind ? ` · ${c.side.kind}` : ''}`;
   }
   // the school years on a path: shown after the school (「중학교 2학년 · 연습생」)
@@ -8537,7 +8681,7 @@ const ARTS = (() => {
     auto(s, item) {
       const T = s.person.traits, f = item.ctx.field, r = C(s), ch = s.edu.childhood, q = s.family.quintile;
       const t = f === 'sport' ? T.physical : f === 'writing' ? T.verbal : T.artistic;
-      const p = clamp(K.serious + (t - 60) / 110 + (['artistic', 'physical'].includes(ch.interest) ? 0.05 : 0) + (q >= 4 ? 0.03 : q <= 1 ? -0.03 : 0), 0.02, 0.5);
+      const p = clamp(K.serious + (t - 60) / 180 + (['artistic', 'physical'].includes(ch.interest) ? 0.05 : 0) + (q >= 4 ? 0.03 : q <= 1 ? -0.03 : 0), 0.02, 0.5);
       if (!r.chance(p)) return 'hobby';
       const keys = item.opts.map(o => o.key).filter(k => k !== 'hobby');
       return r.weighted(keys, k => ({ team: 0.45, trainee: 0.35, school: 0.2, lessons: 0.35, parallel: 0.35 })[k] || 0.2);
@@ -8767,7 +8911,7 @@ const ARTS = (() => {
     },
     note: s => NOTE(s),
   };
-  return { K, on, adultOn, is, practiceAct, youthNow, studentNow, enter, enterBy, eligible, fieldFor, resume, afterService, afterGrad, deferAge, sangmu, talentBonus,
+  return { K, sample, on, adultOn, is, practiceAct, youthNow, studentNow, enter, enterBy, eligible, fieldFor, resume, afterService, afterGrad, deferAge, sangmu, talentBonus,
     label, youthTag, view, aud, stageWord, manages, leavePath, toSecond, setStage, firstStep, leap, fade, lastGame, placeJob, signPro, proTry, title, bare, jo, E, skZ, sportX, subName, isOffice, FDof, pts, mem, mile, work, station, agencyOffers, trainee, R };
 })();
 
@@ -8807,12 +8951,13 @@ const MEMORY = (() => {
   function onEvent(s, ev) {
     if (!s.mem) return;
     const r = R(s), heavy = ev.heavy, mileOrNet = /^(mile|net)-/.test(ev.id);
-    const p = heavy ? 0.95 : mileOrNet ? 0.55 : 0.18;
+    const arts = ev.cat === 'arts';   // the field's own moments are remembered more often (arts patch §8)
+    const p = heavy ? 0.95 : mileOrNet ? 0.55 : arts ? 0.45 : 0.18;
     if (!r.chance(p)) return;
     const who = ev.pid ? [ev.pid] : [];
-    const w = heavy ? 85 : mileOrNet ? 65 : 40 + r.int(0, 15);
+    const w = heavy ? 85 : mileOrNet ? 65 : arts ? 55 + r.int(0, 15) : 40 + r.int(0, 15);
     const icon = { network: 'two', milestone: 'school', health: 'heart', family: 'family', love: 'heart', money: 'coin', school: 'school', work: 'book', career: 'book', grand: 'family', kids: 'family' }[ev.cat] || 'sun';
-    add(s, { text: first(ev.text), w, who, icon, kind: ev.id.startsWith('net-death') ? 'loss' : ev.id === 'mile-family' ? 'family' : ev.cat === 'milestone' ? 'milestone' : 'moment', id: ev.id });
+    add(s, { text: first(ev.text), w, who, icon: arts ? 'star' : icon, kind: ev.id.startsWith('net-death') ? 'loss' : ev.id === 'mile-family' ? 'family' : arts ? 'arts' : ev.cat === 'milestone' ? 'milestone' : 'moment', id: ev.id });
   }
   function onDecision(s, label, how) { if (s.mem && how !== 'auto') add(s, { text: `「${label.split(' · ').slice(1).join(' · ') || label}」을 고른 날`, w: 62, icon: 'road', kind: 'choice', choice: true }); else if (s.mem) add(s, { text: `「${label.split(' · ').slice(1).join(' · ') || label}」 쪽으로 걸어간 날`, w: 48, icon: 'road', kind: 'choice' }); }
 
@@ -8854,6 +8999,9 @@ const MEMORY = (() => {
     const d = s.mem.dream; if (!d) return null;
     const jobs = (s.career.history || []).map(h => h.id).concat(s.career.job ? [s.career.job.id] : []);
     if (jobs.some(j => d.jobs.includes(j))) return 'achieved';
+    // arts patch: the first stage, the draft call or the 등단 makes a 예체능 dream come true; a path walked keeps it near
+    if (d.field === '예체능' && s.arts && s.arts.firstEver) return 'achieved';
+    if (d.field === '예체능' && s.arts && s.arts.ever) return 'transformed';
     const mj = s.edu.uni ? ADMISSIONS.prog(s.edu.uni.p) : null;
     if (d.field && mj && mj.field === d.field) return 'transformed';
     if (s.mem.list.some(m => m.kind === 'dream-small')) return 'transformed';
@@ -8974,11 +9122,13 @@ const MEMORY = (() => {
     const M = s.mem, by = s.person.birth.y, n = s.person.death && s.person.death.age < 30 ? 4 : 6;
     const close = new Set(s.people.filter(p => ['mother', 'father', 'spouse', 'child', 'sibling', 'grandparent'].includes(p.role) || (p.role === 'friend' && p.rel >= 60)).map(p => p.id));
     const par = new Set(NETWORK.parents(s).map(p => p.id));
-    const score = m => m.w + (m.who.some(id => close.has(id)) ? 15 : 0) + (m.choice ? 12 : 0) + (m.kind === 'loss' ? 8 : 0) + (m.kind === 'joy' ? 4 : 0);
+    const score = m => m.w + (m.who.some(id => close.has(id)) ? 15 : 0) + (m.choice ? 12 : 0) + (m.kind === 'loss' ? 8 : 0) + (m.kind === 'joy' ? 4 : 0) + (m.kind === 'arts' ? 10 : 0);
     const pool = M.list.slice().sort((a, b) => score(b) - score(a));
     const out = [], years = new Set();
     const take = pred => { const m = pool.find(x => !out.includes(x) && !years.has(x.y) && pred(x)); if (m) { out.push(m); years.add(m.y); } };
     take(m => m.age <= 12);
+    // an arts or sports life keeps its signature moments on the road back (arts patch §10): the strongest two
+    if (s.arts && s.arts.ever) { take(m => m.kind === 'arts' && m.w >= 80); take(m => m.kind === 'arts'); }
     take(m => m.choice || m.kind === 'choice');
     take(m => m.who.some(id => par.has(id)));
     take(m => m.kind === 'joy' || /웃|결혼|태어났|합격|당첨|여행/.test(m.text));
@@ -9001,6 +9151,10 @@ const MEMORY = (() => {
     else if (/결혼/.test(t)) c = '그날 입은 옷이 좀 불편했던 것만 기억난다. 그리고 웃음소리.';
     else if (m.kind === 'joy') c = r.pick(['별것 아닌 날이었는데, 이상하게 오래 남았다.', '이런 날이 더 많았으면 좋았겠다. 생각보다 많았다.']);
     else if (m.kind === 'keep') c = `${s.mem.keep.item}${STATE.josa(s.mem.keep.item, '은', '는')} 끝까지 곁에 있었다.`;
+    else if (m.kind === 'arts') c = /드래프트|지명|이름은 불리지|떨어|낙선|탈락|방출/.test(t) ? r.pick(['그날은 다 끝난 줄 알았다. 길은 거기서 끝나지 않았다.', '그 침묵도 내 길의 일부였다.'])
+      : /마지막|은퇴/.test(t) ? r.pick(['그 마지막 박수는 아직도 귀에 남아 있다.', '떠날 때를 알고 떠났다. 그걸로 됐다.'])
+      : s.arts && s.arts.field === 'sport' ? r.pick(['그 함성을 듣자고 그 많은 새벽을 뛰었다.', '몸은 잊어도 그날의 공기는 기억한다.'])
+      : r.pick(['그 순간을 위해 그 많은 밤을 견뎠다.', '관객이 몇 명이든 상관없었다. 그날 나는 그 자리에 있었다.', '세상이 몰라도 괜찮았다. 나는 알았으니까.']);
     else c = r.pick(['그런 날도 있었다.', '지금 보니 꽤 괜찮은 날이었다.', '그때의 내가 조금 안쓰럽다.']);
     if (!reserved && (m.kind === 'joy' || m.choice) && r.chance(0.4)) c += r.pick([' 고마웠다.', ' 그걸로 됐다.']);
     return c;
@@ -9058,6 +9212,8 @@ const REPORT = (() => {
     if (c) for (const h of c.history.filter(h => h.reason !== 'military').slice(0, 6)) out.push({ y: Math.floor((h.from - 1) / 12), t: `${h.emp} ${h.title}${h.rank ? ' ' + h.rank : ''}` });
     if (c && c.job) out.push({ y: Math.floor((c.job.start - 1) / 12), t: `${c.job.emp} ${c.job.title}` });
     if (c && c.retiredY) out.push({ y: c.retiredY, t: '은퇴' });
+    // the arts and sports path (arts patch §4): its own stations — entry, debut or draft, the hit, the second act
+    if (s.arts && s.arts.ever) for (const x of s.arts.log.slice(0, 8)) out.push({ y: x.y, t: x.t });
     // the downward turns and the ways back (§11.7): 수감, 출소, 고시원, 임대주택…
     if (s.down) for (const x of s.down.log) if (!/혐의 조사$/.test(x.t)) out.push({ y: x.y, t: x.t });
     return out.sort((a, b) => a.y - b.y);
@@ -9072,14 +9228,27 @@ const REPORT = (() => {
     if (s.money && s.money.firstHomeY) rows.push({ t: `첫 집 ${s.money.firstHomeY - p.birth.y}세 · 첫 집 마련까지 평균 7.9년`, src: '2024 주거실태조사' });
     if (s.down && s.down.ever.prison) rows.push({ t: '교정시설에서 보낸 시간이 있음 · 2025년 하루 평균 수용 인원 63,680명 (정원의 125.8%)', src: '교정통계연보 2026' });
     if (s.down && s.down.ever.homeless) rows.push({ t: `집을 잃었던 시간이 있음${s.down.ever.recovered ? ' · 다시 집을 얻음' : ''} · 2024년 노숙인 등 12,725명`, src: '2024 노숙인 등의 실태조사' });
+    if (s.arts && s.arts.ever && s.arts.firstEver) rows.push(artsRow(s));
     rows.push({ t: `사인 ${d.cause ? HEALTH.causeName(d.cause) : '노환'} · 한 사람이 결국 암으로 사망할 확률 19.5%`, src: '국가데이터처, 2024 생명표' });
     return rows.length > 6 ? [rows[0]].concat(rows.slice(-5)) : rows;   // the lifespan first, the cause last
+  }
+  // the arts life against its field's real numbers (arts patch §9)
+  function artsRow(s) {
+    const A = s.arts, f = DATA.ARTS.fields[A.field], H = A.hist.filter(h => ['first', 'active', 'leap', 'fade'].includes(h.st));
+    const avg = H.length ? Math.round(H.reduce((a, h) => a + h.art, 0) / H.length) : 0, best = H.length ? Math.max(...H.map(h => h.art)) : 0;
+    const peak = A.leapEver ? f.words.leap : f.words.first;
+    if (!H.some(h => h.art > 0)) return { t: `${peak}까지 · 예술인의 47.5%는 예술 활동과 다른 일을 함께 한다`, src: '2024 예술인 실태조사' };
+    if (A.field === 'sport') return { t: `${peak}까지 · 가장 많았던 해 연봉 ${MONEY.won(best)} 원 · 2026 KBO 신인 드래프트 지명률 8.7%`, src: 'KBO, 2025–2026' };
+    if (A.field === 'webtoon') return { t: `${peak}까지 · 활동기 연평균 작품 수입 ${MONEY.won(avg)} 원 · 웹툰 작가 평균 4,268만 원`, src: '2024 웹툰산업 실태조사' };
+    if (A.field === 'film' && A.sub === 'creator') return { t: `${peak}까지 · 활동기 연평균 수입 ${MONEY.won(avg)} 원 · 1인 미디어 창작자 평균 7,100만 원`, src: '국세청, 2024 귀속' };
+    return { t: `${peak}까지 · 활동기 연평균 예술 수입 ${MONEY.won(avg)} 원 · 예술인 평균 1,055만 원`, src: '2024 예술인 실태조사' };
   }
   function ledger(s) { return s.money ? s.money.ledger.slice().sort((a, b) => Math.abs(b.amt) - Math.abs(a.amt)).slice(0, 8).sort((a, b) => a.y - b.y) : []; }
   // a one-line epitaph for the past-lives list (§9.9)
   function epitaph(s) {
     const d = s.person.death, job = mainJob(s), kids = s.love ? s.love.kids.length : 0;
     if (d.age < 20) return '짧았지만 사랑받은 삶';
+    if (s.arts && s.arts.firstEver) { const A = s.arts; return [A.leapEver ? '빛나는 시절을 지나온 사람' : A.field === 'sport' ? '그라운드에 섰던 사람' : A.field === 'writing' ? '이름이 실린 책을 남긴 사람' : '무대와 작업을 사랑한 사람', A.second ? A.second.title : ''].filter(Boolean).join(' · '); }
     return [job ? job.title : '', kids ? `${kids === 1 ? '한 아이' : kids + '남매'}의 ${s.person.sex === 'M' ? '아버지' : '어머니'}` : '', s.love && s.love.status === 'married' ? '누군가의 반려' : ''].filter(Boolean).slice(0, 2).join(' · ') || '조용히 걸어간 한 사람';
   }
   function build(s) {
@@ -9183,7 +9352,7 @@ const RENDER = (() => {
   }
 
   // ======================= FIGURES (visual spec §6) =======================
-  const FIG_KEYS = ['facing', 'h', 'hr', 'tr', 'sr', 'wb', 'skin', 'hc', 'hs', 'gr', 'th', 'top', 'bot', 'botT', 'outer', 'oLong', 'sleeve', 'shoes', 'bag', 'bagC', 'gl', 'eb', 'hat', 'hatC', 'scarf', 'pose', 'umb', 'umbC', 'cane', 'cart', 'babySkin', 'babyHair', 'carrier', 'book', 'stripe', 'stride', 'bounce', 'swing', 'drop', 'stance', 'frame', 'walk', 'light'];
+  const FIG_KEYS = ['facing', 'h', 'hr', 'tr', 'sr', 'wb', 'skin', 'hc', 'hs', 'gr', 'th', 'top', 'bot', 'botT', 'outer', 'oLong', 'sleeve', 'shoes', 'bag', 'bagC', 'gl', 'eb', 'hat', 'hatC', 'scarf', 'pose', 'umb', 'umbC', 'cane', 'cart', 'babySkin', 'babyHair', 'carrier', 'book', 'bat', 'cam', 'stripe', 'stride', 'bounce', 'swing', 'drop', 'stance', 'frame', 'walk', 'light'];
   const figCache = new Map();
   function figure(F) {
     const key = FIG_KEYS.map(k => F[k]).join('|');
@@ -9309,6 +9478,10 @@ const RENDER = (() => {
     else if (F.bag === 'back' || F.bag === 'ruck') { R(tl + 1, torsoTop + 1 + bagBob, d.shW - 2, Math.max(2, Math.round(d.torsoH * 0.8)), F.bagC); if (F.bag === 'ruck') R(tl + 1, torsoTop + bagBob, d.shW - 2, 1, SHADE[F.bagC]); }
     else if (F.bag === 'tote') { R(rightX, torsoTop + Math.round(d.torsoH * 0.45), Math.max(2, d.armW + 2), Math.max(2, Math.round(d.torsoH * 0.5)), F.bagC); R(tl + d.shW - 2, torsoTop, 1, Math.round(d.torsoH * 0.5), F.bagC); }
     else if (F.bag === 'brief') { const [hx, hy] = anchors.handR; R(hx - 1, hy, 4, 3, F.bagC); }
+    // arts patch: an instrument case slung across the back (its neck over the shoulder), a sports bag with a bat
+    else if (F.bag === 'case') { const cw = Math.max(3, Math.round(d.shW * 0.55)), ch = d.torsoH + Math.round(d.torsoH * 0.5); R(cx - (cw >> 1), torsoTop - Math.round(d.torsoH * 0.35) + bagBob, cw, ch, F.bagC); R(cx - (cw >> 1) + 1, torsoTop - Math.round(d.torsoH * 0.35) + bagBob, Math.max(1, cw - 2), 1, 5); R(cx - (cw >> 1), torsoTop + Math.round(d.torsoH * 0.6) + bagBob, cw, 1, SHADE[F.bagC]); }
+    else if (F.bag === 'duffel') { const bw = d.shW + 2, bh = Math.max(3, Math.round(d.torsoH * 0.4)); R(tl - 1, torsoTop + Math.round(d.torsoH * 0.7) + bagBob, bw, bh, F.bagC); R(tl - 1, torsoTop + Math.round(d.torsoH * 0.7) + bagBob, bw, 1, SHADE[F.bagC]); R(tl + 1, torsoTop, 1, Math.round(d.torsoH * 0.7), F.bagC); if (F.bat) R(tl + d.shW, torsoTop - Math.round(d.torsoH * 0.4) + bagBob, 1, Math.round(d.torsoH * 1.2), 10); }
+    if (F.cam) { R(cx - 1, torsoTop + Math.round(d.torsoH * 0.15), 3, 2, 0); R(cx, torsoTop + Math.round(d.torsoH * 0.15), 1, 1, 6); }
     if (F.bag === 'big' && F.pose === 'swing' && !F.book) { const [hx, hy] = anchors.handL; R(hx - 1, hy, 2, 3, 21); }
     if (F.book) { const [hx, hy] = anchors.handL; R(hx - 2, hy - 3, 3, 4, 11); R(hx - 2, hy - 3, 3, 1, 8); }
     if (F.carrier) { for (let i = 0; i < d.torsoH - 1; i++) { const k = Math.round(i * (d.shW - 2) / Math.max(1, d.torsoH - 2)); R(tl + 1 + k, torsoTop + 1 + i, 1, 1, F.carrier); R(tl + d.shW - 2 - k, torsoTop + 1 + i, 1, 1, F.carrier); } }
@@ -9542,6 +9715,13 @@ const RENDER = (() => {
       else if (K === 'farm') set({ top: 15, bot: 12, outer: cold ? 14 : null, hat: 'bucket', hatC: 10, shoes: 12, bag: null });
       else if (K === 'smock') set({ top: 7, bot: 4, outer: warm ? null : 11, shoes: 8, bag: 'tote', bagC: 15 });
     }
+    if (p.prop) {
+      if (p.prop === 'case') { w.bag = 'case'; w.bagC = pk([26, 0, 27]); }
+      else if (p.prop === 'duffel' || p.prop === 'bat') { w.bag = 'duffel'; w.bagC = pk([20, 3, 11, 26]); w.bat = p.prop === 'bat' ? 1 : 0; }
+      else if (p.prop === 'sketch' || p.prop === 'book') { w.book = 1; if (!w.bag || w.bag === 'brief') { w.bag = 'tote'; w.bagC = pk([7, 16, 15]); } }
+      else if (p.prop === 'camera') { w.bag = 'back'; w.bagC = pk([26, 1]); w.cam = 1; }
+      else if (p.prop === 'tote') { w.bag = 'tote'; w.bagC = pk([17, 18, 7]); }
+    }
     if (ctx.rain && age >= 3) w.umb = pk([20, 17, 19, 1, 15, 4]);
     else if (ctx.heat && age >= 30 && day < 0.3) w.umb = pk([8, 18, 7]);
     if (p.look.glasses && age >= p.look.glassesAt) w.gl = 1;
@@ -9562,7 +9742,7 @@ const RENDER = (() => {
   // ======================= SPRITES (roadside world, visual spec §7) =======================
   const sprCache = new Map();
   const SPR_SIZE = { tree: [30, 64], ginkgo: [20, 66], pine: [24, 60], lamp: [14, 72], apt: [54, 150], tower: [40, 190], shop: [46, 44], lowrise: [44, 62], conv: [44, 30], academy: [40, 82], busstop: [34, 30], pole: [14, 78], house: [44, 34], greenhouse: [56, 22], school: [90, 46], daycare: [40, 30], subway: [30, 22], market: [52, 24], boat: [34, 16], tetra: [22, 12], lighthouse: [12, 52], bench: [18, 10], stone: [10, 12],
-    wall: [60, 34], hospital: [40, 46], hall: [44, 40], campus: [72, 58], truck: [34, 22], gift: [10, 10], waver: [12, 24], flower: [7, 9], lantern: [30, 16], dog: [14, 9], cat: [10, 9] };
+    wall: [60, 34], hospital: [40, 46], hall: [44, 40], stage: [40, 30], gallery: [44, 36], studio: [30, 50], stadium: [80, 70], crowd: [40, 15], campus: [72, 58], truck: [34, 22], gift: [10, 10], waver: [12, 24], flower: [7, 9], lantern: [30, 16], dog: [14, 9], cat: [10, 9] };
   function blob(R, rnd, cx, cy, rx, ry, base, shade, hi) {
     for (let y = -ry; y <= ry; y++) for (let x = -rx; x <= rx; x++) {
       const d = (x * x) / (rx * rx) + (y * y) / (ry * ry);
@@ -9701,6 +9881,44 @@ const RENDER = (() => {
       case 'flower': { R(3, 3, 1, 6, 15); R(2, 5, 1, 1, 15); R(2, 0, 3, 3, 8); R(1, 1, 5, 1, 8); R(3, 1, 1, 1, 19); break; }
       case 'lantern': { R(0, 0, 2, 16, 4); R(28, 0, 2, 16, 4); for (let x = 2; x < 28; x++) R(x, 1 + Math.round(Math.sin((x - 2) / 26 * Math.PI) * 3), 1, 1, 4); for (const lx of [7, 14, 21]) { const ly = 3 + Math.round(Math.sin((lx - 2) / 26 * Math.PI) * 3); R(lx - 2, ly + 1, 5, 6, lit ? 31 : 11); R(lx - 1, ly, 3, 1, 12); R(lx - 1, ly + 7, 3, 1, 12); } break; }
       case 'dog': { const coat = v >> 1, f = v & 1; R(2, 2, 9, 4, coat); R(10, 0, 4, 4, coat); R(13, 2, 1, 1, 1); R(11, 0, 1, 1, SHADE[coat]); R(0, f ? 1 : 2, 2, 1, coat); R(2 + f, 6, 1, 3, coat); R(9 - f, 6, 1, 3, coat); R(4 - f, 6, 1, 3, SHADE[coat]); R(7 + f, 6, 1, 3, SHADE[coat]); break; }
+      // arts patch §10: the roadside of an arts or sports life — a small stage, a gallery, a studio window lit late,
+      // stadium lights, and the people who come to watch (no logos or names on any of them)
+      case 'stage': {
+        R(2, 3, 36, 19, 1); R(0, 1, 40, 2, 4); R(1, 3, 1, 19, 4); R(38, 3, 1, 19, 4);
+        R(8, 3, 3, 2, lit ? 31 : 19); R(18, 3, 3, 2, lit ? 31 : 6); R(29, 3, 3, 2, lit ? 31 : 19);
+        if (lit) for (let y = 5; y < 22; y++) { const k = (y - 5) >> 2; R(9 - k, y, 1 + 2 * k, 1, 2); R(30 - k, y, 1 + 2 * k, 1, 2); }
+        R(2, 10, 5, 12, 0); R(3, 12, 3, 3, 4); R(33, 10, 5, 12, 0); R(34, 12, 3, 3, 4); R(19, 13, 1, 9, 6); R(18, 12, 3, 1, 5);
+        R(0, 22, 40, 6, 12); R(0, 22, 40, 1, 28); R(0, 28, 40, 2, 27); break;
+      }
+      case 'gallery': {
+        R(0, 6, 44, 30, 7); R(0, 4, 44, 2, 5); R(0, 34, 44, 2, 5);
+        R(3, 12, 24, 17, night ? 31 : 21); R(3, 12, 24, 1, 4); R(14, 12, 1, 17, 4);
+        R(6, 16, 5, 6, 17); R(7, 17, 3, 4, 18); R(17, 15, 7, 8, 20); R(18, 16, 5, 6, 21); R(6, 24, 18, 1, 6);
+        R(31, 17, 9, 19, 4); R(32, 18, 7, 17, night ? 30 : 3); R(30, 8, 12, 5, 1); R(32, 10, 8, 1, 6); break;
+      }
+      case 'studio': {
+        R(0, 6, 30, 44, 3); R(0, 4, 30, 2, 4); R(2, 2, 6, 2, 4);
+        for (let y = 10; y < 40; y += 9) for (let x = 3; x < 27; x += 9) win(x, y, 5, 6, 0.25);
+        R(12, 10, 5, 6, night || lit ? 31 : 21); R(13, 13, 3, 1, night ? 19 : 6);
+        R(11, 41, 8, 9, 4); R(12, 42, 6, 8, night ? 2 : 5); break;
+      }
+      case 'stadium': {
+        R(3, 8, 2, 62, 4); R(75, 8, 2, 62, 4);
+        R(0, 1, 9, 7, lit ? 31 : 6); R(71, 1, 9, 7, lit ? 31 : 6); for (const lx of [1, 3, 5, 7]) { R(lx, 2, 1, 5, lit ? 30 : 5); R(lx + 70, 2, 1, 5, lit ? 30 : 5); }
+        if (lit) for (let y = 8; y < 34; y++) { const k = (y - 8) >> 2; R(5 + k, y, 2, 1, 2); R(73 - k, y, 2, 1, 2); }
+        R(10, 34, 60, 30, 5); for (let y = 37; y < 62; y += 4) R(10, y, 60, 1, 4);
+        for (let i = 0; i < 40; i++) R(11 + Math.round(rnd() * 57), 35 + Math.round(rnd() * 26), 1, 1, [17, 20, 19, 7, 11][i % 5]);
+        R(8, 30, 64, 4, 3); R(10, 64, 60, 6, 14); R(10, 64, 60, 1, 16); break;
+      }
+      case 'crowd': {
+        const shirts = [3, 11, 20, 17, 15, 2, 19, 4, 21, 12];
+        for (let i = 0; i < 10; i++) {
+          const x = i * 4, dy = (i * 7 + v) % 3, sk = [22, 23, 24, 25][(i + v) % 4];
+          R(x + 1, 3 + dy, 3, 3, (i + v) % 3 ? 26 : 27); R(x + 1, 5 + dy, 3, 1, sk); R(x, 6 + dy, 4, 9 - dy, shirts[(i + v) % shirts.length]);
+          if ((i + v) % 4 === 1) R(x + 3, 0 + dy, 1, 4, lit ? 31 : 19);
+        }
+        break;
+      }
       case 'cat': { R(0, 7, 10, 2, 4); R(2, 2, 5, 5, v); R(2, 0, 1, 2, v); R(5, 0, 1, 2, v); R(7, 4, 2, 1, v); R(8, 3, 1, 1, v); R(3, 3, 1, 1, night ? 19 : 1); break; }
     }
     sprCache.set(key, c);
@@ -9714,7 +9932,7 @@ const RENDER = (() => {
     '중소도시': [['lowrise', 3], ['shop', 2], ['tree', 2], ['pole', 2], ['market', 0.8], ['busstop', 0.6], ['conv', 0.8]],
     '농어촌': [['tree', 2], ['pine', 2], ['house', 2], ['greenhouse', 2], ['pole', 2], ['busstop', 0.4]],
   };
-  const LAT = { cat: [0.03, 0.06], tree: [0.03, 0.09], ginkgo: [0.02, 0.05], pine: [0.04, 0.2], lamp: [0.01, 0.01], apt: [0.18, 0.42], tower: [0.2, 0.45], shop: [0.1, 0.2], lowrise: [0.1, 0.24], conv: [0.1, 0.18], academy: [0.12, 0.22], busstop: [0.03, 0.05], pole: [0.02, 0.04], house: [0.1, 0.32], greenhouse: [0.1, 0.4], school: [0.18, 0.3], daycare: [0.1, 0.2], subway: [0.06, 0.1], market: [0.08, 0.16], boat: [0.2, 0.6], tetra: [0.06, 0.15], lighthouse: [0.4, 0.7], bench: [0.04, 0.07], stone: [0.02, 0.02], campus: [0.18, 0.34], hospital: [0.12, 0.24], wall: [0.06, 0.1] };
+  const LAT = { cat: [0.03, 0.06], tree: [0.03, 0.09], ginkgo: [0.02, 0.05], pine: [0.04, 0.2], lamp: [0.01, 0.01], apt: [0.18, 0.42], tower: [0.2, 0.45], shop: [0.1, 0.2], lowrise: [0.1, 0.24], conv: [0.1, 0.18], academy: [0.12, 0.22], busstop: [0.03, 0.05], pole: [0.02, 0.04], house: [0.1, 0.32], greenhouse: [0.1, 0.4], school: [0.18, 0.3], daycare: [0.1, 0.2], subway: [0.06, 0.1], market: [0.08, 0.16], boat: [0.2, 0.6], tetra: [0.06, 0.15], lighthouse: [0.4, 0.7], bench: [0.04, 0.07], stone: [0.02, 0.02], campus: [0.18, 0.34], hospital: [0.12, 0.24], wall: [0.06, 0.1], stage: [0.06, 0.14], gallery: [0.1, 0.22], studio: [0.12, 0.26], stadium: [0.26, 0.46], crowd: [0.0, 0.025] };
   const FORK_P = 0.42;   // where the road splits, as a share of the way from the horizon to the bottom edge
   const CITY = new Set(['대도시', '대도시권 시']);
   const D = 10, R_FAR = 90, ROAD = 0.28;
@@ -9791,6 +10009,14 @@ const RENDER = (() => {
       else if (w.place === 'room') list.push(['lowrise', 2.5], ['conv', 1.5]);
       else if (w.place === 'shelter') list.push(['lowrise', 1.5], ['bench', 1.5], ['subway', 1.2]);
       else if (w.place === 'street') list.push(['subway', 2.5], ['bench', 3]);
+      // an arts or sports life (arts patch §10): small stages and clubs, galleries, a studio window, stadium lights;
+      // a breakthrough brings a slightly larger crowd to the roadside and a fading name thins it
+      if (w.artF) {
+        const A = { music: [['stage', 1.2], ['shop', 0.8]], idol: [['stage', 1.4], ['shop', 0.6]], acting: [['stage', 1], ['lowrise', 0.6]], visual: [['gallery', 1.2], ['studio', 0.7]],
+          webtoon: [['studio', 1.5], ['conv', 0.6]], writing: [['studio', 1], ['bench', 1]], film: [['studio', 1.1], ['shop', 0.6]], sport: [['stadium', 0.7], ['bench', 0.6]] }[w.artF];
+        if (A) list.push(...A);
+        if (w.crowd > 0) list.push(['crowd', w.crowd]);
+      }
       const f = w.focus;
       if (['study', 'grades', 'spec', 'self', 'exam', 'jobexam'].includes(f) && w.type !== '농어촌') list.push(['academy', 2.5], ['lowrise', 1]);
       if (['work', 'career'].includes(f) && CITY.has(w.type)) list.push(['tower', 2], ['apt', 1]);
@@ -9821,7 +10047,7 @@ const RENDER = (() => {
     landmark(kind, data) { this.objs.push(Object.assign({ type: kind, s: this.travel + (data && data.near ? 8 : R_FAR - 4), side: kind === 'stone' ? (this.rnd() < 0.5 ? -1 : 1) : 0, lat: 0.02, v: 0, passed: false }, data)); }
     // A roadside moment that arrives with an event card (visual spec §7.5).
     vignette(key) {
-      const sprites = { hospital: [0.08, 0.2], hall: [0.08, 0.2], truck: [-0.02, 0.02], gift: [0.02, 0.04], waver: [0.04, 0.1], flower: [0.01, 0.02], lantern: [0.0, 0.02], school: [0.18, 0.3], house: [0.1, 0.25], campus: [0.18, 0.32] };
+      const sprites = { stage: [0.04, 0.1], gallery: [0.08, 0.2], studio: [0.1, 0.22], stadium: [0.24, 0.4], crowd: [0.0, 0.02], hospital: [0.08, 0.2], hall: [0.08, 0.2], truck: [-0.02, 0.02], gift: [0.02, 0.04], waver: [0.04, 0.1], flower: [0.01, 0.02], lantern: [0.0, 0.02], school: [0.18, 0.3], house: [0.1, 0.25], campus: [0.18, 0.32] };
       if (key === 'books' || key === 'exam') key = 'school';   // 수능 시험장: a school gate on a cold November morning
       if (sprites[key]) {
         const [a, b] = sprites[key];
@@ -10140,7 +10366,7 @@ const RENDER = (() => {
     const walking = vis.walking && !(gait.pause && h2(Math.floor(sc.t / 2.5), 7) < gait.pause);
     const fr = walking ? frame : idle;
     const uni = s.edu && s.edu.stage === 'univ' ? s.edu.uni : null;
-    const me = { look: P.look, jacket: uni ? [3, 12, 2, 20, 11, 14, 1][RNG.hash32(uni.name) % 7] : null, work: workLook(s, age) };
+    const me = { look: P.look, jacket: uni ? [3, 12, 2, 20, 11, 14, 1][RNG.hash32(uni.name) % 7] : null, work: workLook(s, age), prop: artProp(s, age) };
     const figs = [];
     let breathAt = null;
     const careList = carers(s);
@@ -10245,6 +10471,17 @@ const RENDER = (() => {
   }
 
   // what the walker wears for work or service (visual spec §6.5)
+  // arts patch §10: what a person on an arts or sports path carries on the road
+  function artProp(s, age) {
+    const A = s.arts;
+    if (!A || !A.on || age < 9 || A.stage === 'second' || (s.career && ['military', 'prison'].includes(s.career.status) && !(s.career.mil && s.career.mil.branch === 'sangmu'))) return null;
+    if (A.field === 'music' || A.field === 'idol') return A.field === 'music' || A.sub === 'pop' ? 'case' : 'tote';
+    if (A.field === 'visual' || A.field === 'webtoon') return 'sketch';
+    if (A.field === 'writing') return 'book';
+    if (A.field === 'sport') return A.sub === 'baseball' ? 'bat' : 'duffel';
+    if (A.field === 'film') return 'camera';
+    return 'tote';
+  }
   function workLook(s, age) {
     const c = s.career;
     if (!c || age < 18) return null;
@@ -10962,7 +11199,9 @@ const UI = (() => {
     const low = S.career && S.career.status === 'prison' ? 'prison' : S.down && S.down.low;
     const place = low ? low : E.stage === 'univ' ? 'univ' : E.stage === 'retake' || E.banSu || (S.career && S.career.status === 'exam') ? 'retake' : E.stage === 'high' && E.examYear === S.clock.y && S.clock.m >= 6 && S.clock.m <= 11 ? 'exam'
       : look === 'office' ? 'office' : look === 'coat' || look === 'scrubs' ? 'clinic' : look === 'apron' || (CJ && CJ.biz != null) ? 'shop' : S.prep && PREP.hagwon(S) && age < 30 ? 'study' : null;
-    sc.setWorld({ type: pl.type, coastal: pl.coastal, seed: RNG.hash32(pl.sido + pl.sgg), age: Math.floor(age), focus: cast.top, place, cat: S.people.some(p => p.species === 'cat' && p.alive && p.household) });
+    const AR = S.arts, artF = ARTS.on(S) && !low && (ARTS.youthNow(S) || ARTS.studentNow(S) || (S.career && S.career.status === 'art')) ? AR.field : null;
+    const crowd = artF && !ARTS.youthNow(S) ? (AR.stage === 'leap' ? 2.4 : AR.stage === 'active' || AR.stage === 'first' ? Math.max(0, (AR.rec - 20) / 40) : 0) : 0;
+    sc.setWorld({ type: pl.type, coastal: pl.coastal, seed: RNG.hash32(pl.sido + pl.sgg), age: Math.floor(age), focus: cast.top, place, cat: S.people.some(p => p.species === 'cat' && p.alive && p.household), artF, crowd });
     const gait = cast.gait;
     sc.gait += walking ? dt * gait.cadence / 2 * Math.min(mult, 2.5) : 0;
     const scroll = walking ? 6 * gait.cadence / 2 * Math.min(mult, 6) : 0;
@@ -11335,9 +11574,49 @@ const UI = (() => {
   const WORD5 = v => ['아주 나쁨', '나쁨', '보통', '좋음', '아주 좋음'][Math.min(4, Math.floor(v / 20))];
   const LEAVE_WHY = { care: '육아', move: '이직', quit: '퇴사', layoff: '권고사직', early: '희망퇴직', contract: '계약 만료', closed: '폐업', retire: '퇴직', military: '입대', prison: '수감', fired: '해고' };
   // ---------- 직업 panel (visual spec §8.1 right column) ----------
+  // ---------- 활동 panel (arts patch §10): replaces the ladder view for a person on an arts or sports path ----------
+  const ART_SEG = [['art', '예술 수입', '#9B7BB8'], ['adj', '분야 안의 일', '#B79FCB'], ['part', '아르바이트', '#C9A34E']];
+  function artsSplitLine(v) {
+    const sp = v.split, tot = sp.art + sp.adj + sp.part;
+    if (tot <= 0) return null;
+    const pc = k => Math.round(sp[k] / tot * 100), name = { art: v.field === '스포츠' ? '선수 연봉' : '예술 수입', adj: '레슨·분야 일', part: '아르바이트' };
+    return ['art', 'adj', 'part'].filter(k => sp[k] > 0).map(k => `${name[k]} ${pc(k)}%`).join(' · ');
+  }
+  function renderArts(panel) {
+    const v = ARTS.view(S), c = S.career, J = JOBS, kv = [];
+    const add = (k, ...x) => kv.push(el('dt', { text: k }), el('dd', {}, ...x));
+    const kids = [el('h2', { text: '활동' }), el('p', { class: 'work-now', text: `${v.field}${v.sub ? ' · ' + v.sub : ''} · ${v.stage}` })];
+    add('시작', `${v.since}년부터 · ${Math.max(1, S.clock.y - v.since + 1)}년째`);
+    if (v.org) add(v.org.kind === 'team' || v.org.kind === 'indep' ? '소속 팀' : '소속', v.org.name, v.org.fic ? el('span', { class: 'sub', text: ' · 가상' }) : null, v.org.group ? el('span', { class: 'sub', text: ` · 「${v.org.group}」` }) : null);
+    if (v.org && v.org.years != null) add('계약', `남은 기간 약 ${v.org.years}년 (표준전속계약 기준 최대 7년)`, v.org.settle ? el('span', { class: 'sub', text: ` · ${v.org.settle}` }) : null);
+    if (v.org && v.org.pay) add(v.field === '스포츠' ? '연봉' : '연 수입', `${J.won(v.org.pay)} 원`, gameTag());
+    add('인지도', `${v.aud}`, el('span', { class: 'sub', text: ` · ${Math.round(v.rec)} / 100` }), gameTag());
+    add('다음', v.next);
+    kids.push(el('dl', { class: 'kv' }, kv));
+    // 실력 per discipline (0–100), as plain bars
+    kids.push(el('h3', { text: '실력' }), el('dl', { class: 'kv' }, v.skills.flatMap(([n, x]) => [el('dt', { text: n }), el('dd', {}, el('span', { class: 'mono', text: String(Math.round(x)) }), el('div', { class: 'mbar' }, el('i', { style: `width:${Math.min(100, x).toFixed(0)}%` })))])));
+    // 생계: the year's split, honestly (§7)
+    const line = artsSplitLine(v);
+    if (!v.youth && !v.student) {
+      const sp = v.split, tot = sp.art + sp.adj + sp.part, parts = ART_SEG.map(([k, n, col]) => [k, n, col, sp[k] / 12]);
+      kids.push(el('h3', { text: '생계 · 최근 1년' }));
+      if (tot > 0) kids.push(bar(parts, tot / 12), legend(parts), el('p', { class: 'sub', text: line }));
+      else kids.push(el('p', { class: 'sub', text: '아직 이 길에서 번 돈이 없다. 생계는 가족과 저축에 기대고 있다.' }));
+      if (c.side && c.side.kind) kids.push(el('p', { class: 'sub', text: `요즘 하는 일 · ${c.side.kind}` }));
+    } else kids.push(el('p', { class: 'sub', text: v.youth ? '학교를 다니며 연습한다. 수업이 끝나면 하루의 나머지가 이 길에 쓰인다.' : '학교에서 실기와 작업을 이어 간다.' }));
+    if (v.works.length) kids.push(el('h3', { text: v.field === '스포츠' ? '기록' : '작품·기록' }), el('ul', { class: 'jobs-past' }, v.works.map(w => el('li', {}, el('span', { class: 'when', text: `${w.y}` }), `${w.t}${w.note ? ' · ' + w.note : ''}`))));
+    kids.push(el('p', { class: 'sub', text: '데뷔·지명·흥행의 확률과 계약 조건은 게임 설정이다.' }));
+    const N = DATA.STATS[{ '아이돌·가수': 'singersPay', '연기': 'actorsPay', '웹툰·일러스트': 'webtoonPay', '문학': 'publishing', '스포츠': 'kboDraft' }[v.field] || 'artistsField'];
+    if (N) kids.push(realNote(N));
+    panel.replaceChildren(...kids);
+  }
   function renderWork() {
     if (!S) return;
     const c = S.career, J = JOBS, age = STATE.age(S), panel = $('panel-work');
+    const artsTab = ARTS.on(S) && (!c || !['military', 'prison'].includes(c.status) || (c.mil && c.mil.branch === 'sangmu'));
+    const tabBtn = document.querySelector('.tabs [data-tab="work"]');
+    if (tabBtn && tabBtn.textContent !== (artsTab ? '활동' : '직업')) { tabBtn.textContent = artsTab ? '활동' : '직업'; panel.setAttribute('aria-label', tabBtn.textContent); }
+    if (artsTab) { renderArts(panel); return; }
     if (!c) { panel.replaceChildren(el('h2', { text: '직업' })); return; }
     const kids = [el('h2', { text: '직업' }), el('p', { class: 'work-now', text: J.label(S) || (age < 15 ? '아직 일할 나이가 아니다' : STATE.status(S)) })];
     const kv = [];
@@ -11426,7 +11705,7 @@ const UI = (() => {
   // ---------- 돈 panel (visual spec §8.3, Amendment 1 §1.11) ----------
   let moneyTab = 'flow', memTab = 'mem';
   const W = n => MONEY.won(Math.round(n));
-  const IN_SEG = [['wage', '근로소득', '#7E9A77'], ['biz', '사업소득', '#B3C2A0'], ['side', '아르바이트', '#C9A34E'], ['spouse', '배우자 소득', '#7FA3C0'], ['pension', '연금', '#C98F96'], ['basic', '기초연금', '#E7C3C3'], ['aid', '복지 급여', '#B7BDC4'], ['allowance', '부모님 용돈', '#F2D3A8']];
+  const IN_SEG = [['wage', '근로소득', '#7E9A77'], ['biz', '사업소득', '#B3C2A0'], ['art', '예술·선수 수입', '#9B7BB8'], ['adj', '분야 안의 일', '#B79FCB'], ['side', '아르바이트', '#C9A34E'], ['spouse', '배우자 소득', '#7FA3C0'], ['pension', '연금', '#C98F96'], ['basic', '기초연금', '#E7C3C3'], ['aid', '복지 급여', '#B7BDC4'], ['allowance', '부모님 용돈', '#F2D3A8']];
   const OUT_SEG = [['housing', '주거비', '#B9714F'], ['living', '생활비', '#8A93A0'], ['kids', '자녀', '#E0A96D'], ['care', '돌봄·부양', '#C98F96'], ['insurance', '보험', '#5E6878'], ['debt', '대출 상환', '#7A4B3A']];
   function bar(parts, total) { return el('div', { class: 'flowbar', role: 'img', 'aria-label': parts.map(p => `${p[1]} ${W(p[3])} 원`).join(', ') }, parts.filter(p => p[3] > 0).map(p => el('i', { style: `width:${(p[3] / Math.max(1, total) * 100).toFixed(1)}%; background:${p[2]}`, title: `${p[1]} ${W(p[3])} 원` }))); }
   function legend(parts) { return el('div', { class: 'legend' }, parts.filter(p => p[3] > 0).flatMap(p => [el('span', { class: 'sw', style: `background:${p[2]}` }), el('span', { text: p[1] }), el('span', { class: 'v', text: W(p[3]) })])); }
@@ -11451,6 +11730,7 @@ const UI = (() => {
       const out = OUT_SEG.map(([k, t, c]) => [k, t, c, f.out[k] || 0]), tout = out.reduce((a, p) => a + p[3], 0);
       const spend = Math.max(1, tout), em = M.emerg / spend;
       kids.push(el('h3', { text: `들어온 돈 · 월 ${W(tin)} 원 (세후)` }), bar(inn, Math.max(tin, tout)), legend(inn),
+        ARTS.on(S) && !ARTS.youthNow(S) && artsSplitLine(ARTS.view(S)) ? el('p', { class: 'sub', text: `생계의 비율 · ${artsSplitLine(ARTS.view(S))}` }) : null,
         el('h3', { text: `나간 돈 · 월 ${W(tout)} 원` }), bar(out, Math.max(tin, tout)), legend(out),
         el('dl', { class: 'kv' }, el('dt', { text: '남은 돈' }), el('dd', { class: f.left < 0 ? 'dn' : '', text: `${W(f.left)} 원${f.left < 0 ? ' · 모아 둔 돈을 쓰는 중' : ''}` }),
           el('dt', { text: '비상금' }), el('dd', { text: `${W(M.emerg)} 원 · ${em >= 1 ? em.toFixed(1) + '개월 버틸 수 있다' : '한 달도 안 된다'}` }),
@@ -12791,7 +13071,7 @@ const HARNESS = (() => {
     // prep patch §3.10: tests sat, exam passes with their preparation years, graduation → first job
     work.prep = { tests: s.prep.tests.slice(), passes: s.prep.results.filter(r => r.prepY != null).map(r => ({ key: r.key, y: r.prepY })) };
     work.toJob = c.gradAt != null && c.firstJob ? (c.firstJob.y * 12 + c.firstJob.m) - c.gradAt : null;
-    return { seed: s.seed, sex: p.sex, birth: p.birth, death: p.death, months: p.death.months, age: p.death.months / 12, perYear, secs, born, evYear, repeats, heavy, total, people, edu, work, hl, mo, cause: p.death.cause, emo: { mem: s.mem.list.length, diary: s.mem.diary.length, keep: s.mem.keep.seen.length, stops: MEMORY.stops(s).length, age: p.death.age }, market: { hist: s.market.hist.map(h => h.ch), crashes: s.market.crashes.length, bears: s.market.bears.length, years: s.market.hist.length }, ever: Object.assign({}, s.money.ever), firstHome: s.money.firstHomeY && s.money.formedY ? s.money.firstHomeY - s.money.formedY : null, fam: { first: s.love.first, births: s.love.births, divorces: s.love.divorces, married50: s.love.first && s.love.first.age <= 50, kids: s.love.births.length }, down: Object.assign({}, s.down && s.down.ever), victim: !!(s.money.ever.fraud || s.money.ever.scam) || s.log.some(e => e.kind === 'event' && VICTIM.includes(e.id)) };
+    return { seed: s.seed, sex: p.sex, birth: p.birth, death: p.death, months: p.death.months, age: p.death.months / 12, perYear, secs, born, evYear, repeats, heavy, total, people, edu, work, hl, mo, cause: p.death.cause, emo: { mem: s.mem.list.length, diary: s.mem.diary.length, keep: s.mem.keep.seen.length, stops: MEMORY.stops(s).length, age: p.death.age }, market: { hist: s.market.hist.map(h => h.ch), crashes: s.market.crashes.length, bears: s.market.bears.length, years: s.market.hist.length }, ever: Object.assign({}, s.money.ever), firstHome: s.money.firstHomeY && s.money.formedY ? s.money.firstHomeY - s.money.formedY : null, fam: { first: s.love.first, births: s.love.births, divorces: s.love.divorces, married50: s.love.first && s.love.first.age <= 50, kids: s.love.births.length }, down: Object.assign({}, s.down && s.down.ever), victim: !!(s.money.ever.fraud || s.money.ever.scam) || s.log.some(e => e.kind === 'event' && VICTIM.includes(e.id)), arts: ARTS.sample(s) };
   }
 
   // Base seed defaults to 1 so repeated runs are comparable while tuning; { seed: 'random' } draws a fresh one.
@@ -12884,6 +13164,7 @@ const HARNESS = (() => {
       ...healthRows(lives, row, within, share, mean),
       ...workRows(lives, row, within, share, mean),
       ...prepRows(lives, row, within, share, mean, n),
+      ...artsRows(lives, row, within, share, mean),
     ];
     const pass = rows.every(r => r.판정 !== '벗어남');
     const ms = Math.round(performance.now() - t0);
@@ -13035,6 +13316,36 @@ const HARNESS = (() => {
       row('정보처리기사 합격률 · 90시간 이상 준비', `${pj.toFixed(1)}% (${jip.length}회) · ${pj90.toFixed(1)}% (${jip90.length}회)`, '20~35% · 55~75% (준비 패치 §3.10)', jip.length < 30 ? null : pj >= 20 && pj <= 35 && pj90 >= 55 && pj90 <= 75),
       row('졸업 후 첫 일자리까지', `${tj.toFixed(1)}개월 (${toJob.length}명)`, '11.2 ± 3개월 (청년층 부가조사 2026)', within(tj, [11.2, 3])),
       row('수능 과목 준비: 가볍게→꾸준히 · 꾸준히→몰입', `상위 %가 ${eff.ls.toFixed(1)} · ${eff.sf.toFixed(1)}%p 좋아짐 (${eff.k}명)`, '10~20%p · 그보다 작게 (준비 패치 §3.10)', eff.ls >= 10 && eff.ls <= 20 && eff.sf > 0 && eff.sf < eff.ls),
+    ];
+  }
+  // arts patch §11 — who takes an arts or sports path, how far they get, what they earn, and how they leave.
+  // Income rows read the years on the path as an adult (art income only, 만 원); a row whose sample is too small to
+  // judge (a few hundred lives reach only a handful of webtoon artists) shows as 참고.
+  function artsRows(lives, row, within, share, mean) {
+    const adults = lives.filter(l => l.age >= 20), A = adults.filter(l => l.arts), A30 = A.filter(l => l.age >= 30), pc = v => v.toFixed(1) + '%';
+    const entry = share(adults, l => l.arts) * 100, first = share(A30, l => l.arts.first) * 100, leap = share(A30, l => l.arts.leap) * 100;
+    const a40 = A.filter(l => l.arts.at40 != null), at40 = share(a40, l => l.arts.at40) * 100;
+    const dr = A.flatMap(l => l.arts.drafts), drafted = share(dr, d => d.ok) * 100;
+    const office = share(A30, l => l.arts.office) * 100, sideDoor = A.filter(l => l.arts.office && !l.arts.officeExit).length;
+    const W = ['first', 'active', 'leap'];
+    const years = (f, st, pos) => A.filter(l => f(l.arts)).flatMap(l => l.arts.yrs.filter(y => st.includes(y.st) && (!pos || y.art > 0)).map(y => y.art)).sort((a, b) => a - b);
+    const med = v => v.length ? v[Math.floor(v.length / 2)] : 0, top1 = v => { const t = v.slice(Math.floor(v.length * 0.99)); return mean(t); };
+    const low50 = v => mean(v.slice(0, Math.floor(v.length / 2))), trim = v => mean(v.slice(0, Math.floor(v.length * 0.99)));
+    const W2 = v => v >= 10000 ? (v / 10000).toFixed(1) + '억' : Math.round(v).toLocaleString('ko-KR') + '만';
+    const near = (v, c) => Math.abs(v / c - 1) <= 0.2;
+    const toon = years(a => a.field === 'webtoon' && a.sub === 'toon', W, true), cre = years(a => a.field === 'film' && a.sub === 'creator', W, true);
+    const all = years(a => a.field !== 'sport', ['aspire', 'first', 'active', 'leap', 'fade'], false);
+    const fields = Object.keys(DATA.ARTS.fields).map(f => `${DATA.ARTS.fields[f].name} ${A.filter(l => l.arts.field === f).length}`).join(' · ');
+    return [
+      row('예체능의 길에 진지하게 들어선 삶 (20세 이상)', `${pc(entry)} (${A.length}명)`, '5~10% (예체능 패치 §11 게임 설정)', adults.length < 200 ? null : entry >= 5 && entry <= 10),
+      row('분야별 인원', fields, '참고', null),
+      row('「첫 발」에 이른 비율 · 「도약」에 이른 비율 (30세 이상)', `${pc(first)} · ${pc(leap)} (${A30.length}명)`, '30~60% · 1~5% (§11 게임 설정)', A30.length < 40 ? null : first >= 30 && first <= 60 && leap >= 1 && leap <= 5),
+      row('40세에 수입의 절반 이상을 분야 안에서', `${pc(at40)} (${a40.length}명)`, '35~55% (§11 게임 설정)', a40.length < 40 ? null : at40 >= 35 && at40 <= 55),
+      row('KBO 드래프트 지명률 (지원 기준)', `${pc(drafted)} (${dr.length}회 · 평균 확률 ${pc(mean(dr.map(d => d.p)) * 100)})`, '8.7% ± 2%p (2026 드래프트, §9)', dr.length < 30 ? null : within(drafted, [8.7, 2])),
+      row('웹툰 작가 연 수입 · 평균 / 중앙값', `${W2(mean(toon))} / ${W2(med(toon))} (${toon.length}명·해) · 상위 1% ${W2(top1(toon))}`, '4,268만 / 3,400만 ± 20% (2024 웹툰산업 실태조사)', toon.length < 150 ? null : near(mean(toon), 4268) && near(med(toon), 3400)),
+      row('1인 미디어 창작자 연 수입 · 평균 / 하위 50%', `${W2(mean(cre))} / ${W2(low50(cre))} (${cre.length}명·해) · 상위 1% ${W2(top1(cre))}`, '7,100만 / 2,463만 ± 20% · 상위 1% 12.9억 (국세청 2024)', cre.length < 150 ? null : near(mean(cre), 7100) && near(low50(cre), 2463)),
+      row('예술인 예술 활동 수입 (스포츠 제외, 상위 1% 제외 평균)', `${W2(trim(all))} · 전체 평균 ${W2(mean(all))} · 상위 1% ${W2(top1(all))} (${all.length}명·해)`, '1,055만 ± 20% (2024 예술인 실태조사; 상위 1%는 따로 극단적으로)', all.length < 300 ? null : near(trim(all), 1055)),
+      row('예체능의 길에서 사무직으로 옮긴 비율 (30세 이상)', `${pc(office)} · 결정 7을 거치지 않은 경우 ${sideDoor}명`, '25% 미만, 「계속할까」 결정으로만 (§11)', A30.length < 40 ? (sideDoor === 0 ? null : false) : office < 25 && sideDoor === 0),
     ];
   }
   // the same lives (same seeds, so the same aptitude and luck) sit the first 수능 at three intensities
