@@ -46,9 +46,9 @@ const course = r => {
   if (r.job !== '—' && r.job !== '학생') x.push(r.job);
   if (r.prison) x.push('교정시설을 거침');
   if (r.homeless) x.push('집을 잃었다 다시 얻음');
-  return x.join(' → ') || '—';
+  return x.join(' → ') || (r.age < 7 ? '—' : r.age < 13 ? '초등학생' : r.age < 16 ? '중학생' : '—');
 };
-const end = r => `${r.age}세 · ${r.cause}${r.married ? '' : ' · 미혼'}${r.kids ? ` · 자녀 ${r.kids}` : ''} · 최고 순자산 ${won(r.peak)}`;
+const end = r => r.age < 20 ? `${r.age}세 · ${r.cause}` : `${r.age}세 · ${r.cause}${r.married ? '' : ' · 미혼'}${r.kids ? ` · 자녀 ${r.kids}` : ''} · 최고 순자산 ${won(r.peak)}`;
 
 function table(R) {
   const used = new Set();
@@ -77,6 +77,8 @@ function table(R) {
   md += sec('공무원 · 소방관 · 경찰관', '', [...pick(r => /7급 공무원/.test(r.job), 2), ...pick(r => /9급 공무원/.test(r.job), 2), ...pick(r => /소방관|경찰관/.test(r.job), 2)]);
   md += sec('재능이 고른 삶', '다섯 재능이 모두 33 이상.', pick(r => Math.min(...Object.values(r.born.tal)) >= 33, 4));
   md += sec('100세를 넘기는 삶', '', pick(r => r.age >= 100, 5, (a, b) => b.age - a.age));
+  md += sec('일찍 떠나는 삶', '마흔이 되기 전에 끝나는 삶. 갓난아기 때의 일은 번호로 정해지고, 그 뒤의 사고와 병은 고르는 길에 따라 비껴가기도 합니다.',
+    [...pick(r => r.age < 1, 2), ...pick(r => r.age >= 1 && r.age < 13, 3), ...pick(r => r.age >= 13 && r.age < 20, 3), ...pick(r => r.age >= 20 && r.age < 30, 3), ...pick(r => r.age >= 30 && r.age < 40, 2)].sort((a, b) => a.age - b.age));
   md += sec('다문화 · 한부모 · 보호 아동', '', [...pick(r => r.born.multi && /^(서울대|연세대|고려대|성균관대|한양대)/.test(r.uni || ''), 2), ...pick(r => r.born.single && r.peak > 100000, 2), ...pick(r => r.born.orphan, 1)]);
   md += sec('굴곡이 큰 삶', '노숙이나 교정시설을 거친 삶. 다시 일어서는 길도 있습니다.', [...pick(r => r.homeless, 3), ...pick(r => r.prison, 2)]);
   md += sec('평범한 소시민', '3분위 가정, 다섯 재능이 모두 20–30. 가장 흔한 한 생.', pick(r => r.born.q === 3 && !r.born.single && !r.born.multi && Object.values(r.born.tal).every(v => v >= 20 && v <= 30) && r.age >= 75, 6));
