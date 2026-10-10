@@ -26,11 +26,24 @@ DOWN · PREP · ARTS · MEMORY · REPORT · SAVE · RENDER · SOUND · UI · HAR
   one marked `· 가상`. Real people are never named.
 - `DATA.SAVE_VERSION` is 10. Bump it (and add a migration in SAVE if possible) when the shape of the state changes.
 
+## The road (RENDER)
+
+`RENDER.Scene` is a factory. By default it returns `Scene3D`: the same road, spawning, forks, landmarks and cast as the
+2D `Scene` (which it extends), drawn as flat-shaded low-poly blocks with WebGL at twice the design resolution
+(`K3`) and scaled up without smoothing. The sky and the far backdrop are still the 2D pixel layer
+(`drawBackground(v, true)`); particles, signpost labels and speech dots are drawn on top in design pixels.
+World units are metres (x right, y up, z = `o.s − travel`); the road bends in the vertex shader (`uBend`), and
+`proj()` applies the same bend for DOM labels. Roadside models live in `model3(type, v, season)` (local x runs
+outward from the roadside and is mirrored for the left side) and are cached per type, variant and season. People are
+built each frame by `person3` from the same `specFor` spec as the 2D sprites. Buildings whose footprints (`fp`)
+overlap an earlier one are skipped. Without WebGL, or with 설정 → 길 그리기 → 2D 픽셀 (`SET.view`), the 2D `Scene` is used.
+The portraits, the family panel and the ending photographs still use the 2D figure sprites.
+
 ## Tests and tools
 
 ```
 node --test tests/*.test.cjs        # node checks (about 1 minute)
-node tests/browser.check.cjs [dir]  # loads three arts lives in Chromium, checks the 「활동」 tab, writes screenshots
+node tests/browser.check.cjs [dir]  # loads three arts lives in Chromium (SwiftShader WebGL), checks the 「활동」 tab and the 3D road
 node tests/build-artifact.cjs       # parses the script and writes dist/soshimin-play.html (dist/ is not committed)
 ```
 

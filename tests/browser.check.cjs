@@ -25,7 +25,8 @@ function arts(field) {
 (async () => {
   const out = process.argv[2] || path.join(__dirname, '..', 'dist');
   fs.mkdirSync(out, { recursive: true });
-  const browser = await playwright.chromium.launch();
+  // SwiftShader gives headless Chromium a WebGL context, so the 3D road is the one checked
+  const browser = await playwright.chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
   const errors = [];
   let ok = true;
   for (const field of ['music', 'sport', 'visual']) {
@@ -45,6 +46,17 @@ function arts(field) {
     const good = tab.trim() === '활동' && panel.includes('실력') && panel.includes('인지도');
     console.log(`${field}: tab 「${tab.trim()}」 · ${good ? 'ok' : 'MISSING'} · ${panel.slice(0, 90).replace(/\s+/g, ' ')}`);
     ok = ok && good;
+    // the road is drawn in 3D (the canvas holds two render pixels per design pixel) and is not blank
+    const road = await page.evaluate(() => {
+      const cv = document.querySelector('#stage-canvas'), c = document.createElement('canvas');
+      c.width = cv.width; c.height = cv.height; const g = c.getContext('2d'); g.drawImage(cv, 0, 0);
+      const d = g.getImageData(0, Math.floor(cv.height * 0.6), cv.width, 1).data, seen = new Set();
+      for (let i = 0; i < d.length; i += 16) seen.add(d[i] >> 3 | (d[i + 1] >> 3) << 5 | (d[i + 2] >> 3) << 10);
+      return { w: cv.width, colours: seen.size };
+    });
+    const r3 = road.w === 512 && road.colours >= 4;
+    console.log(`${field}: road ${road.w}px wide, ${road.colours} colours on one row · ${r3 ? '3D ok' : 'NOT 3D'}`);
+    ok = ok && r3;
     await page.evaluate(() => document.querySelector('.tabs [data-tab="money"]').click());
     await page.waitForTimeout(200);
     await page.screenshot({ path: path.join(out, `arts-${field}.png`) });
