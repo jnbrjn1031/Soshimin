@@ -10,6 +10,8 @@
 
 오프라인으로 하려면 `소시민.html`을 내려받아 브라우저로 열면 됩니다.
 
+어떤 삶으로 태어날지 고르고 싶다면 **[운명 번호표](SEEDS.md)**에서 번호를 골라 첫 화면의 「운명 번호로 태어나기」에 넣으세요.
+
 ## 배포
 
 `main`에 push하면 `.github/workflows/pages.yml`이 `소시민.html`을 `index.html`로 만들어 GitHub Pages에 올립니다.

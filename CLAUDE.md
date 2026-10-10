@@ -129,6 +129,7 @@ type, university, career status, job and employer). An adult walker keeps the st
 node --test tests/*.test.cjs        # node checks (about 1 minute; talent.test.cjs covers the roll, reveals, effort and gates)
 node tests/browser.check.cjs [dir]  # loads three arts lives and a 고2 in Chromium (SwiftShader WebGL): 「예체능」, the 3D road, 「재능」's bars, starting an 활동
 node tests/build-artifact.cjs       # parses the script and writes dist/soshimin-play.html (dist/ is not committed)
+node tests/seeds.cjs [n]            # lives n 운명 번호 on 「흐름에 맡긴다」 and rewrites SEEDS.md, the 운명 번호표 (2,000 lives: about 2 minutes)
 ```
 
 `tests/load.cjs` runs the game script in a Node `vm` context and returns the modules (`G.ARTS`, `G.sim.runMany`, …).
