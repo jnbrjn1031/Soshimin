@@ -134,3 +134,32 @@ test('automatic lives start no 활동 (the calibration stays where it was)', () 
   const s = live(seedOf(14), s => STATE.age(s) >= 25);
   assert.equal(s.acts.list.length + s.acts.done.length, 0);
 });
+
+test('every university is real (no 가상 names)', () => {
+  assert.equal(DATA.UNIVERSITIES.filter(u => u.fic).length, 0);
+  assert.equal(ADMISSIONS.programs().filter(p => /가상/.test(p.uni)).length, 0);
+});
+
+test('진로 questions at 초4 and 중2 (and 고1 계열) start the activities the player picks', () => {
+  const { DECISIONS } = G;
+  const s = STATE.create(seedOf(21)), seen = {};
+  for (let g = 0; s.person.alive && g < 17 * 12; g++) {
+    SIM.tickMonth(s);
+    for (let n = 0; s.pending.length && n < 30; n++) {
+      const it = s.pending.shift();
+      if (it.kind === 'decision' && ['dirElem', 'dirMid', 'track'].includes(it.def)) {
+        const key = it.def === 'dirElem' ? 'sport' : it.def === 'dirMid' ? 'tokmok' : it.opts.find(o => o.key === 'scieng') ? 'scieng' : it.opts[0].key;
+        DECISIONS.resolve(s, it, key, 'player'); seen[it.def] = s.acts.list.map(a => a.key); continue;
+      }
+      if (it.kind !== 'death') HARNESS.AUTO[it.kind](s, it);
+    }
+  }
+  assert.ok(seen.dirElem && seen.dirElem.includes('sportClub'), 'elementary: sport club');
+  assert.ok(seen.dirMid && seen.dirMid.includes('tokmok'), 'middle: 특목 대비');
+  assert.ok(seen.track && seen.track.includes('suneung'), 'high: 수능 준비');
+  // 흐름에 맡긴 답은 활동을 시작하지 않는다
+  const t = STATE.create(seedOf(22));
+  for (let g = 0; t.person.alive && g < 17 * 12; g++) { SIM.tickMonth(t); for (let n = 0; t.pending.length && n < 30; n++) { const it = t.pending.shift(); if (it.kind !== 'death') HARNESS.AUTO[it.kind](t, it); } }
+  assert.equal(t.acts.list.length + t.acts.done.length, 0);
+  assert.ok(t.decisions.some(d => /초등 진로/.test(d.label)) && t.decisions.some(d => /중등 진로/.test(d.label)));
+});

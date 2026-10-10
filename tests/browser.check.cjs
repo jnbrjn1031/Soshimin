@@ -92,7 +92,7 @@ function arts(field) {
     console.log(`acts: second tab ${acts.second} · ${acts.cards} running · ${acts.turns} turns`);
     ok = ok && acts.second === 'acts' && acts.cards === 1 && acts.turns >= 2 && acts.turns <= 5;
     await (await page.$('#panel-acts')).screenshot({ path: path.join(out, 'acts-panel.png') });
-    const good = t.rows === 5 && t.cuts >= 1 && /노력/.test(t.text) && /다음 관문/.test(t.text) && !t.prepTab && t.first === 'talent';
+    const good = t.rows === 5 && t.cuts >= 1 && /노력/.test(t.text) && !/다음 관문 ·/.test(t.text) && !t.prepTab && t.first === 'talent';
     console.log(`talent: ${t.rows} rows · ${t.cuts} cutoffs marked · ${good ? 'ok' : 'MISSING'} · ${t.text.slice(0, 140)}`);
     ok = ok && good;
     await (await page.$('#panel-talent')).screenshot({ path: path.join(out, 'talent-panel.png') });

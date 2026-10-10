@@ -79,11 +79,18 @@ DOWN · TALENT · ARTS · MEMORY · REPORT · SAVE · RENDER · SOUND · UI · H
   adds `ACT_PTS` (0.8) focus points to its talent's effort, costs a monthly fee (the parents pay for a minor) and a
   little stress; on completion it adds `ACT_DONE` (2) effort and its record (어학 점수, 자격증, 인턴, 수상). An activity
   stops when its stage ends. Automatic lives start none, so the harness numbers are unchanged.
+- 진로 questions start activities: `dirElem` (초4 April, a child's question: 공부·운동·예술·표현·관계), `dirMid` (중2
+  April: 일반고·특목·외고·예고·체고·특성화) and the 고1 `track` decision. A choice the player makes starts that direction's
+  activities (`startActs`; `DECISIONS.resolve` now passes `how` to `apply`); 흐름에 맡긴 answers and automatic lives start
+  none. The two new decisions' automatic answer draws nothing (the strongest talent decides).
 - UI: the tabs are 재능 · 활동 · 상태 · 돈 · 가족 · 직업 · 이력 · 기록 (for a person on an arts path the 직업 tab reads
   「예체능」) (기억 and 도감 tabs were removed; 도감 stays as the top-bar
   button, and memories still feed the ending). 「재능」 (the first tab, open by default) shows each talent as revealed (a hatched range until exact), effort stacked on it, and the next relevant
   cutoff as a tick (`TALENT.nextGate`: high schools, then universities, arts gates on a path, then exams and jobs). Forms
   show each gate's numbers once the talent has shown itself (`TALENT.label`) and tag rows 「합격선 이상」 or 「미달」.
+  The 재능 and 활동 tabs carry numbers only (no gate names or explanations under the bars and cards).
+- Every university is real: the nine fictional ones were replaced by 선문대, 우석대, 대구가톨릭대, 경남대, 상지대, 동신대,
+  경민대, 광주보건대 and 서울사이버대 (same region, type and band).
 
 ## The road (RENDER)
 
@@ -97,6 +104,12 @@ outward from the roadside and is mirrored for the left side) and are cached per 
 built each frame by `person3` from the same `specFor` spec as the 2D sprites. Buildings whose footprints (`fp`)
 overlap an earlier one are skipped. Without WebGL, or with 설정 → 길 그리기 → 2D 픽셀 (`SET.view`), the 2D `Scene` is used.
 The portraits, the family panel and the ending photographs still use the 2D figure sprites.
+
+The road back ends on the same theatre (UI `theatre`, `Stage3.finale`): the old self, facing the player as the last
+stretch of road ends, stands on the stage in a spotlight; the camera swings round behind them so the raked house and
+its audience come into view, the house applauds (`SOUND.applause`) and the curtain closes across the proscenium in
+front of them, then the picture fades to the obituary. Timings live in `THEATRE`. Without WebGL two velvet panels close
+over the road. This replaced the old 「새벽」 and 「길은 이어진다」 phases.
 
 The birth stage (UI `playStage`) is a theatre drawn by `RENDER.stage3()` (`Stage3`, same shader with `uDim` and
 `uSpot` for a dark house and columns of light): the page lays the family out in `.bs-ph` placeholders and the camera is

@@ -507,6 +507,8 @@ canvas.pixel{image-rendering:pixelated; image-rendering:crisp-edges; display:blo
 .stop-what{font-size:var(--fs-s); color:var(--paper-muted); text-align:center}
 .stop-say{font-family:var(--serif); font-size:17px; line-height:1.6; text-align:center; min-height:2.8em; margin:0}
 /* the end of a life: 「끝」, then 「회상」 (user request) */
+.end-theatre{position:fixed; inset:0; z-index:44; opacity:0; background:#050508; pointer-events:none}
+.end-theatre canvas{position:absolute; inset:0; width:100%; height:100%}
 .end-mark{position:fixed; inset:0; z-index:45; display:grid; place-content:center; justify-items:center; gap:14px; background:rgba(7,8,12,.88); opacity:0; transition:opacity .8s var(--ease-in); pointer-events:none}
 .end-mark.on{opacity:1}
 .end-mark.out{opacity:0; transition:opacity .8s var(--ease-out)}
@@ -956,7 +958,7 @@ const DATA = {
   ].map(([id, name, grp, edu, lo, hi, src, emp, c, minAge]) => ({ id, name, grp, edu, lo, hi, src, emp, c, minAge: minAge || 20 })),
 
   // Appendix B — universities. band = typical 정시 percentile (top %), a 「게임 설정」 approximation.
-  // type: 국립 공립 사립 과기원 교대 전문대 특수 예술 원격. med = has a medical school (†). fic = fictional (가상).
+  // type: 국립 공립 사립 과기원 교대 전문대 특수 예술 원격. med = has a medical school (†). fic = fictional (가상; none now).
   UNIVERSITIES: [
     ['서울대', '서울', '국립', 0.3, 2.5, 1], ['연세대', '서울', '사립', 0.3, 2.5, 1], ['고려대', '서울', '사립', 0.3, 2.5, 1],
     ['KAIST', '대전', '과기원', 0.5, 3], ['POSTECH', '경북', '과기원', 0.5, 3], ['UNIST', '울산', '과기원', 0.5, 3], ['GIST', '광주', '과기원', 0.5, 3], ['DGIST', '대구', '과기원', 0.5, 3],
@@ -971,11 +973,11 @@ const DATA = {
     ['전북대', '전북', '국립', 15, 30, 1], ['충북대', '충북', '국립', 15, 30, 1], ['강원대', '강원', '국립', 15, 30, 1], ['경상국립대', '경남', '국립', 15, 30, 1], ['제주대', '제주', '국립', 15, 30, 1],
     ['명지대', '서울', '사립', 12, 30], ['상명대', '서울', '사립', 12, 30], ['가톨릭대', '경기', '사립', 12, 30, 1], ['경기대', '경기', '사립', 12, 30], ['가천대', '경기', '사립', 12, 30, 1], ['인천대', '인천', '국립', 12, 30], ['한국항공대', '경기', '사립', 12, 30], ['한국공학대', '경기', '사립', 12, 30],
     ['부경대', '부산', '국립', 25, 55], ['영남대', '경북', '사립', 25, 55, 1], ['계명대', '대구', '사립', 25, 55, 1], ['동아대', '부산', '사립', 25, 55, 1], ['조선대', '광주', '사립', 25, 55, 1], ['울산대', '울산', '사립', 25, 55, 1], ['한남대', '대전', '사립', 25, 55], ['순천향대', '충남', '사립', 25, 55, 1], ['한림대', '강원', '사립', 25, 55, 1], ['금오공대', '경북', '국립', 25, 55], ['한국해양대', '부산', '국립', 25, 55], ['창원대', '경남', '국립', 25, 55], ['안동대', '경북', '국립', 25, 55], ['목포대', '전남', '국립', 25, 55],
-    ['한빛대', '충남', '사립', 45, 85, 0, 1], ['새솔대', '전북', '사립', 45, 85, 0, 1], ['누리대', '경북', '사립', 45, 85, 0, 1], ['가람대', '경남', '사립', 45, 85, 0, 1], ['미르대', '강원', '사립', 45, 85, 0, 1], ['온새대', '전남', '사립', 45, 85, 0, 1],
-    ['영진전문대', '대구', '전문대', 40, 100], ['인하공업전문대', '인천', '전문대', 40, 100], ['대림대', '경기', '전문대', 40, 100], ['부천대', '경기', '전문대', 40, 100], ['동의과학대', '부산', '전문대', 40, 100], ['대구보건대', '대구', '전문대', 40, 100], ['한결전문대', '경기', '전문대', 40, 100, 0, 1], ['다솜보건대', '광주', '전문대', 40, 100, 0, 1],
+    ['선문대', '충남', '사립', 45, 85], ['우석대', '전북', '사립', 45, 85], ['대구가톨릭대', '경북', '사립', 45, 85], ['경남대', '경남', '사립', 45, 85], ['상지대', '강원', '사립', 45, 85], ['동신대', '전남', '사립', 45, 85],
+    ['영진전문대', '대구', '전문대', 40, 100], ['인하공업전문대', '인천', '전문대', 40, 100], ['대림대', '경기', '전문대', 40, 100], ['부천대', '경기', '전문대', 40, 100], ['동의과학대', '부산', '전문대', 40, 100], ['대구보건대', '대구', '전문대', 40, 100], ['경민대', '경기', '전문대', 40, 100], ['광주보건대', '광주', '전문대', 40, 100],
     ['경찰대학', '충남', '특수', 1, 8], ['육군사관학교', '서울', '특수', 1, 8], ['해군사관학교', '경남', '특수', 1, 8], ['공군사관학교', '충북', '특수', 1, 8],
     ['한국예술종합학교', '서울', '예술', 1, 30], ['한국체육대', '서울', '예술', 1, 30],
-    ['한국방송통신대', '서울', '원격', 60, 100], ['열린사이버대', '서울', '원격', 60, 100, 0, 1],
+    ['한국방송통신대', '서울', '원격', 60, 100], ['서울사이버대', '서울', '원격', 60, 100],
   ].map(([name, sido, type, lo, hi, med, fic]) => ({ name, sido, type, lo, hi, med: !!med, fic: !!fic })),
 
   SIDO_SHORT: {
@@ -3712,7 +3714,7 @@ const DECISIONS = (() => {
     const d = DEF[item.def], o = item.opts.find(x => x.key === key);
     if (o.fx) { const half = {}; for (const k in o.fx) half[k] = o.fx[k] * 0.5; SIM.stats.applyFx(s, half); }
     // Stat-only choices need no additional domain mutation; logging and memories still use the same path.
-    if (d.apply) d.apply(s, key, item);
+    if (d.apply) d.apply(s, key, item, how);
     log(s, `${d.short} · ${o.label}`, how);
   }
   function log(s, label, how) {
@@ -4057,6 +4059,9 @@ const ADMISSIONS = (() => {
     for (const [id, at] of [['earlyDays', 4], ['afterSchool', 7], ['schoolFriends', 9], ['interest', 11], ['tutoring', 13], ['middleBalance', 14]]) {
       if (years === at && !child.asked[id]) { child.asked[id] = y; DECISIONS.offer(s, id); }
     }
+    // 진로 질문 (user request): 초4 and 중2 in April, the same question as the 고1 계열 at each school's level
+    if (k === 3 && m === 4 && !child.asked.dirElem) { child.asked.dirElem = y; DECISIONS.offer(s, 'dirElem'); }
+    if (k === 7 && m === 4 && !child.asked.dirMid) { child.asked.dirMid = y; DECISIONS.offer(s, 'dirMid'); }
     // Additional lessons use the birth household's budget, never the child's own balance (게임 설정).
     if (years >= 13 && years < 19 && child.tutor != null) {
       const fees = [0, 19.2, 60.4], cost = fees[child.tutor];
@@ -4364,6 +4369,45 @@ const ADMISSIONS = (() => {
     auto(s) { return s.family.quintile >= 4 ? '2' : s.family.quintile >= 2 ? '1' : '0'; },
     apply(s, key) { const n = Number(key); s.edu.childhood.tutor = n; s.person.env.privateEd = STATE.clamp(s.person.env.privateEd + [-6, 0, 6][n], 0, 100); }, note: () => 'privateEdIncome',
   };
+  // 진로 질문의 답이 활동을 연다: 플레이어가 직접 고른 방향의 활동이 시작된다 (자리가 남는 만큼, 최대 넷).
+  // 흐름에 맡긴 답과 자동 인생은 활동을 시작하지 않으므로 보정된 수치는 그대로다 (게임 설정).
+  const startActs = (s, how, keys) => { if (how === 'auto') return; for (const k of keys) TALENT.actStart(s, k); };
+  const TRACK_ACTS = { humsoc: ['naesinH', 'suneung', 'nonsul'], scieng: ['naesinH', 'suneung'], med: ['naesinH', 'suneung', 'record'], edu: ['naesinH', 'suneung', 'record'],
+    college: ['naesinH'], job: [], arts: null };
+  const artsActs = s => [s.arts && s.arts.on && s.arts.field === 'sport' ? 'sportH' : s.arts && s.arts.on && ['idol', 'acting', 'writing'].includes(s.arts.field) ? 'stageH' : 'silgiH', 'naesinH'];
+  // 초등학교 4학년 봄: 아이 눈높이의 질문
+  DECISIONS.DEF.dirElem = {
+    title: '나는 무엇을 할 때 즐거울까', short: '초등 진로',
+    text: () => '초등학교 4학년 봄, 담임 선생님이 「나의 꿈 그리기」 종이를 나눠 주셨다. 무엇을 할 때 가장 즐거운지 하나만 골라 적어 오라고 하셨다.',
+    options: () => [
+      { key: 'study', label: '책 읽고 문제 풀기', sign: '공부', desc: '수학 문제를 끝까지 풀 때 기분이 좋다.', cost: '수학 기초 학원 · 독서 습관' },
+      { key: 'sport', label: '밖에서 뛰어놀기', sign: '운동', desc: '운동장에서 공을 찰 때 시간 가는 줄 모른다.', cost: '스포츠 클럽' },
+      { key: 'art', label: '그리고 만들고 노래하기', sign: '예술', desc: '도화지와 크레파스가 있으면 하루가 짧다.', cost: '미술·음악 학원' },
+      { key: 'expr', label: '이야기하고 글쓰기', sign: '표현', desc: '일기를 쓰거나 친구들 앞에서 이야기하는 게 좋다.', cost: '독서 습관' },
+      { key: 'rel', label: '친구들과 함께하기', sign: '관계', desc: '여럿이 같이 무언가를 할 때 신난다.', cost: '스카우트·봉사' },
+    ],
+    // no draw: the strongest leaning answers
+    auto(s) { const T = s.person.traits; return [['study', T.academic], ['sport', T.physical], ['art', T.artistic], ['expr', T.verbal], ['rel', T.social]].sort((a, b) => b[1] - a[1])[0][0]; },
+    apply(s, key, item, how) { startActs(s, how, { study: ['mathBase', 'reading'], sport: ['sportClub'], art: ['artLesson'], expr: ['reading'], rel: ['scout'] }[key]); },
+    note: () => 'privateEd',
+  };
+  // 중학교 2학년 봄: 고등학교를 바라보는 질문
+  DECISIONS.DEF.dirMid = {
+    title: '어떤 고등학교를 바라볼까', short: '중등 진로',
+    text: () => '중학교 2학년 봄, 진로 상담 주간이다. 선생님이 고등학교 종류가 적힌 안내문을 보여 주며, 1년 반 뒤 원서를 쓰려면 지금부터 무엇을 준비할지 생각해 보자고 하셨다.',
+    options: () => [
+      { key: 'general', label: '일반고 · 내신을 챙긴다', sign: '일반고', desc: '가까운 일반고에 가서 내신과 수능으로 대학에 간다.', cost: '내신 관리 (중학교)' },
+      { key: 'tokmok', label: '과학고·자사고에 도전한다', sign: '특목·자사고', desc: '수학·과학을 깊게 판다. 성적과 면접 준비가 필요하다.', cost: '특목·자사고 대비 · 내신 관리' },
+      { key: 'fl', label: '외고·국제고를 준비한다', sign: '외고·국제고', desc: '영어와 말하기를 키운다.', cost: '외고·국제고 대비 · 내신 관리' },
+      { key: 'arts', label: '예고 실기를 준비한다', sign: '예술고', desc: '그림이나 음악 실기를 본격적으로 배운다.', cost: '예고 실기 준비' },
+      { key: 'sports', label: '체고·운동부를 준비한다', sign: '체육고', desc: '운동부에서 대회와 실기를 준비한다.', cost: '체고·운동부 훈련' },
+      { key: 'voc', label: '특성화·마이스터고로 기술을 배운다', sign: '특성화고', desc: '일찍 기술을 배워 졸업과 함께 일을 시작한다.', cost: '동아리·봉사' },
+    ],
+    auto(s) { const T = s.person.traits; const best = Math.max(T.academic, T.verbal, T.artistic, T.physical);
+      return T.academic === best ? (T.academic >= 70 ? 'tokmok' : 'general') : T.verbal === best ? (T.verbal >= 70 ? 'fl' : 'general') : T.artistic === best ? (T.artistic >= 66 ? 'arts' : 'general') : T.physical >= 66 ? 'sports' : 'general'; },
+    apply(s, key, item, how) { startActs(s, how, { general: ['naesinM'], tokmok: ['tokmok', 'naesinM'], fl: ['flPrep', 'naesinM'], arts: ['silgiM'], sports: ['sportM'], voc: ['scout'] }[key]); },
+    note: () => 'privateEdIncome',
+  };
   DECISIONS.DEF.track = {
     title: '계열과 진로 방향', short: '계열',
     text(s) {
@@ -4397,7 +4441,7 @@ const ADMISSIONS = (() => {
       if (Math.abs(T.logical - T.verbal) < 6) return R.chance(0.5) ? 'scieng' : 'humsoc';
       return T.logical > T.verbal ? 'scieng' : 'humsoc';
     },
-    apply(s, key) { s.edu.track = key; if (key === 'job') s.edu.examYear = null; if (key === 'arts') ARTS.enterBy(s, 'track'); },
+    apply(s, key, item, how) { s.edu.track = key; if (key === 'job') s.edu.examYear = null; if (key === 'arts') ARTS.enterBy(s, 'track'); startActs(s, how, TRACK_ACTS[key] || artsActs(s)); },
     note(s) { return HS[s.edu.hs.type].vocational ? 'vocational' : 'privateEdHigh'; },
   };
   DECISIONS.DEF.afterFail = {
@@ -11320,6 +11364,98 @@ void main() {
       gl.depthMask(true);
       return out;
     }
+
+    // ---- the last scene of the road back (user request): the same theatre, seen from the stage ----
+    // The old self stands on the stage facing the house; the camera starts in front (as the road back ended) and
+    // swings round behind them, so the seats and the people in them come into view. The curtain then closes across
+    // the proscenium, between the old self and the house.
+    // o: { W, H, pix, t, swing (0–1: front → behind), close (0–1), F, hm, crowd (0–1: how many seats are taken), fade }
+    finale(o) {
+      const { W, H } = o, pix = o.pix || 2, gl = this.G.gl, U = this.G.U;
+      const w = Math.max(1, Math.ceil(W / pix)), h = Math.max(1, Math.ceil(H / pix));
+      if (w !== this.w || h !== this.h) { this.w = this.cv.width = w; this.h = this.cv.height = h; }
+      const C = [0, 0, 2.4], head = o.hm * 0.92, sw = smooth(o.swing), th = sw * Math.PI;
+      // the camera orbits the old self: in front at chest height, then behind and a little above, looking out at the house
+      const R = lerp(5.2, 4.4, sw), eye = [Math.sin(th) * R * 0.7, lerp(head * 0.8, head + 1.1, sw), C[2] - Math.cos(th) * R];
+      // the camera keeps the old self in view while it travels, and only then lifts its gaze to the house
+      const look = smooth(clamp01((sw - 0.45) / 0.55)), tgt = [0, lerp(head * 0.7, -0.4, look), lerp(C[2], -9, look)];
+      {
+        const f0 = [tgt[0] - eye[0], tgt[1] - eye[1], tgt[2] - eye[2]], fl = Math.hypot(...f0), fv = f0.map(x => x / fl);
+        let r = [fv[2], 0, -fv[0]]; const rl = Math.hypot(...r) || 1; r = r.map(x => x / rl);
+        const u = [fv[1] * r[2] - fv[2] * r[1], fv[2] * r[0] - fv[0] * r[2], fv[0] * r[1] - fv[1] * r[0]];
+        const dot = (p, q) => p[0] * q[0] + p[1] * q[1] + p[2] * q[2];
+        const V = [r[0], r[1], r[2], -dot(r, eye), u[0], u[1], u[2], -dot(u, eye), -fv[0], -fv[1], -fv[2], dot(fv, eye), 0, 0, 0, 1];
+        const near = 0.2, farZ = 300, Fq = 1 / Math.tan(FV3 / 2 * 1.15);
+        const Pm = [Fq * H / W, 0, 0, 0, 0, Fq, 0, 0, 0, 0, (farZ + near) / (near - farZ), 2 * farZ * near / (near - farZ), 0, 0, -1, 0];
+        const VP = new Float32Array(16);
+        for (let i = 0; i < 4; i++) for (let j = 0; j < 4; j++) { let q = 0; for (let k = 0; k < 4; k++) q += Pm[i * 4 + k] * V[k * 4 + j]; VP[j * 4 + i] = q; }
+        this.vp = VP; this.Wc = W; this.Hc = H;
+      }
+      const M = new Mesh(), Hs = new Mesh(), Cu = new Mesh(), hw = 4.6, yTop = 5.4, zEdge = -1.6, zp = -0.5, zc = -0.2, zBack = 9, far = 16;
+      // the stage: planks running toward the house, the apron's face and its gold lip, footlights, the back wall
+      for (let x = -far, i = 0; x < far; x += 0.42, i++) M.flat(x, x + 0.42, zEdge, zBack, PLANK[i & 1]);
+      Hs.box(-far, -1.4, zEdge - 0.05, far, 0, zEdge, [0.2, 0.12, 0.07]);
+      Hs.box(-far, -0.1, zEdge - 0.08, far, 0, zEdge - 0.04, GOLD);
+      for (let x = -hw + 0.4; x < hw - 0.3; x += 0.7) Hs.box(x - 0.12, 0, zEdge + 0.1, x + 0.12, 0.08, zEdge + 0.28, [1, 0.85, 0.55], { e: 1 });
+      M.box(-far, 0, zBack, far, yTop + 8, zBack + 0.2, [0.05, 0.07, 0.15]);
+      // the house: a raked floor of seats, an aisle down the middle, and people in most of them
+      for (let r = 0; r < 14; r++) {
+        const z = zEdge - 1.8 - r * 1.05, y = -1.2 + r * 0.3;
+        Hs.box(-far, -3, z - 0.55, far, y - 0.5, z + 0.55, [0.07, 0.05, 0.06]);
+        for (let x = -9.3 + ((r & 1) ? 0.3 : 0); x < 9.3; x += 0.62) {
+          if (Math.abs(x + 0.29) < 0.75) continue;
+          Hs.box(x + 0.04, y - 0.5, z - 0.1, x + 0.56, y + 0.12, z + 0.06, [0.3, 0.05, 0.07], { top: [0.4, 0.08, 0.1] });
+          const hh = h2(r * 61 + Math.round(x * 10), 7);
+          if (hh < (o.crowd == null ? 0.8 : o.crowd)) {
+            const hc = hh < 0.25 ? [0.62, 0.62, 0.6] : hh < 0.5 ? [0.13, 0.1, 0.09] : [0.08, 0.07, 0.07];
+            const clap = o.clap ? Math.max(0, Math.sin(o.t * 11 + hh * 40)) * 0.05 : 0;
+            Hs.box(x + 0.15, y + 0.12, z - 0.24, x + 0.45, y + 0.48, z - 0.02, [0.16, 0.14, 0.16]);
+            Hs.box(x + 0.19, y + 0.5 + clap, z - 0.2, x + 0.41, y + 0.74 + clap, z - 0.04, hc);
+          }
+        }
+      }
+      // the proscenium arch with its valance, seen from the stage side
+      for (const s of [-1, 1]) {
+        Hs.box(s > 0 ? hw : -far, -1.4, zp - 0.4, s > 0 ? far : -hw, yTop + 8, zp, [0.24, 0.06, 0.08]);
+        Hs.box(s > 0 ? hw - 0.02 : -hw - 0.14, 0, zp, s > 0 ? hw + 0.14 : -hw + 0.02, yTop, zp + 0.1, GOLD);
+      }
+      Hs.box(-far, yTop, zp - 0.4, far, yTop + 8, zp, [0.24, 0.06, 0.08]);
+      for (let x = -hw, i = 0; x < hw; x += 0.5, i++) {
+        const d = 0.36 + 0.14 * Math.sin((i + 0.5) * Math.PI / 2) ** 2;
+        Hs.box(x, yTop - d, zp + 0.02, x + 0.5, yTop + 0.02, zp + 0.12, i & 1 ? VELVET : VELVET2);
+      }
+      // the curtain: two pleated halves that run in from the sides until they meet
+      const shut = smooth(o.close), outer = hw + 0.35, NP = 16, NY = 6, Ht = yTop + 0.05;
+      if (shut > 0.001) for (const s of [-1, 1]) {
+        const col = (i, k) => {
+          const y = k / NY * Ht, u = i / NP, lead = clamp01(shut * (1.12 - 0.12 * y / Ht));
+          const inner = lerp(outer * 0.97, 0, lead), x = inner + (outer - inner) * u, dep = (0.04 + 0.14 * (1 - shut)) * (i & 1 ? 1 : -1);
+          return [s * x, y, zc + dep];
+        };
+        for (let i = 0; i < NP; i++) for (let k = 0; k < NY; k++) {
+          const c = i & 1 ? VELVET : VELVET2, A0 = col(i, k), B0 = col(i + 1, k), A1 = col(i, k + 1), B1 = col(i + 1, k + 1);
+          Cu.face([A0, B0, B1, A1], [A0[0], A0[1], zc + 5], c);
+        }
+      }
+      // the old self, in a column of light
+      M.push(mT(0, 0, 0)); person3(M, o.F, o.hm, C[0], C[2], o.t * 1.2, {}); M.pop();
+      const spots = new Float32Array(40); spots.set([C[0], C[2], 1.1, 1], 0);
+      gl.viewport(0, 0, w, h);
+      gl.clearColor(0.02, 0.02, 0.03, 1); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+      gl.uniformMatrix4fv(U.uVP, false, this.vp);
+      gl.uniform1f(U.uBend, 0); gl.uniform1f(U.uBZ, 0);
+      gl.uniform3fv(U.uL, (() => { const v = [0, 0.75, 0.66], l = Math.hypot(...v); return v.map(x => x / l); })());
+      gl.uniform3fv(U.uSun, [0.62, 0.5, 0.4]); gl.uniform3fv(U.uAmb, [0.42, 0.4, 0.48]);
+      gl.uniform3fv(U.uFog, [0.02, 0.02, 0.03]); gl.uniform2f(U.uFogR, 1e4, 2e4);
+      gl.uniform4fv(U.uGlow, [1, 0.86, 0.6, 1]);
+      gl.uniform3fv(U.uSpotC, [1.25, 1.08, 0.84]); gl.uniform4fv(U.uSpot, spots);
+      gl.enable(gl.DEPTH_TEST); gl.depthMask(true);
+      const fade = o.fade == null ? 1 : o.fade;
+      gl.uniform1f(U.uDim, 0.4 * fade); this.draw(Hs, fade);
+      gl.uniform1f(U.uDim, 0.32 * fade); this.draw(M, fade);
+      gl.uniform1f(U.uDim, 0.95 * fade); this.draw(Cu, fade);   // the curtain catches the stage light
+      gl.uniform1f(U.uDim, 1);
+    }
     proj(p) {
       const m = this.vp, [x, y, z] = p, cx = m[0] * x + m[4] * y + m[8] * z + m[12], cy = m[1] * x + m[5] * y + m[9] * z + m[13], ww = m[3] * x + m[7] * y + m[11] * z + m[15];
       return ww > 0.05 ? [(cx / ww * 0.5 + 0.5) * this.Wc, (0.5 - cy / ww * 0.5) * this.Hc] : null;
@@ -11625,6 +11761,16 @@ const SOUND = (() => {
     g2.gain.setValueAtTime(0.0001, t - 0.32); g2.gain.linearRampToValueAtTime(0.09, t - 0.31); g2.gain.exponentialRampToValueAtTime(0.0001, t);
     o2.connect(g2); g2.connect(out); o2.start(t - 0.32); o2.stop(t + 0.02);
   }
+  // applause (the end of the road back): many short claps, swelling and then thinning out
+  function applause(dur) {
+    if (!on || !ac) return;
+    const D = dur || 6;
+    for (let i = 0; i < 420; i++) {
+      const u = Math.random(), at = D * u, dens = Math.min(1, u * 4) * Math.min(1, (1 - u) * 2.2);
+      if (Math.random() > dens) continue;
+      burst({ f: 1100 + Math.random() * 1900, q: 0.9 + Math.random() * 0.8, g: 0.012 + Math.random() * 0.02, d: 0.035 + Math.random() * 0.03, delay: at });
+    }
+  }
   function rustle() { burst({ f: 3200, q: 0.6, g: 0.05, d: 0.18, a: 0.03 }); burst({ f: 5200, q: 0.8, g: 0.025, d: 0.12, a: 0.02, delay: 0.06 }); }
   function stamp() {
     if (!on || !ac) return;
@@ -11669,7 +11815,7 @@ const SOUND = (() => {
     }
     motifUntil = t + 1;
   }
-  return { enable, setVolume, setStage, setEnv, step, spot, chip, rustle, stamp, motif, compose, get on() { return on; } };
+  return { enable, setVolume, setStage, setEnv, step, spot, chip, rustle, stamp, motif, compose, applause, get on() { return on; } };
 })();
 
 // ===== MODULE: UI =====
@@ -12506,15 +12652,12 @@ const UI = (() => {
     const panel = $('panel-talent');
     if (!panel.querySelector('#tal-rows')) panel.replaceChildren(
       el('h2', { text: '재능' }),
-      el('p', { class: 'sub', id: 'tal-note' }),
       el('div', { class: 'tal', id: 'tal-rows' }, DATA.TALENTS.map(d => el('div', { class: 'trow', 'data-k': d.key, style: `--tc:${d.color}` },
         el('span', { class: 'tname' }, d.name, el('small', { text: d.sub })),
         el('span', { class: 'tbar', role: 'img' }, el('i', { class: 't' }), el('i', { class: 'r' }), el('i', { class: 'e' }), el('b')),
         el('span', { class: 'tw' })))),
-      el('p', { class: 'tlegend' }, el('span', {}, el('i'), '재능'), el('span', {}, el('i', { class: 'e' }), '노력'), el('span', {}, el('i', { class: 'c' }), '다음 관문'), gameTag()),
-      el('p', { class: 'sub', text: '노력은 「상태」의 집중 다섯 점에서 쌓입니다. 학교·대학·시험·첫 직장·팀은 모두 재능 + 노력의 정해진 합격선으로 뽑습니다.' }));
+      el('p', { class: 'tlegend' }, el('span', {}, el('i'), '재능'), el('span', {}, el('i', { class: 'e' }), '노력'), el('span', {}, el('i', { class: 'c' }), '다음 관문')));
     const T = S.talent, fz = T.frozen;
-    $('tal-note').textContent = fz ? `노력 고정 · 만 ${fz.age}세 첫 직장부터` : STATE.age(S) < 6 ? '노력은 만 6세부터 쌓인다' : '점수 = 재능 + 노력 (최대 100)';
     for (const row of panel.querySelectorAll('.trow')) {
       const k = row.dataset.k, kn = TALENT.known(S, k), eff = TALENT.effortOf(S, k), raw = fz ? eff : T.eff[k];
       const mid = kn.step >= 4 ? kn.lo : kn.step ? (kn.lo + kn.hi) / 2 : 0;
@@ -12529,8 +12672,7 @@ const UI = (() => {
       const tw = row.querySelector('.tw'), name = TALENT.NAME[k];
       const tText = kn.step === 0 ? '재능 아직 모름' : kn.step === 1 ? `재능 ${kn.word}` : kn.step < 4 ? `재능 ${kn.lo}~${kn.hi}` : `재능 ${kn.lo}`;
       const sum = kn.step >= 4 ? ` = 점수 ${kn.lo + eff}` : '';
-      tw.replaceChildren(el('b', { text: tText }), ` · 노력 ${eff}${sum}`,
-        g ? el('div', {}, `다음 관문 · ${g.name} (${TALENT.label(S, g)})`, ok ? el('span', { class: 'ok', text: ' · 충족' }) : null) : null);
+      tw.replaceChildren(el('b', { text: tText }), ` · 노력 ${eff}${sum}`);
       const pts = T.pts[k] || 0, pace = T.pace[k] || 1;
       row.title = fz ? `${name} · 첫 직장 이후 노력은 관문에 쓰이지 않습니다` : `${name} · 이번 달 집중 ${pts}점 · 노력이 쌓이는 속도 ×${pace} (가구 소득·사교육·지역, 게임 설정)${pts < 0.3 ? ' · 점수를 주지 않으면 노력이 조금씩 줄어든다' : ''}`;
       row.querySelector('.tbar').setAttribute('aria-label', `${name} ${tText}, 노력 ${eff}${g ? `, 다음 관문 ${g.name} ${g.cut}` : ''}`);
@@ -12550,17 +12692,13 @@ const UI = (() => {
       return el('div', { class: 'acard', style: `--tc:${tcolor(d.k)}` },
         el('div', { class: 'acard-h' }, el('b', { text: d.name }), el('button', { type: 'button', text: '그만두기', 'aria-label': `${d.name} 그만두기`, onclick: () => { TALENT.actStop(S, d.key); renderActs(true); renderTalents(); } })),
         el('div', { class: 'aturns', role: 'img', 'aria-label': `${d.turns}턴 가운데 ${done}턴 마침` }, Array.from({ length: d.turns }, (_, i) => el('i', { class: i < done ? 'on' : '' }, i === done ? el('span', { style: `width:${Math.round(part * 100)}%` }) : null))),
-        el('div', { class: 'ameta' }, el('b', { text: `${done} / ${d.turns}턴` }), ` · ${TALENT.NAME[d.k]} 노력 · ${d.use}`),
-        el('div', { class: 'ameta' }, d.fee ? `월 ${d.fee}만 원${st === 'job' || STATE.age(S) >= 19 && !['elem', 'mid', 'high'].includes(st) ? '' : ' (부모님 부담)'}` : '비용 없음', ' ', gameTag()));
+        el('div', { class: 'ameta' }, el('b', { text: `${done} / ${d.turns}턴` }), ` · ${TALENT.NAME[d.k]}${d.fee ? ` · 월 ${d.fee}만 원` : ''}`));
     };
     const D = P.done.slice(-8).reverse();
     panel.replaceChildren(...[
-      el('h2', { text: '활동' }),
-      el('p', { class: 'sub', text: `${TALENT.STAGE_NAME[st] || '아직 어린 나이'} · 동시에 ${P.list.length}/${TALENT.ACT_MAX}개. 한 턴은 1년, 활동은 난도에 따라 2~5턴입니다. 하는 동안 그 재능의 노력이 더 빨리 쌓이고, 마치면 노력이 조금 더 붙습니다.` }),
-      S.talent.frozen ? el('p', { class: 'sub', text: '첫 직장 이후의 노력은 관문에 쓰이지 않습니다. 자격증과 어학은 이직 서류에 남습니다.' }) : null,
+      el('h2', { text: `활동 ${P.list.length}/${TALENT.ACT_MAX}` }),
       el('div', { class: 'acts' }, P.list.length ? P.list.map(card) : [el('p', { class: 'sub', text: '하고 있는 활동이 없다.' })]),
       el('button', { class: 'link-btn', type: 'button', text: '활동 추가', disabled: P.list.length >= TALENT.ACT_MAX || !avail.length, onclick: openActAdd }),
-      !avail.length && P.list.length < TALENT.ACT_MAX ? el('p', { class: 'sub', text: '지금 시작할 수 있는 활동이 없다. (초등학생부터)' }) : null,
       D.length ? el('h3', { text: '지난 활동' }) : null,
       D.length ? el('ul', { class: 'act-done' }, D.map(r => el('li', { class: r.ok ? '' : 'no', text: `${r.y} · ${TALENT.ACT_BY[r.key].name} · ${r.ok ? `${r.turns}턴 완료` : `${r.turns}턴에서 중단`}` }))) : null,
     ].filter(Boolean));
@@ -12575,10 +12713,10 @@ const UI = (() => {
     const byK = TALENT.KEYS.map(k => [k, avail.filter(d => d.k === k)]).filter(([, L]) => L.length);
     openOverlay(el('div', { class: 'paper card', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'aa-h' },
       el('h2', { id: 'aa-h', class: 'form-title', text: '활동 추가' }),
-      el('p', { class: 'form-sub', text: `지금 ${P.list.length}/${TALENT.ACT_MAX}개 · 한 턴은 1년 · 비용과 기간은 게임 설정입니다` }),
+      el('p', { class: 'form-sub', text: `${P.list.length}/${TALENT.ACT_MAX}` }),
       el('div', { class: 'aadd' }, byK.map(([k, L]) => el('div', {}, el('h3', { text: `${TALENT.NAME[k]} 노력` }),
         L.map(d => el('div', { class: 'aadd-row' },
-          el('div', {}, el('b', { text: d.name }), el('div', { class: 'sub', text: [`${d.turns}턴`, d.fee ? `월 ${d.fee}만 원` : '비용 없음', d.use].join(' · ') })),
+          el('div', {}, el('b', { text: d.name }), el('div', { class: 'sub', text: [`${d.turns}턴`, d.fee ? `월 ${d.fee}만 원` : ''].filter(Boolean).join(' · ') })),
           el('button', { class: 'pbtn', type: 'button', text: '시작', disabled: P.list.length >= TALENT.ACT_MAX, onclick: () => add(d) })))))),
       el('div', { class: 'card-actions' }, el('button', { class: 'pbtn primary', type: 'button', text: '닫기', 'data-esc': '1', onclick: close }))));
   }
@@ -13254,10 +13392,10 @@ const UI = (() => {
     const phases = [{ k: 'stop', dur: 2.8 }, { k: 'turn', dur: 1.2 }];
     let from = d.age;
     for (const st of rep.stops) { phases.push({ k: 'back', dur: 4, a0: from, a1: st.age }); phases.push({ k: 'photo', stop: st }); from = st.age; }
-    phases.push({ k: 'back', dur: 3.5, a0: from, a1: 0 }, { k: 'dawn', dur: 4.5 }, { k: 'on', dur: 8 });
+    // the road back ends facing the old self; the camera then finds the stage behind them (user request)
+    phases.push({ k: 'back', dur: 3.5, a0: from, a1: 0 }, { k: 'theatre', dur: THEATRE.dur });
     const dead = S.people.filter(x => !x.alive && x.role !== 'pet' && x.death && x.death.age != null).slice(-8);
-    const heir = S.people.find(x => x.alive && x.role === 'grandchild') || S.people.find(x => x.alive && x.role === 'child') || S.people.find(x => x.alive && (x.role === 'cousin' || (x.role === 'friend' && x.rel >= 50)));
-    const seq = endSeq = { i: 0, t: 0, pt: 0, last: performance.now(), done: false, rep, phases, dead, heir, stones: 0, ghost: null, total: 0 };
+    const seq = endSeq = { i: 0, t: 0, pt: 0, last: performance.now(), done: false, rep, phases, dead, stones: 0, ghost: null, total: 0 };
     // skipping takes a deliberate one-second hold (§2.10)
     const skip = el('div', { class: 'skip-hold', role: 'button', tabindex: '0', 'aria-label': '길게 눌러 건너뛰기' }, '길게 눌러 건너뛰기', el('i'));
     document.body.append(skip);
@@ -13266,7 +13404,7 @@ const UI = (() => {
     skip.onpointerdown = () => hold(true); skip.onpointerup = skip.onpointerleave = () => hold(false);
     const kd = e => { if ((e.code === 'Space' || e.code === 'Enter') && !e.repeat) hold(true); }, ku = e => { if (e.code === 'Space' || e.code === 'Enter') hold(false); };
     addEventListener('keydown', kd); addEventListener('keyup', ku);
-    const end = () => { if (seq.done) return; seq.done = true; endSeq = null; skip.remove(); removeEventListener('keydown', kd); removeEventListener('keyup', ku); closeOverlay(); showFacts(rep); };
+    const end = () => { if (seq.done) return; seq.done = true; endSeq = null; skip.remove(); if (seq.th) seq.th.box.remove(); removeEventListener('keydown', kd); removeEventListener('keyup', ku); closeOverlay(); showFacts(rep); };
     // 「끝」 on a dark screen, then 「회상」, then the road back begins (user request)
     const mark = el('div', { class: 'end-mark', role: 'status' }, el('p', { class: 'em-1', text: '끝' }), el('p', { class: 'em-2', text: '회상' }));
     document.body.append(mark);
@@ -13287,7 +13425,11 @@ const UI = (() => {
       if (holdT && now - holdT >= 1000) { end(); return; }
       const ph = seq.phases[seq.i];
       if (!ph) { end(); return; }
-      if (ph.k === 'photo') {
+      if (ph.k === 'theatre') {
+        seq.pt += dt;
+        if (!theatre(seq, seq.pt)) stageScene.frame(dt, endingView('back', 1, seq, 0, { a0: 0, a1: 0 }));
+        if (seq.pt >= ph.dur) { seq.i++; seq.pt = 0; }
+      } else if (ph.k === 'photo') {
         if (!ph.shown) { ph.shown = true; stopCard(ph.stop, () => { if (seq.done) return; closeOverlay(); seq.i++; seq.pt = 0; }); }
         stageScene.frame(dt, endingView('photo', 0, seq, dt));
       } else {
@@ -13301,18 +13443,48 @@ const UI = (() => {
     requestAnimationFrame(step);
     }
   }
+
+  // ---- the last scene: from the old self's face to their back, the house applauding, the curtain closing ----
+  const THEATRE = { dur: 12.5, fadeIn: [0, 1], swing: [1, 4.6], clap: 3.6, close: [6.6, 9.4], out: [11, 12.5] };
+  const span01 = (t, [a, b]) => Math.max(0, Math.min(1, (t - a) / (b - a)));
+  function theatre(seq, t) {
+    let T = seq.th;
+    if (!T) {
+      const st = RENDER.stage3(), d = S.person.death, age = Math.max(1, d.age);
+      const ctx = { y: S.clock.y, month: 5, seasonKey: 'spring', light: 2, rain: false, snow: false, heat: false, coldHour: false, week: 1, H: 200, W: 256 };
+      const F = RENDER.specFor({ look: S.person.look, jacket: null, work: null }, S.person.sex, age, ctx, RENDER.gaitAt(age), { over: { facing: 'front', walk: 0, frame: 0, pose: 'swing', umb: null, cane: 0, cart: 0, bag: null } });
+      // without WebGL: the road stays and two velvet panels close over it
+      const cur = st ? null : el('div', { class: 'bs-curtain' }, el('div', { class: 'bs-cur l' }), el('div', { class: 'bs-cur r' }));
+      const box = el('div', { class: 'end-theatre', 'aria-hidden': 'true' }, st ? st.cv : cur);
+      if (st) st.cv.classList.add('pixel');
+      document.body.append(box);
+      T = seq.th = { st, F, hm: F.h / 200 * 8.5, box, cur, clapped: false };
+      $('sr-alert').textContent = '무대 위에서 객석을 바라본다. 박수 소리와 함께 막이 내린다.';
+    }
+    const fade = 1 - span01(t, THEATRE.out), close = span01(t, THEATRE.close);
+    if (!T.clapped && t >= THEATRE.clap) { T.clapped = true; SOUND.applause(7.5); }
+    if (T.st) {
+      T.box.style.opacity = String(span01(t, THEATRE.fadeIn));
+      T.st.finale({ W: innerWidth, H: innerHeight, pix: innerWidth < 760 ? 2 : 3, t, swing: span01(t, THEATRE.swing), close, F: T.F, hm: T.hm, crowd: 0.82, clap: t >= THEATRE.clap && t < THEATRE.close[1] + 1, fade });
+      return true;
+    }
+    T.box.style.opacity = String(fade);
+    T.cur.classList.toggle('open', close < 0.5);
+    T.cur.querySelectorAll('.bs-cur').forEach(c => { c.style.transform = `scaleX(${0.1 + 0.9 * close})`; });
+    return false;
+  }
   function endingView(k, u, seq, dt, ph) {
     const sc = stageScene, W = sc.W, H = sc.H, d = S.person.death, age = d.age;
     const order = ['winter', 'autumn', 'summer', 'spring'];
-    const seasonNow = k === 'back' ? order[Math.floor(seq.total / 1.6) % 4] : k === 'dawn' || k === 'on' ? 'spring' : CAL.season(S.clock.m).key;
+    const seasonNow = k === 'back' ? order[Math.floor(seq.total / 1.6) % 4] : CAL.season(S.clock.m).key;
     const ctx = Object.assign({}, RENDER.context(S, sc, { tod: 0.4 }), { seasonKey: seasonNow, rain: false, snow: false, light: 2 });
     const me = { look: S.person.look, jacket: null, work: null };
-    const facing = k === 'stop' ? (u > 0.4 ? 'side' : 'back') : k === 'on' ? 'back' : 'front';
+    const facing = k === 'stop' ? (u > 0.4 ? 'side' : 'back') : 'front';
     const walking = k === 'back' || (k === 'stop' && u < 0.2);
     const fr = Math.floor(sc.t * 2.6 * (walking ? 2 : 0.5)) % 8;
     const figs = [], cx = Math.round(W / 2), fy = Math.round(H * (sc.portrait ? 0.86 : 0.88));
-    const alpha = k === 'dawn' ? 1 - u : 1;
-    if (k !== 'on') {
+    const alpha = 1;
+    {
       const F = RENDER.specFor(me, S.person.sex, age, ctx, RENDER.gaitAt(age), { over: { facing, pose: 'swing', bag: null, umb: null, cart: 0, book: 0 } });
       F.frame = fr; F.walk = walking ? 1 : 0;
       figs.push({ F, x: cx, fy, r: 10, alpha });
@@ -13331,23 +13503,8 @@ const UI = (() => {
         if (v >= 1) seq.ghost = null;
       }
     }
-    if (k === 'on') {
-      // the road goes on: the keepsake by the roadside, picked up by someone who walks on (or a tree with a bird)
-      if (!seq.onInit) { seq.onInit = true; sc.objs = sc.objs.filter(o => o.type !== 'stone'); if (seq.heir || seq.rep.early) sc.vignette('gift'); else { sc.objs.push({ type: 'tree', s: sc.travel + 30, side: 1, lat: 0.06, v: 1 }); sc.vignette('bird'); } }
-      const who = seq.rep.early ? NETWORK.parents(S).filter(x => x.alive)[0] : seq.heir;
-      if (who) {
-        const wa = STATE.personAge(S, who), v = u;
-        const early = seq.rep.early;
-        const gy = early ? Math.round(fy - H * 0.05) : Math.round(H * 1.05 - (H * 1.05 - sc.hz - 18) * v);
-        const F = RENDER.specFor(who, who.sex, wa, ctx, RENDER.gaitAt(wa), { scale: early ? 1 : Math.max(0.35, 1 - v * 0.6), over: { facing: early ? 'front' : 'back', pose: 'swing', umb: null } });
-        F.frame = early ? 0 : Math.floor(sc.t * 5) % 8; F.walk = early ? 0 : 1;
-        figs.push({ F, x: cx + Math.round(W * 0.04), fy: gy, r: 10, alpha: Math.min(1, u * 4) });
-        if (!early && v > 0.45) sc.objs = sc.objs.filter(o => o.type !== 'gift');
-      }
-    }
-    if (k === 'dawn' && !seq.dawnSong) { seq.dawnSong = true; SOUND.motif(S.seed, 'lullaby'); }
-    const phase = k === 'dawn' ? [1, 2, u] : [2, 2, 0];
-    return { phase, tod: k === 'dawn' ? 0.2 + 0.1 * u : 0.4, light: 2, season: seasonNow, scroll: k === 'back' ? -9 : k === 'on' ? 0 : 0, still: k !== 'back', figs, fog: k === 'dawn' ? 0.3 + u * 0.5 : 0.24, walkerR: 0, petals: seasonNow === 'spring' && k === 'back', leaves: seasonNow === 'autumn' && k === 'back', snow: seasonNow === 'winter' && k === 'back' };
+    const phase = [2, 2, 0];
+    return { phase, tod: 0.4, light: 2, season: seasonNow, scroll: k === 'back' ? -9 : 0, still: k !== 'back', figs, fog: 0.24, walkerR: 0, petals: seasonNow === 'spring' && k === 'back', leaves: seasonNow === 'autumn' && k === 'back', snow: seasonNow === 'winter' && k === 'back' };
   }
   // one stop on the road back: the scene as a soft photograph, the old self's comment typed beneath
   function stopCard(st, next) {
