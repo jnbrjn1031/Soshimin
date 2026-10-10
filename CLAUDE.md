@@ -39,6 +39,15 @@ built each frame by `person3` from the same `specFor` spec as the 2D sprites. Bu
 overlap an earlier one are skipped. Without WebGL, or with 설정 → 길 그리기 → 2D 픽셀 (`SET.view`), the 2D `Scene` is used.
 The portraits, the family panel and the ending photographs still use the 2D figure sprites.
 
+The birth stage (UI `playStage`) is a theatre drawn by `RENDER.stage3()` (`Stage3`, same shader with `uDim` and
+`uSpot` for a dark house and columns of light): the page lays the family out in `.bs-ph` placeholders and the camera is
+solved each frame so the lowest row stands on the floor at their bottom edge (rows above stand on risers further back).
+The curtain parts first, then the spotlights find 나, the parents, the siblings and the pet. In 2D the curtain is two CSS panels.
+
+Clothes (`wardrobe`) belong to an era, not a week: the age band plus, for the walker, `me.era` (school stage, high-school
+type, university, career status, job and employer). An adult walker keeps the style of the age at which the era began
+(`eraAge`). Weather only adds layers (coat, scarf, sleeves, kids' summer shorts, umbrella), picked once per era.
+
 ## Tests and tools
 
 ```

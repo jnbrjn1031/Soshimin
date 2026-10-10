@@ -162,6 +162,21 @@ canvas.pixel{image-rendering:pixelated; image-rendering:crisp-edges; display:blo
 .bs-go[hidden]{display:none}
 .bs-sound{position:absolute; top:12px; right:12px; font-size:var(--fs-s)}
 .bs-skip{position:absolute; bottom:10px; left:0; right:0; text-align:center; font-size:var(--fs-xs); color:#8E96A3}
+/* the theatre: a WebGL stage behind the family (3D), or velvet panels that part over the 2D stage */
+.bstage .bs-3d{position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none}
+.bstage.d3 .bs-row,.bstage.d3 .bs-bottom{position:relative; z-index:1}
+.bstage.d3 .bs-row::after,.bstage.d3 .bs-beam,.bstage.d3 .bs-pool{display:none}
+.bstage.d3 .bs-row{align-items:flex-start}
+.bstage.d3 .bs-fig{align-self:stretch}
+.bstage.d3 .bs-ph{width:100%}
+.bstage.d3 .bs-top,.bstage.d3 .bs-info,.bstage.d3 .bs-house{text-shadow:0 1px 2px #000, 0 0 8px #000}
+.bs-sound,.bs-skip{z-index:4}
+.bs-curtain{position:fixed; inset:0; z-index:3; pointer-events:none; overflow:hidden}
+.bs-cur{position:absolute; top:0; bottom:0; width:51%; background:repeating-linear-gradient(90deg, #4E0810 0 6px, #7E111C 6px 20px, #A21A27 20px 26px, #6A0D17 26px 36px); transition:transform 2.2s cubic-bezier(.55,0,.3,1)}
+.bs-cur.l{left:0; transform-origin:left center} .bs-cur.r{right:0; transform-origin:right center}
+.bs-curtain.open .bs-cur{transform:scaleX(.1)}
+.bs-val{position:absolute; left:0; right:0; top:0; height:30px; background:repeating-radial-gradient(circle at 50% -10px, #8E1420 0 26px, transparent 27px) 0 0/48px 40px repeat-x, #5A0A12; border-bottom:3px solid #C49A3C; box-shadow:0 4px 10px rgba(0,0,0,.5)}
+@media (prefers-reduced-motion: reduce){ .bs-cur{transition:none} }
 /* the family stands in the middle of the screen; place, home, income and 시작하기 sit below */
 .bs-bottom{display:grid; justify-items:center; align-content:start; gap:22px; padding-top:22px}
 @media (max-width:759px){
@@ -9633,44 +9648,49 @@ const RENDER = (() => {
     const th = sex === 'M' && age >= 40 && L.thin < clamp01((age - 40) / 40) * 0.6 ? 1 : 0;
     return { hs, hc: L.hair, gr, th };
   }
-  // Clothes by age, season, weather and the day (visual spec §6.5). Brand-free, muted palette.
-  function wardrobe(p, sex, age, ctx) {
-    const r = vrng(RNG.hash32(`${p.look.wear}:${ctx.y}:${ctx.seasonKey}`));
-    const pk = arr => arr[Math.floor(r() * arr.length)];
-    const day = h2(p.look.wear, ctx.week);
+  // Clothes by age, season, weather and work (visual spec §6.5). Brand-free, muted palette.
+  // An outfit belongs to an era, not to a week (user request): it changes with the age band and, for the walker, with
+  // school, university, the job or 군 복무 (p.era). The weather only adds layers — a coat and scarf in winter, short
+  // sleeves in summer, an umbrella in the rain — and those are picked once per era too.
+  function wardrobe(p, sex, realAge, ctx) {
+    // an adult walker dresses for the age at which the current era began (p.eraAge), so turning 30 or 45 in the same job changes nothing
+    const age = p.eraAge != null && p.eraAge >= 19 && realAge >= 19 ? Math.min(realAge, p.eraAge) : realAge;
+    const band = age < 3 ? 0 : age < 7 ? 1 : age < 13 ? 2 : age < 19 ? 3 : age < 30 ? 4 : age < 45 ? 5 : age < 65 ? 6 : 7;
+    const era = `${p.look.wear}:${band}:${p.era || ''}`;
+    const r = vrng(RNG.hash32(era));                                         // the outfit itself
+    const rW = vrng(RNG.hash32(era + ':' + ctx.seasonKey));                  // the season's layers
+    const pk = arr => arr[Math.floor(r() * arr.length)], pkW = arr => arr[Math.floor(rW() * arr.length)];
+    const day = h2(p.look.wear, RNG.hash32(era) % 99991);
     const w = { top: 8, bot: 2, botT: 'pants', outer: null, oLong: 0, sleeve: 'long', shoes: 1, bag: null, bagC: null, gl: 0, eb: 0, hat: null, hatC: null, scarf: null, pose: 'swing', umb: null, cart: 0, cane: 0, stripe: null };
     const S = ctx.seasonKey, warm = S === 'summer', cold = S === 'winter';
     if (warm) w.sleeve = 'short';
-    if (age < 3) { w.top = pk([18, 16, 21, 9, 7]); w.bot = pk([20, 16, 18, 7]); w.shoes = 8; if (warm) w.botT = 'shorts'; if (cold) { w.outer = pk([18, 21, 16, 17]); } }
+    if (age < 3) { w.top = pk([18, 16, 21, 9, 7]); w.bot = pk([20, 16, 18, 7]); w.shoes = 8; if (warm) w.botT = 'shorts'; if (cold) { w.outer = pkW([18, 21, 16, 17]); } }
     else if (age < 7) {
       const daycare = day < 0.6;
       w.top = daycare ? 19 : pk([18, 16, 21, 9, 17, 15]); w.bot = pk([20, 2, 4]); w.shoes = 8;
       if (warm) w.botT = 'shorts'; else if (sex === 'F' && p.look.schoolSkirt) w.botT = 'skirt';
-      if (cold) w.outer = pk([17, 20, 15, 19]);
+      if (cold) w.outer = pkW([17, 20, 15, 19]);
       w.bag = 'small'; w.bagC = 19;
     } else if (age < 13) {
       w.top = pk([18, 16, 21, 9, 17, 15, 8, 19]); w.bot = pk([20, 2, 4, 12]); w.shoes = pk([8, 7, 1]);
-      if (warm) w.botT = 'shorts'; else if (sex === 'F' && p.look.schoolSkirt && r() < 0.5) w.botT = 'skirt';
-      if (cold) w.outer = pk([20, 2, 17, 15, 11]); else if (S !== 'summer' && r() < 0.4) w.outer = pk([15, 4, 18]);
+      const skirt = r() < 0.5;
+      if (warm) w.botT = 'shorts'; else if (sex === 'F' && p.look.schoolSkirt && skirt) w.botT = 'skirt';
+      if (cold) w.outer = pkW([20, 2, 17, 15, 11]); else if (S !== 'summer' && rW() < 0.4) w.outer = pkW([15, 4, 18]);
       w.bag = 'big'; w.bagC = pk([20, 17, 15, 11, 19, 3]);
     } else if (age < 19) {
-      const uniC = [2, 14, 3][p.look.wear % 3], uniBot = [2, 4][p.look.wear % 2];
-      const weekend = day > 0.82, pe = day > 0.62 && day <= 0.72;
-      if (weekend) { w.top = pk([4, 5, 8, 2, 20, 15]); w.bot = pk([20, 2, 4]); }
-      else if (pe) { w.top = 20; w.bot = 20; }
-      else {
-        const mo = ctx.month;
-        w.top = 8; w.bot = uniBot;
-        if (sex === 'F' && p.look.schoolSkirt) w.botT = 'skirt';
-        if (mo >= 10 || mo <= 4) w.outer = uniC;
-        if (mo >= 6 && mo <= 8) w.sleeve = 'short'; else w.sleeve = 'long';
-      }
+      // the school uniform every day (no weekend or PE-day swaps); the blazer from October to April
+      const uniC = [2, 14, 3][p.look.wear % 3], uniBot = [2, 4][p.look.wear % 2], mo = ctx.month;
+      w.top = 8; w.bot = uniBot;
+      if (sex === 'F' && p.look.schoolSkirt) w.botT = 'skirt';
+      if (mo >= 10 || mo <= 4) w.outer = uniC;
+      if (mo >= 6 && mo <= 8) w.sleeve = 'short'; else w.sleeve = 'long';
       if (cold) { w.outer = [1, 3, 2][p.look.wear % 3]; w.oLong = 1; }
       w.bag = 'back'; w.bagC = pk([1, 3, 2, 4]); w.shoes = 8;
       w.eb = day < 0.6 ? 1 : 0; w.pose = ctx.rain ? 'swing' : 'pockets';
     } else if (age < 30) {
       w.top = pk([8, 7, 4, 5, 15, 17, 2, 21]); w.bot = pk([20, 2, 4, 7, 12]);
-      if (sex === 'F' && r() < 0.25 && !cold) w.botT = 'skirt';
+      const skirt = r() < 0.25;
+      if (sex === 'F' && skirt) w.botT = 'skirt';
       w.bag = r() < 0.5 ? 'tote' : 'back'; w.bagC = pk([7, 16, 8, 1, 4]);
       w.eb = day < 0.35 ? 1 : 0;
       if (p.jacket != null && !warm && day < 0.6) { w.outer = p.jacket; w.stripe = 8; w.bag = 'tote'; }
@@ -9681,25 +9701,27 @@ const RENDER = (() => {
     } else if (age < 65) {
       const hike = day > 0.82;
       w.top = pk([8, 21, 5, 7]); w.bot = pk([3, 4, 2]);
-      w.outer = hike ? pk([11, 20, 15, 19]) : (S === 'summer' ? null : pk([4, 12, 14, 5]));
+      const jacket = pk([4, 12, 14, 5]);
+      w.outer = hike ? pk([11, 20, 15, 19]) : (S === 'summer' ? null : jacket);
       if (hike) { w.bag = 'ruck'; w.bagC = pk([11, 20, 4]); w.hat = 'visor'; w.hatC = pk([7, 15, 8]); }
       else if (day < 0.3) w.pose = 'phone';
     } else {
       w.top = pk([8, 7, 9, 18]); w.bot = pk([4, 3, 5]);
-      w.outer = S === 'summer' ? null : pk([14, 12, 5, 17, 10]);
-      if (S === 'summer' || r() < 0.3) { w.hat = 'bucket'; w.hatC = pk([7, 15, 8, 6]); }
-      if (age < 80) { if (day < 0.25) w.cart = 1; else if (day < 0.85) w.pose = 'clasp'; }
+      const jacket = pk([14, 12, 5, 17, 10]), hatC = pk([7, 15, 8, 6]), hat = r() < 0.3;
+      w.outer = S === 'summer' ? null : jacket;
+      if (S === 'summer' || hat) { w.hat = 'bucket'; w.hatC = hatC; }
+      if (realAge < 80) { if (day < 0.25) w.cart = 1; else if (day < 0.85) w.pose = 'clasp'; }
       else w.cane = 1;
     }
     if (cold && age >= 3) {
-      if (age >= 19 && w.outer == null) { w.outer = pk([1, 2, 3, 12, 4, 8]); w.oLong = age >= 19 && r() < 0.7 ? 1 : 0; }
-      else if (age >= 19 && !w.oLong && w.stripe == null) { w.oLong = r() < 0.6 ? 1 : 0; }
-      if (age >= 13) w.scarf = pk([17, 19, 15, 11, 8, 4]);
+      if (age >= 19 && w.outer == null) { w.outer = pkW([1, 2, 3, 12, 4, 8]); w.oLong = age >= 19 && rW() < 0.7 ? 1 : 0; }
+      else if (age >= 19 && !w.oLong && w.stripe == null) { w.oLong = rW() < 0.6 ? 1 : 0; }
+      if (age >= 13) w.scarf = pkW([17, 19, 15, 11, 8, 4]);
       if (age >= 19 && age < 65 && w.pose === 'swing' && ctx.coldHour) w.pose = 'pockets';
-    } else if (S === 'spring' && age >= 19 && w.outer == null && r() < 0.6) w.outer = pk([9, 7, 15, 17, 4]);
-    else if (S === 'autumn' && age >= 19 && w.outer == null && r() < 0.7) w.outer = pk([11, 19, 15, 18, 10, 12]);
-    // work and service clothes on working days (visual spec §6.5): generic, no insignia or logos
-    if (p.work && (p.work === 'mil' || day <= 0.78)) {
+    } else if (S === 'spring' && age >= 19 && w.outer == null && rW() < 0.6) w.outer = pkW([9, 7, 15, 17, 4]);
+    else if (S === 'autumn' && age >= 19 && w.outer == null && rW() < 0.7) w.outer = pkW([11, 19, 15, 18, 10, 12]);
+    // work and service clothes for as long as the job lasts (visual spec §6.5): generic, no insignia or logos
+    if (p.work) {
       const K = p.work, long = !warm;
       const set = o => { Object.assign(w, { outer: null, oLong: 0, stripe: null, hat: null, scarf: cold ? w.scarf : null }, o); w.sleeve = warm ? 'short' : 'long'; };
       if (K === 'mil') set({ top: 14, bot: 14, botT: 'pants', outer: long ? 13 : null, shoes: 0, bag: 'ruck', bagC: 13, pose: 'swing' });
@@ -9722,9 +9744,9 @@ const RENDER = (() => {
       else if (p.prop === 'camera') { w.bag = 'back'; w.bagC = pk([26, 1]); w.cam = 1; }
       else if (p.prop === 'tote') { w.bag = 'tote'; w.bagC = pk([17, 18, 7]); }
     }
-    if (ctx.rain && age >= 3) w.umb = pk([20, 17, 19, 1, 15, 4]);
+    if (ctx.rain && age >= 3) w.umb = [20, 17, 19, 1, 15, 4][RNG.hash32(era + ':umb') % 6];
     else if (ctx.heat && age >= 30 && day < 0.3) w.umb = pk([8, 18, 7]);
-    if (p.look.glasses && age >= p.look.glassesAt) w.gl = 1;
+    if (p.look.glasses && realAge >= p.look.glassesAt) w.gl = 1;
     if (w.cane || w.cart || w.pose === 'clasp') w.umb = ctx.rain ? w.umb : null;
     return w;
   }
@@ -10891,19 +10913,24 @@ const RENDER = (() => {
   // ---- WebGL ----
   const VS3 = `attribute vec3 aP; attribute vec3 aN; attribute vec4 aC;
 uniform mat4 uVP; uniform vec4 uObj; uniform float uBend, uBZ; uniform vec3 uL, uSun, uAmb;
-varying vec3 vC; varying float vE, vZ;
+varying vec3 vC; varying float vE, vZ; varying vec2 vW;
 void main() {
   vec3 p = aP, n = aN; p.x *= uObj.w; n.x *= uObj.w; p += uObj.xyz;
+  vW = p.xz;
   float dz = max(0.0, p.z - uBZ); p.x += uBend * dz * dz;
   vC = aC.rgb * (uAmb * (0.78 + 0.22 * n.y) + uSun * max(dot(n, uL), 0.0));
   vE = aC.a; vZ = p.z;
   gl_Position = uVP * vec4(p, 1.0);
 }`;
   const FS3 = `precision mediump float;
-varying vec3 vC; varying float vE, vZ;
+varying vec3 vC; varying float vE, vZ; varying vec2 vW;
 uniform vec3 uFog; uniform vec2 uFogR; uniform vec4 uGlow; uniform float uAlpha;
+uniform float uDim; uniform vec3 uSpotC; uniform vec4 uSpot[10];
 void main() {
-  vec3 c = mix(vC, uGlow.rgb * (0.7 + 0.3 * vE), uGlow.a * min(1.0, vE * 1.6));
+  // the birth stage: a dark house (uDim) and columns of light from above (uSpot: x, z, radius, strength); the road keeps uDim 1
+  float sp = 0.0;
+  for (int i = 0; i < 10; i++) sp += uSpot[i].w * (1.0 - smoothstep(uSpot[i].z * 0.72, uSpot[i].z, distance(vW, uSpot[i].xy)));
+  vec3 c = mix(vC * (uDim + uSpotC * min(sp, 1.4)), uGlow.rgb * (0.7 + 0.3 * vE), uGlow.a * min(1.0, vE * 1.6));
   c = mix(c, uFog, smoothstep(uFogR.x, uFogR.y, vZ) * 0.97);
   gl_FragColor = vec4(c * uAlpha, uAlpha);
 }`;
@@ -10917,7 +10944,8 @@ void main() {
     if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(pr));
     gl.useProgram(pr);
     const U = {};
-    for (const n of ['uVP', 'uObj', 'uBend', 'uBZ', 'uL', 'uSun', 'uAmb', 'uFog', 'uFogR', 'uGlow', 'uAlpha']) U[n] = gl.getUniformLocation(pr, n);
+    for (const n of ['uVP', 'uObj', 'uBend', 'uBZ', 'uL', 'uSun', 'uAmb', 'uFog', 'uFogR', 'uGlow', 'uAlpha', 'uDim', 'uSpotC', 'uSpot']) U[n] = gl.getUniformLocation(pr, n);
+    gl.uniform1f(U.uDim, 1);
     const A = { p: gl.getAttribLocation(pr, 'aP'), n: gl.getAttribLocation(pr, 'aN'), c: gl.getAttribLocation(pr, 'aC') };
     for (const k of ['p', 'n', 'c']) gl.enableVertexAttribArray(A[k]);
     gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA); gl.disable(gl.CULL_FACE); gl.depthFunc(gl.LEQUAL);
@@ -11189,6 +11217,184 @@ void main() {
   }
   const setMode3 = m => { mode3 = m === '2d' ? '2d' : '3d'; };
 
+  // ---- the birth stage in 3D: a theatre whose curtain parts, and spotlights that find each member of the family ----
+  // The page lays the family out (one placeholder per member); each frame the camera is solved so the lowest row's
+  // feet land on the stage floor at the placeholders' bottom edge, and rows above stand on risers further back.
+  const VELVET = [0.56, 0.07, 0.1], VELVET2 = [0.42, 0.05, 0.08], GOLD = [0.78, 0.58, 0.24], PLANK = [[0.4, 0.25, 0.14], [0.35, 0.21, 0.11]];
+  const mS = k => [k, 0, 0, 0, 0, k, 0, 0, 0, 0, k, 0];
+  const smooth = t => { t = clamp01(t); return t * t * (3 - 2 * t); };
+  const FV3 = 36 * Math.PI / 180, STAGE_CH = 2.3, ROW3 = 3;
+  class Stage3 {
+    constructor(cv) { this.cv = cv; this.G = gl3(cv); this.ok = !!this.G; this.w = 0; this.h = 0; }
+    draw(M, alpha) {
+      const { gl, U, A, dyn } = this.G;
+      if (!M.d.length) return;
+      gl.bindBuffer(gl.ARRAY_BUFFER, dyn); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(M.d), gl.DYNAMIC_DRAW);
+      gl.vertexAttribPointer(A.p, 3, gl.FLOAT, false, 40, 0); gl.vertexAttribPointer(A.n, 3, gl.FLOAT, false, 40, 12); gl.vertexAttribPointer(A.c, 4, gl.FLOAT, false, 40, 24);
+      gl.uniform4fv(U.uObj, [0, 0, 0, 1]); gl.uniform1f(U.uAlpha, alpha == null ? 1 : alpha);
+      gl.drawArrays(gl.TRIANGLES, 0, M.d.length / 10);
+    }
+    // o: { W, H (css px), pix (css px per render pixel), open (curtain 0–1), t (seconds), members }
+    // a member: { el (placeholder), kind: 'person' | 'baby' | 'pet', F, hm, look, species, coat, lit (0–1) }
+    // returns, per member, the head's height on screen (css px) so the page can set its label just above it
+    frame(o) {
+      const { W, H, members } = o, pix = o.pix || 2, gl = this.G.gl, U = this.G.U;
+      const w = Math.max(1, Math.ceil(W / pix)), h = Math.max(1, Math.ceil(H / pix));
+      if (w !== this.w || h !== this.h) { this.w = this.cv.width = w; this.h = this.cv.height = h; }
+      const rects = members.map(m => m.el.getBoundingClientRect());
+      if (!rects.length) return [];
+      const fpx = H / 2 / Math.tan(FV3 / 2), Hpx = Math.max(40, rects[0].height);
+      const Zb = 1.75 * fpx / Hpx, yb = Math.max(...rects.map(r => r.bottom));
+      const a = Math.atan(STAGE_CH / Zb) - Math.atan((yb - H / 2) / fpx), sa = Math.sin(a), ca = Math.cos(a);
+      const at = (sx, sy, z) => {
+        const u = (sx - W / 2) / fpx, v = (sy - H / 2) / fpx, dz = ca - sa * v, k = z / dz;
+        return [u * k, STAGE_CH + (-sa - ca * v) * k, z];
+      };
+      {
+        const eye = [0, STAGE_CH, 0], r = [1, 0, 0], u = [0, ca, sa], f = [0, -sa, ca], dot = (p, q) => p[0] * q[0] + p[1] * q[1] + p[2] * q[2];
+        const V = [r[0], r[1], r[2], -dot(r, eye), u[0], u[1], u[2], -dot(u, eye), -f[0], -f[1], -f[2], dot(f, eye), 0, 0, 0, 1];
+        const near = 0.3, farZ = 300, Fq = 1 / Math.tan(FV3 / 2);
+        const Pm = [Fq * H / W, 0, 0, 0, 0, Fq, 0, 0, 0, 0, (farZ + near) / (near - farZ), 2 * farZ * near / (near - farZ), 0, 0, -1, 0];
+        const VP = new Float32Array(16);
+        for (let i = 0; i < 4; i++) for (let j = 0; j < 4; j++) { let q = 0; for (let k = 0; k < 4; k++) q += Pm[i * 4 + k] * V[k * 4 + j]; VP[j * 4 + i] = q; }
+        this.vp = VP; this.Wc = W; this.Hc = H;
+      }
+      // rows, from the floor row up: each row further back stands on a riser
+      const order = rects.map((r, i) => i).sort((i, j) => rects[j].bottom - rects[i].bottom);
+      const rowOf = new Array(rects.length);
+      let row = -1, last = Infinity;
+      for (const i of order) { if (last - rects[i].bottom > 12) { row++; last = rects[i].bottom; } rowOf[i] = row; }
+      const P = members.map((m, i) => { const r = rects[i], z = Zb + rowOf[i] * ROW3, p = at(r.left + r.width / 2, r.bottom, z); return { x: p[0], y: Math.max(0, p[1]), z }; });
+      const rows = row + 1;
+      // the house: proscenium just in front of the curtain, its opening a little wider than the family on screen
+      // the front edge of the stage sits just under the lowest name, so the footlights never run through the text
+      const below = Math.max(...members.map((m, i) => (m.info ? m.info.getBoundingClientRect().bottom : rects[i].bottom)), yb) + 14;
+      const vB = (below - H / 2) / fpx, zEdge = sa + ca * vB > 0.02 ? (ca - sa * vB) * STAGE_CH / (sa + ca * vB) : Zb - 3;
+      const z0 = Math.min(Zb - 3, zEdge), zp = z0 + 1.1, zc = zp + 0.3, zBack = Zb + rows * ROW3 + 2.2;
+      const left = Math.min(...rects.map(r => r.left)), right = Math.max(...rects.map(r => r.right));
+      const hw = Math.max(-at(Math.min(W * 0.06, left - 10), yb, zp)[0], at(Math.max(W * 0.94, right + 10), yb, zp)[0], 1.5);
+      const yTop = Math.max(at(W / 2, H * 0.05, zp)[1], 3.2), far = -at(0, yb, zBack)[0] + 4;
+      const M = new Mesh(), Hs = new Mesh();
+      // floor planks along the depth, the apron's front face, and the back wall (a deep blue cyclorama)
+      for (let x = -far, i = 0; x < far; x += 0.42, i++) M.flat(x, x + 0.42, z0, zBack, PLANK[i & 1]);
+      Hs.box(-far, -1.3, z0 - 0.05, far, 0, z0, [0.2, 0.12, 0.07]);
+      Hs.box(-far, -0.1, z0 - 0.08, far, 0, z0 - 0.04, GOLD);
+      M.box(-far, 0, zBack, far, yTop + 8, zBack + 0.2, [0.05, 0.07, 0.15]);
+      M.box(-far, 0, zBack - 0.02, far, 0.9, zBack, [0.09, 0.11, 0.22]);
+      // footlights along the front edge
+      for (let x = -hw + 0.4; x < hw - 0.3; x += 0.7) Hs.box(x - 0.12, 0, z0 + 0.12, x + 0.12, 0.08, z0 + 0.3, [1, 0.85, 0.55], { e: 1 });
+      // risers for the rows further back
+      for (let r = 1; r < rows; r++) {
+        const ids = P.map((p, i) => i).filter(i => rowOf[i] === r), xs = ids.map(i => P[i].x), y = Math.max(...ids.map(i => P[i].y)), z = Zb + r * ROW3;
+        M.box(Math.min(...xs) - 0.6, 0, z - 0.6, Math.max(...xs) + 0.6, y, z + 0.6, [0.13, 0.1, 0.09], { top: [0.3, 0.2, 0.12] });
+      }
+      // seats of the house, in silhouette below the stage
+      for (let r = 0; r < 3; r++) {
+        const z = z0 - 1.6 - r * 1.05, y = -0.35 + r * 0.22;
+        if (z < 1) break;
+        for (let x = -far + ((r & 1) ? 0.3 : 0); x < far; x += 0.62) Hs.box(x + 0.04, y - 0.5, z - 0.08, x + 0.56, y, z + 0.08, [0.26, 0.05, 0.07], { top: [0.34, 0.07, 0.09] });
+      }
+      // the proscenium: wine-red walls with gold trim, and a scalloped valance behind the top beam
+      for (const s of [-1, 1]) {
+        Hs.box(s > 0 ? hw : -far, -1.3, zp - 0.4, s > 0 ? far : -hw, yTop + 8, zp, [0.24, 0.06, 0.08]);
+        Hs.box(s > 0 ? hw - 0.02 : -hw - 0.14, 0, zp - 0.46, s > 0 ? hw + 0.14 : -hw + 0.02, yTop, zp - 0.36, GOLD);
+      }
+      Hs.box(-far, yTop, zp - 0.4, far, yTop + 8, zp, [0.24, 0.06, 0.08]);
+      Hs.box(-hw - 0.14, yTop - 0.02, zp - 0.46, hw + 0.14, yTop + 0.14, zp - 0.36, GOLD);
+      for (let x = -hw, i = 0; x < hw; x += 0.5, i++) {
+        const d = 0.36 + 0.14 * Math.sin((i + 0.5) * Math.PI / 2) ** 2;
+        Hs.box(x, yTop - d, zp + 0.04, x + 0.5, yTop + 0.02, zp + 0.14 + (i & 1) * 0.05, i & 1 ? VELVET : VELVET2);
+        Hs.box(x + 0.05, yTop - d - 0.06, zp + 0.02, x + 0.45, yTop - d, zp + 0.06, GOLD);
+      }
+      // the curtain: two pleated halves that gather to the sides; the hem leads and a tie-back pinches each half
+      const open = smooth(o.open), outer = hw + 0.35, gather = outer * 0.17, NP = 16, NY = 6, Ht = yTop + 0.05;
+      for (const s of [-1, 1]) {
+        const col = (i, k) => {
+          const y = k / NY * Ht, u = i / NP, lead = clamp01(open * (1.25 - 0.25 * y / Ht) + (open > 0.98 ? 1 : 0));
+          const pinch = 1 - 0.45 * Math.exp(-((((y / Ht) - 0.32) / 0.16) ** 2)) * open;
+          const inner = lerp(0, outer - gather * pinch, Math.min(1, lead));
+          const x = inner + (outer - inner) * u, dep = (0.05 + 0.16 * open) * (i & 1 ? 1 : -1);
+          return [s * x, y, zc + dep];
+        };
+        for (let i = 0; i < NP; i++) for (let k = 0; k < NY; k++) {
+          const c = i & 1 ? VELVET : VELVET2, A0 = col(i, k), B0 = col(i + 1, k), A1 = col(i, k + 1), B1 = col(i + 1, k + 1);
+          Hs.face([A0, B0, B1, A1], [A0[0], A0[1], zc + 5], c);
+        }
+        if (open > 0.6) { const tb = col(NP * 0.08, NY * 0.32); Hs.box(tb[0] - 0.05, tb[1] - 0.06, zc - 0.25, s * (outer + 0.05), tb[1] + 0.06, zc - 0.15, GOLD); }
+      }
+      // the family
+      const out = [], spots = new Float32Array(40), beams = new Mesh();
+      let ns = 0;
+      members.forEach((m, i) => {
+        const p = P[i], res = {};
+        if (m.kind === 'person') {
+          M.push(mT(0, p.y, 0)); person3(M, m.F, m.hm, p.x, p.z, o.t * 1.2 + i * 1.7, res); M.pop();
+        } else if (m.kind === 'baby') {
+          M.push(mmul(mT(p.x, p.y, p.z), mS(1.3)));
+          for (const sx of [-1, 1]) M.seg([sx * 0.3, 0, -0.18], [sx * 0.24, 0.42, 0.04], 0.04, [0.42, 0.28, 0.16]).seg([sx * 0.3, 0, 0.2], [sx * 0.24, 0.42, 0.04], 0.04, [0.42, 0.28, 0.16]);
+          M.push(mmul(mT(0, 0.46, 0), mRX(-0.45)));
+          M.box(-0.36, -0.06, -0.2, 0.36, 0.1, 0.2, [0.78, 0.62, 0.4]);
+          for (const sz of [-1, 1]) M.box(-0.36, 0.1, sz > 0 ? 0.16 : -0.2, 0.36, 0.2, sz > 0 ? 0.2 : -0.16, [0.7, 0.54, 0.33]);
+          for (const sx of [-1, 1]) M.box(sx > 0 ? 0.32 : -0.36, 0.1, -0.2, sx > 0 ? 0.36 : -0.32, 0.2, 0.2, [0.7, 0.54, 0.33]);
+          M.box(-0.28, 0.08, -0.13, 0.12, 0.22, 0.13, [0.95, 0.9, 0.82]).box(-0.2, 0.08, -0.135, -0.14, 0.225, 0.135, [0.62, 0.78, 0.86]);
+          M.box(0.1, 0.1, -0.1, 0.3, 0.27, 0.1, m.look.skin).box(0.2, 0.11, -0.105, 0.31, 0.28, 0.105, m.look.hair);
+          M.box(0.11, 0.27, -0.06, 0.12, 0.275, -0.02, 25).box(0.11, 0.27, 0.02, 0.12, 0.275, 0.06, 25);
+          M.box(0.22, 0.16, -0.21, 0.4, 0.46, 0.21, [0.7, 0.54, 0.33]);
+          M.pop(); M.pop();
+          res.head = [p.x, p.y + 1.1, p.z];
+        } else {
+          M.push(mmul(mmul(mT(p.x, p.y, p.z), mRY(p.x > 0 ? -0.75 * Math.PI : 0.75 * Math.PI)), mS(1.5)));
+          if (m.species === 'dog') dog3(M, m.coat, 0, 0, 0, {});
+          else {
+            const c = m.coat;
+            M.box(-0.09, 0.05, -0.2, 0.09, 0.25, 0.2, c).box(-0.09, 0.15, 0.2, 0.09, 0.36, 0.37, c);
+            M.box(-0.08, 0.36, 0.22, -0.03, 0.42, 0.27, c).box(0.03, 0.36, 0.22, 0.08, 0.42, 0.27, c).seg([0, 0.2, -0.2], [0, 0.42, -0.36], 0.05, c);
+          }
+          M.pop();
+          res.head = [p.x, p.y + 0.95, p.z];
+        }
+        const pt = res.head && this.proj(res.head);
+        out.push(pt ? pt[1] : rects[i].top);
+        const k = m.lit || 0;
+        if (k > 0 && ns < 10) {
+          const r = m.kind === 'person' ? 0.95 : 0.8;
+          spots.set([p.x, p.z, r, k], ns++ * 4);
+          const apex = [p.x * 0.5, yTop + 2.5, Math.max(zp + 0.6, p.z - 1.6)], ring = [];
+          for (let j = 0; j < 14; j++) { const t = j / 14 * Math.PI * 2; ring.push([p.x + Math.cos(t) * r, p.y + 0.01, p.z + Math.sin(t) * r * 0.9]); }
+          for (let j = 0; j < 14; j++) beams.face([apex, ring[j], ring[(j + 1) % 14]], [p.x, p.y + 1, p.z], [1, 0.93, 0.78], 1);
+          beams.k = Math.max(beams.k || 0, k);
+        }
+      });
+      // light: a dark house with a warm wash on the curtain; the wash dims as the curtain opens
+      gl.viewport(0, 0, w, h);
+      gl.clearColor(0.027, 0.031, 0.047, 1); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+      gl.uniformMatrix4fv(U.uVP, false, this.vp);
+      gl.uniform1f(U.uBend, 0); gl.uniform1f(U.uBZ, 0);
+      gl.uniform3fv(U.uL, (() => { const v = [0, 0.75, -0.66], l = Math.hypot(...v); return v.map(x => x / l); })());
+      gl.uniform3fv(U.uSun, [0.62, 0.5, 0.4]); gl.uniform3fv(U.uAmb, [0.42, 0.4, 0.48]);
+      gl.uniform3fv(U.uFog, [0, 0, 0]); gl.uniform2f(U.uFogR, 1e4, 2e4);
+      gl.uniform4fv(U.uGlow, [1, 0.86, 0.6, 1]);
+      gl.uniform3fv(U.uSpotC, [1.2, 1.05, 0.82]); gl.uniform4fv(U.uSpot, spots);
+      gl.enable(gl.DEPTH_TEST); gl.depthMask(true);
+      gl.uniform1f(U.uDim, 0.55 - 0.2 * open); this.draw(Hs);
+      gl.uniform1f(U.uDim, 0.5 - 0.38 * open); this.draw(M);
+      // the beams: faint, without writing depth
+      gl.depthMask(false);
+      if (beams.d.length) this.draw(beams, 0.07 * beams.k);
+      gl.depthMask(true);
+      return out;
+    }
+    proj(p) {
+      const m = this.vp, [x, y, z] = p, cx = m[0] * x + m[4] * y + m[8] * z + m[12], cy = m[1] * x + m[5] * y + m[9] * z + m[13], ww = m[3] * x + m[7] * y + m[11] * z + m[15];
+      return ww > 0.05 ? [(cx / ww * 0.5 + 0.5) * this.Wc, (0.5 - cy / ww * 0.5) * this.Hc] : null;
+    }
+  }
+  // the page asks for a stage; null without WebGL (the 2D stage is used then)
+  function stage3() {
+    if (mode3 !== '3d') return null;
+    try { const cv = mk(1, 1), st = new Stage3(cv); return st.ok ? st : null; } catch (e) { return null; }
+  }
+
   // ---- the cast on the road for a given life moment ----
   const PH_KEY = [0, 1, 2, 3];
   function context(s, sc, vis) {
@@ -11229,7 +11435,11 @@ void main() {
     const walking = vis.walking && !(gait.pause && h2(Math.floor(sc.t / 2.5), 7) < gait.pause);
     const fr = walking ? frame : idle;
     const uni = s.edu && s.edu.stage === 'univ' ? s.edu.uni : null;
-    const me = { look: P.look, jacket: uni ? [3, 12, 2, 20, 11, 14, 1][RNG.hash32(uni.name) % 7] : null, work: workLook(s, age), prop: artProp(s, age) };
+    // the walker's outfit era: a new school, university, job or service brings new clothes, nothing else does
+    const c = s.career, e = s.edu;
+    const era = [e ? e.stage : '', e && e.hs ? e.hs.type : '', uni ? uni.name : '', c ? c.status : '', c && c.job ? `${c.job.id}/${c.job.emp}` : ''].join('|');
+    if (sc.outfitEra !== era || sc.outfitSeed !== s.seed) { sc.outfitEra = era; sc.outfitSeed = s.seed; sc.outfitAge = Math.floor(age); }
+    const me = { look: P.look, era, eraAge: sc.outfitAge, jacket: uni ? [3, 12, 2, 20, 11, 14, 1][RNG.hash32(uni.name) % 7] : null, work: workLook(s, age), prop: artProp(s, age) };
     const figs = [];
     let breathAt = null;
     const careList = carers(s);
@@ -11366,7 +11576,7 @@ void main() {
     if (['corp', 'public', 'prof'].includes(DATA.JOB_X[id].ladder) || [13, 17, 20, 46, 57, 58, 31, 29, 30].includes(id)) return 'office';
     return null;
   }
-  return { Scene: AutoScene, Scene2D: Scene, Scene3D, setMode: setMode3, phaseAt, context, castPlay, specFor, gaitAt, figure, sprite, workLook, PAL, MAPS, h2, vrng };
+  return { Scene: AutoScene, Scene2D: Scene, Scene3D, setMode: setMode3, stage3, phaseAt, context, castPlay, specFor, gaitAt, figure, sprite, workLook, PAL, MAPS, h2, vrng };
 })();
 
 // ===== MODULE: SOUND =====
@@ -11826,12 +12036,12 @@ const UI = (() => {
     c.setAttribute('aria-hidden', 'true');
     return c;
   }
-  function stageFigure(s, p, k) {
+  function stageSpec(s, p) {
     const a = Math.max(1, STATE.personAge(s, p));
     const ctx = { y: s.clock.y, month: s.clock.m, seasonKey: CAL.season(s.clock.m).key, light: 2, rain: false, snow: false, heat: false, coldHour: false, week: 1, H: 200, W: 256 };
-    const F = RENDER.specFor(p, p.sex, a, ctx, RENDER.gaitAt(a), { over: { facing: 'front', walk: 0, frame: 0, pose: 'swing', umb: null, cane: 0, cart: 0, bag: null } });
-    return cropSprite(RENDER.figure(F).cv, k);
+    return RENDER.specFor(p, p.sex, a, ctx, RENDER.gaitAt(a), { over: { facing: 'front', walk: 0, frame: 0, pose: 'swing', umb: null, cane: 0, cart: 0, bag: null } });
   }
+  function stageFigure(s, p, k) { return cropSprite(RENDER.figure(stageSpec(s, p)).cv, k); }
   // the newborn, swaddled, eyes closed
   function babySprite(look, k) {
     const c = document.createElement('canvas'); c.width = 13; c.height = 16;
@@ -11877,15 +12087,25 @@ const UI = (() => {
     const par = NETWORK.parents(s), father = par.find(p => p.role === 'father'), mother = par.find(p => p.role === 'mother');
     const sibs = s.people.filter(p => p.role === 'sibling' && p.alive).sort((a, b) => (a.by * 12 + a.bm) - (b.by * 12 + b.bm));
     const pet = s.people.find(p => p.role === 'pet' && p.alive && p.household);
-    const member = (cls, top, sprite, name, lines) => el('div', { class: 'bs-p ' + cls },
-      el('div', { class: 'bs-top', text: top }),
-      el('div', { class: 'bs-fig' }, el('div', { class: 'bs-beam' }), el('div', { class: 'bs-pool' }), sprite),
-      el('div', { class: 'bs-info' }, el('b', { text: name }), lines.filter(Boolean).map(t => el('span', { text: t }))));
-    const person = p => member('', p.label, stageFigure(s, p, k), p.name || '', [`만 ${STATE.personAge(s, p)}세`, ['mother', 'father'].includes(p.role) ? STATE.jobLabel(p) : '', p.foreign ? `${p.foreign} 출신` : '']);
-    const me = member('me', '나', babySprite(P.look, k), STATE.fullName(s), [`${P.birth.y}년 ${P.birth.m}월 ${P.birth.d}일`, P.sex === 'M' ? '남자' : '여자']);
+    // the 3D stage (a theatre in WebGL) when the road is drawn in 3D; the family then stands in placeholders it fills
+    const st3 = RENDER.stage3(), cast3 = [], figH = innerWidth < 760 ? 104 : 156;
+    const member = (cls, top, sprite, name, lines) => {
+      const fig = st3 ? el('div', { class: 'bs-ph', style: `height:${figH}px` }) : sprite();
+      const node = el('div', { class: 'bs-p ' + cls },
+        el('div', { class: 'bs-top', text: top }),
+        el('div', { class: 'bs-fig' }, el('div', { class: 'bs-beam' }), el('div', { class: 'bs-pool' }), fig),
+        el('div', { class: 'bs-info' }, el('b', { text: name }), lines.filter(Boolean).map(t => el('span', { text: t }))));
+      if (st3) cast3.push(Object.assign(st3cast(), { el: fig, node, top: node.querySelector('.bs-top'), info: node.querySelector('.bs-info'), litAt: null }));
+      return node;
+    };
+    let st3cast = () => ({});
+    const as3 = (fn, mk) => { st3cast = fn; const n = mk(); st3cast = () => ({}); return n; };
+    const person = p => as3(() => { const F = stageSpec(s, p); return { kind: 'person', F, hm: F.h / 200 * 8.5 }; },
+      () => member('', p.label, () => stageFigure(s, p, k), p.name || '', [`만 ${STATE.personAge(s, p)}세`, ['mother', 'father'].includes(p.role) ? STATE.jobLabel(p) : '', p.foreign ? `${p.foreign} 출신` : '']));
+    const me = as3(() => ({ kind: 'baby', look: P.look }), () => member('me', '나', () => babySprite(P.look, k), STATE.fullName(s), [`${P.birth.y}년 ${P.birth.m}월 ${P.birth.d}일`, P.sex === 'M' ? '남자' : '여자']));
     const fFig = father ? person(father) : null, mFig = mother ? person(mother) : null;
     const sFigs = sibs.map(p => { const n = person(p); n.classList.add('sib'); return n; });
-    const petFig = pet ? member('pet', pet.label, cropSprite(RENDER.sprite(pet.species, pet.species === 'dog' ? pet.look.coat * 2 : pet.look.coat, 'summer', 2), k), pet.name, [`${Math.max(0, STATE.personAge(s, pet))}살`]) : null;
+    const petFig = pet ? as3(() => ({ kind: 'pet', species: pet.species, coat: pet.look.coat }), () => member('pet', pet.label, () => cropSprite(RENDER.sprite(pet.species, pet.species === 'dog' ? pet.look.coat * 2 : pet.look.coat, 'summer', 2), k), pet.name, [`${Math.max(0, STATE.personAge(s, pet))}살`])) : null;
     // the order the lights come on: 나 → 부모님 → 형제 → 반려동물
     const carer = s.people.find(p => p.role === 'carer'), cFig = carer ? person(carer) : null;   // a child born without parents (게임 설정)
     const groups = [[me], [fFig, mFig, cFig].filter(Boolean), sFigs, petFig ? [petFig] : []].filter(g => g.length);
@@ -11903,12 +12123,18 @@ const UI = (() => {
     const go = el('button', { class: 'btn-accent bs-go', type: 'button', text: '시작하기', hidden: true, onclick: () => begin() });
     const soundBtn = el('button', { class: 'btn-quiet bs-sound', type: 'button', text: SET.sound ? '소리 끄기' : '소리 켜기', onclick: () => { SET.sound = !SET.sound; SOUND.enable(SET.sound); saveSet(); soundBtn.textContent = SET.sound ? '소리 끄기' : '소리 켜기'; } });
     const skipNote = el('p', { class: 'bs-skip', text: '아무 키나 누르거나 화면을 누르면 바로 보입니다' });
-    const stage = el('div', { id: 'birth-stage', class: 'bstage', role: 'region', 'aria-label': '태어난 날' },
-      soundBtn, el('div', {}), el('div', { class: 'bs-row' }, [...sFigs, fFig, me, mFig, cFig, petFig].filter(Boolean)), el('div', { class: 'bs-bottom' }, house, go), skipNote);
+    // the curtain: drawn in 3D on the WebGL stage, or two velvet panels over the 2D stage
+    const curtain = st3 ? null : el('div', { class: 'bs-curtain', 'aria-hidden': 'true' }, el('div', { class: 'bs-cur l' }), el('div', { class: 'bs-cur r' }), el('div', { class: 'bs-val' }));
+    if (st3) st3.cv.classList.add('pixel', 'bs-3d');
+    const stage = el('div', { id: 'birth-stage', class: 'bstage' + (st3 ? ' d3' : ''), role: 'region', 'aria-label': '태어난 날' },
+      st3 ? st3.cv : null, curtain, soundBtn, el('div', {}), el('div', { class: 'bs-row' }, [...sFigs, fFig, me, mFig, cFig, petFig].filter(Boolean)), el('div', { class: 'bs-bottom' }, house, go), skipNote);
     document.body.append(stage);
-    const HOLD = 5.4, GAP = 1.5, FIRST = 1.0;
+    // the curtain opens first (CUR0 → CUR1 s); then the lights come on one group at a time
+    const HOLD = 5.4, GAP = 1.5, CUR0 = 0.4, CUR1 = 2.6, FIRST = reduced() ? 0 : CUR1 + 0.5;
     const now0 = performance.now();
-    const seq = birthSeq = { t: HOLD, start: now0, last: now0, done: false, go: false, lit: 0, revealed: false, song: false };
+    const seq = birthSeq = { t: HOLD, start: now0, last: now0, done: false, go: false, lit: 0, revealed: false, song: false, open: reduced() ? 1 : 0 };
+    if (!reduced()) setTimeout(() => { if (!seq.done) SOUND.rustle(); }, CUR0 * 1000);
+    if (curtain && reduced()) curtain.classList.add('open');
     const light = i => {
       for (const n of groups[i]) n.classList.add('lit');
       SOUND.spot();
@@ -11950,6 +12176,20 @@ const UI = (() => {
       if (seq.done) return;
       const now = performance.now(), dt = Math.min(0.1, (now - seq.last) / 1000);
       seq.last = now;
+      // the curtain: on its own time, faster once the player has skipped ahead
+      const el1 = (now - now0) / 1000;
+      if (el1 >= CUR0 && seq.open < 1) seq.open = Math.min(1, seq.open + dt / (seq.revealed ? 0.6 : CUR1 - CUR0));
+      if (curtain && seq.open > 0) curtain.classList.add('open');
+      if (st3 && stage.isConnected) {
+        const tNow = now / 1000;
+        for (const m of cast3) {
+          if (m.litAt == null && m.node.classList.contains('lit')) m.litAt = tNow;
+          const e = m.litAt == null ? -1 : (tNow - m.litAt) / 0.45;
+          m.lit = e < 0 ? 0 : e < 0.2 ? 0.35 : e < 0.35 ? 1 : e < 0.5 ? 0.55 : 1;   // the stage light's flicker as it comes on
+        }
+        const heads = st3.frame({ W: innerWidth, H: innerHeight, pix: innerWidth < 760 ? 2 : 3, open: seq.open, t: tNow, members: cast3 });
+        cast3.forEach((m, i) => { const r = m.el.getBoundingClientRect(); m.top.style.top = Math.max(0, Math.round(heads[i] - r.top - 4)) + 'px'; });
+      }
       if (!seq.go) {
         // the lights, one group at a time; the household and 시작하기 follow the last one
         const el0 = (now - now0) / 1000;
