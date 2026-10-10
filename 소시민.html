@@ -507,7 +507,7 @@ canvas.pixel{image-rendering:pixelated; image-rendering:crisp-edges; display:blo
 .stop-what{font-size:var(--fs-s); color:var(--paper-muted); text-align:center}
 .stop-say{font-family:var(--serif); font-size:17px; line-height:1.6; text-align:center; min-height:2.8em; margin:0}
 /* the end of a life: 「끝」, then 「회상」 (user request) */
-.end-theatre{position:fixed; inset:0; z-index:44; opacity:0; background:#050508; pointer-events:none}
+.end-theatre{position:fixed; inset:0; z-index:44; opacity:0; pointer-events:none}
 .end-theatre canvas{position:absolute; inset:0; width:100%; height:100%}
 .end-mark{position:fixed; inset:0; z-index:45; display:grid; place-content:center; justify-items:center; gap:14px; background:rgba(7,8,12,.88); opacity:0; transition:opacity .8s var(--ease-in); pointer-events:none}
 .end-mark.on{opacity:1}
@@ -11375,10 +11375,16 @@ void main() {
       const w = Math.max(1, Math.ceil(W / pix)), h = Math.max(1, Math.ceil(H / pix));
       if (w !== this.w || h !== this.h) { this.w = this.cv.width = w; this.h = this.cv.height = h; }
       const C = [0, 0, 2.4], head = o.hm * 0.92, sw = smooth(o.swing), th = sw * Math.PI;
+      // the walk in: the old self comes down the road toward the camera (o.walk 0–1) and the daylight road turns into the
+      // stage as the house lights go down (o.stage 0–1); the camera backs away in step, so the framing stays as it was
+      const wk = o.walk == null ? 1 : o.walk, stg = o.stage == null ? 1 : smooth(o.stage), WALK = 8;
+      const cz = C[2] + WALK * (1 - wk);
       // the camera orbits the old self: in front at chest height, then behind and a little above, looking out at the house
-      const R = lerp(5.2, 4.4, sw), eye = [Math.sin(th) * R * 0.7, lerp(head * 0.8, head + 1.1, sw), C[2] - Math.cos(th) * R];
+      // on the road the camera starts far and high, as the road view framed them (small, low in the picture), and closes in
+      const near0 = smooth(wk), R = lerp(lerp(14, 5.2, near0), 4.4, sw);
+      const eye = [Math.sin(th) * R * 0.7, lerp(lerp(3.4, head * 0.8, near0), head + 1.1, sw), cz - Math.cos(th) * R];
       // the camera keeps the old self in view while it travels, and only then lifts its gaze to the house
-      const look = smooth(clamp01((sw - 0.45) / 0.55)), tgt = [0, lerp(head * 0.7, -0.4, look), lerp(C[2], -9, look)];
+      const look = smooth(clamp01((sw - 0.45) / 0.55)), tgt = [0, lerp(lerp(2.2, head * 0.7, near0), -0.4, look), lerp(cz + 4 * (1 - near0), -9, look)];
       {
         const f0 = [tgt[0] - eye[0], tgt[1] - eye[1], tgt[2] - eye[2]], fl = Math.hypot(...f0), fv = f0.map(x => x / fl);
         let r = [fv[2], 0, -fv[0]]; const rl = Math.hypot(...r) || 1; r = r.map(x => x / rl);
@@ -11397,7 +11403,16 @@ void main() {
       Hs.box(-far, -1.4, zEdge - 0.05, far, 0, zEdge, [0.2, 0.12, 0.07]);
       Hs.box(-far, -0.1, zEdge - 0.08, far, 0, zEdge - 0.04, GOLD);
       for (let x = -hw + 0.4; x < hw - 0.3; x += 0.7) Hs.box(x - 0.12, 0, zEdge + 0.1, x + 0.12, 0.08, zEdge + 0.28, [1, 0.85, 0.55], { e: 1 });
-      M.box(-far, 0, zBack, far, yTop + 8, zBack + 0.2, [0.05, 0.07, 0.15]);
+      // the road it came down: grey asphalt with white edges and a dashed centre line over a wide field, fading out as the
+      // stage lights come up (drawn over the planks, without writing depth)
+      const Rd = new Mesh();
+      if (stg < 0.999) {
+        // flat() takes its height directly: the field, the asphalt and the markings sit just above the planks
+        Rd.flat(-60, 60, -30, 120, [0.66, 0.68, 0.64], 0.02);
+        Rd.flat(-1.7, 1.7, -30, 120, [0.44, 0.45, 0.5], 0.03);
+        for (const s of [-1, 1]) Rd.flat(s * 1.62 - 0.06, s * 1.62 + 0.06, -30, 120, [0.9, 0.9, 0.86], 0.035);
+        for (let z = -30; z < 120; z += 2.4) Rd.flat(-0.06, 0.06, z, z + 1.2, [0.92, 0.8, 0.36], 0.035);
+      }
       // the house: a raked floor of seats, an aisle down the middle, and people in most of them
       for (let r = 0; r < 14; r++) {
         const z = zEdge - 1.8 - r * 1.05, y = -1.2 + r * 0.3;
@@ -11438,25 +11453,31 @@ void main() {
         }
       }
       // the old self, in a column of light; a bow as the curtain closes (o.bow, radians), then fading away (o.me)
-      const Pm = new Mesh();
-      Pm.push(mT(0, 0, 0)); person3(Pm, Object.assign({}, o.F, { bow: o.bow || 0 }), o.hm, C[0], C[2], o.t * 1.2, {}); Pm.pop();
-      const fade = o.fade == null ? 1 : o.fade, spots = new Float32Array(40); spots.set([C[0], C[2], 1.1, fade], 0);
+      const Pm = new Mesh(), walking = wk < 1;
+      Pm.push(mT(0, 0, 0)); person3(Pm, Object.assign({}, o.F, { bow: o.bow || 0, walk: walking ? 1 : 0 }), o.hm, C[0], cz, walking ? wk * WALK * 2.4 : o.t * 1.2, {}); Pm.pop();
+      const fade = o.fade == null ? 1 : o.fade, spots = new Float32Array(40); spots.set([C[0], C[2], 1.1, fade * smooth(clamp01((stg - 0.55) / 0.45))], 0);
+      // the sky goes from a pale morning to the dark of the house
+      const SKY = [0.7, 0.78, 0.84], sky = SKY.map(v => lerp(v, 0.02, stg));
       gl.viewport(0, 0, w, h);
-      gl.clearColor(0.02, 0.02, 0.03, 1); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+      gl.clearColor(sky[0], sky[1], sky[2], 1); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
       gl.uniformMatrix4fv(U.uVP, false, this.vp);
       gl.uniform1f(U.uBend, 0); gl.uniform1f(U.uBZ, 0);
-      gl.uniform3fv(U.uL, (() => { const v = [0, 0.75, 0.66], l = Math.hypot(...v); return v.map(x => x / l); })());
+      // daylight from the camera's side on the road; the stage keeps its light from above and behind
+      gl.uniform3fv(U.uL, (() => { const v = [lerp(0.3, 0, stg), 0.75, lerp(-0.6, 0.66, stg)], l = Math.hypot(...v); return v.map(x => x / l); })());
       gl.uniform3fv(U.uSun, [0.62, 0.5, 0.4]); gl.uniform3fv(U.uAmb, [0.42, 0.4, 0.48]);
-      gl.uniform3fv(U.uFog, [0.02, 0.02, 0.03]); gl.uniform2f(U.uFogR, 1e4, 2e4);
-      gl.uniform4fv(U.uGlow, [fade, 0.86 * fade, 0.6 * fade, 1]);
+      gl.uniform3fv(U.uFog, sky); gl.uniform2f(U.uFogR, lerp(18, 1e4, stg), lerp(70, 2e4, stg));
+      gl.uniform4fv(U.uGlow, [fade * stg, 0.86 * fade * stg, 0.6 * fade * stg, 1]);
       gl.uniform3fv(U.uSpotC, [1.25, 1.08, 0.84]); gl.uniform4fv(U.uSpot, spots);
       gl.enable(gl.DEPTH_TEST); gl.depthMask(true);
       // going dark dims the light, never the opacity, so the closed curtain keeps hiding the house
-      gl.uniform1f(U.uDim, 0.4 * fade); this.draw(Hs);
-      gl.uniform1f(U.uDim, 0.32 * fade); this.draw(M);
+      // the house and the arch rise out of the dark as the stage takes over; daylight dims to stage light
+      const lit = lerp(1, 0.32, stg) * fade;
+      if (stg > 0.02) { gl.uniform1f(U.uDim, 0.4 * fade * stg); this.draw(Hs); }
+      gl.uniform1f(U.uDim, lit); this.draw(M);
+      if (Rd.d.length) { gl.uniform1f(U.uDim, lerp(1, 0.32, stg)); gl.depthMask(false); this.draw(Rd, 1 - stg); gl.depthMask(true); }
       gl.uniform1f(U.uDim, 0.95 * fade); this.draw(Cu);   // the curtain catches the stage light
       const me = o.me == null ? 1 : o.me;
-      if (me > 0.01) { gl.uniform1f(U.uDim, 0.32 * fade); if (me < 1) gl.depthMask(false); this.draw(Pm, me); gl.depthMask(true); }
+      if (me > 0.01) { gl.uniform1f(U.uDim, lit); if (me < 1) gl.depthMask(false); this.draw(Pm, me); gl.depthMask(true); }
       gl.uniform1f(U.uDim, 1);
     }
     proj(p) {
@@ -13449,7 +13470,7 @@ const UI = (() => {
 
   // ---- the last scene: from the old self's face to their back, the house applauding, the curtain closing ----
   // the curtain closes while the old self bows; they straighten, fade slowly away, and the picture goes dark
-  const THEATRE = { dur: 14.4, fadeIn: [0, 1], swing: [1, 4.6], clap: 3.6, close: [6.6, 9.4], bowDown: [7, 8], bowUp: [8.9, 9.9], gone: [10.2, 12.7], out: [12.9, 14.2] };
+  const THEATRE = { dur: 18.6, fadeIn: [0, 1.2], walk: [0, 4.4], stage: [1.8, 4.8], swing: [5.2, 8.8], clap: 7.8, close: [10.8, 13.6], bowDown: [11.2, 12.2], bowUp: [13.1, 14.1], gone: [14.4, 16.9], out: [17.1, 18.4] };
   const span01 = (t, [a, b]) => Math.max(0, Math.min(1, (t - a) / (b - a))), smoothT = x => x * x * (3 - 2 * x);
   function theatre(seq, t) {
     let T = seq.th;
@@ -13470,7 +13491,9 @@ const UI = (() => {
     if (T.st) {
       T.box.style.opacity = String(span01(t, THEATRE.fadeIn));
       const bow = 0.85 * (smoothT(span01(t, THEATRE.bowDown)) - smoothT(span01(t, THEATRE.bowUp)));
-      T.st.finale({ W: innerWidth, H: innerHeight, pix: innerWidth < 760 ? 2 : 3, t, swing: span01(t, THEATRE.swing), close, bow, me: 1 - span01(t, THEATRE.gone), F: T.F, hm: T.hm, crowd: 0.82, clap: t >= THEATRE.clap && t < THEATRE.close[1] + 1, fade });
+      const wk = span01(t, THEATRE.walk), steps = Math.floor(wk * 8 * 2.4 / Math.PI);
+      if (steps !== T.steps && wk < 1) { T.steps = steps; SOUND.step(S.person.death.age); }
+      T.st.finale({ W: innerWidth, H: innerHeight, pix: innerWidth < 760 ? 2 : 3, t, walk: 1 - Math.pow(1 - wk, 1.6), stage: span01(t, THEATRE.stage), swing: span01(t, THEATRE.swing), close, bow, me: 1 - span01(t, THEATRE.gone), F: T.F, hm: T.hm, crowd: 0.82, clap: t >= THEATRE.clap && t < THEATRE.close[1] + 1, fade });
       return true;
     }
     T.box.style.opacity = String(fade);

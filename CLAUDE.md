@@ -105,8 +105,10 @@ built each frame by `person3` from the same `specFor` spec as the 2D sprites. Bu
 overlap an earlier one are skipped. Without WebGL, or with 설정 → 길 그리기 → 2D 픽셀 (`SET.view`), the 2D `Scene` is used.
 The portraits, the family panel and the ending photographs still use the 2D figure sprites.
 
-The road back ends on the same theatre (UI `theatre`, `Stage3.finale`): the old self, facing the player as the last
-stretch of road ends, stands on the stage in a spotlight; the camera swings round behind them so the raked house and
+The road back ends on the same theatre (UI `theatre`, `Stage3.finale`): the 3D scene opens on the same road, framed as
+the road view left it, with the old self walking toward the camera; as they come closer the sky darkens, the road fades
+into the stage planks (`o.walk`, `o.stage`), the arch and the footlights rise out of the dark and a spotlight finds
+them where they stop; the camera swings round behind them so the raked house and
 its audience come into view, the house applauds (`SOUND.applause`) and the curtain closes across the proscenium in
 front of them while they bow (`F.bow`, a forward lean of the torso in `person3`); they straighten, fade slowly away,
 the light goes down (dimmed, never made transparent, so the curtain keeps hiding the house) and the obituary follows. Timings live in `THEATRE`. Without WebGL two velvet panels close
