@@ -13,7 +13,7 @@ function load() {
   const ctx = { console, performance, setTimeout, clearTimeout, Math, Date, JSON };
   ctx.globalThis = ctx;
   vm.createContext(ctx);
-  const names = ['DATA', 'RNG', 'STATE', 'SIM', 'NETWORK', 'EVENTS', 'YEARLY6', 'DECISIONS', 'ADMISSIONS', 'JOBS', 'FAMILY', 'MONEY', 'HEALTH', 'DOWN', 'PREP', 'ARTS', 'MEMORY', 'REPORT', 'HARNESS'];
+  const names = ['DATA', 'RNG', 'STATE', 'SIM', 'NETWORK', 'EVENTS', 'YEARLY6', 'DECISIONS', 'ADMISSIONS', 'JOBS', 'FAMILY', 'MONEY', 'HEALTH', 'DOWN', 'TALENT', 'ARTS', 'MEMORY', 'REPORT', 'HARNESS'];
   vm.runInContext(code + `\n;globalThis.__mod = { ${names.map(n => `${n}: typeof ${n} !== 'undefined' ? ${n} : null`).join(', ')} };`, ctx, { filename: 'soshimin.js' });
   return Object.assign({ sim: ctx.__sim, ctx }, ctx.__mod);
 }

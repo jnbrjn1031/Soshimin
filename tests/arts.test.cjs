@@ -19,7 +19,7 @@ function live(seed, until) {
 const seedOf = i => RNG.hash32('1:' + i);
 
 test('the game script loads and keeps its save version', () => {
-  assert.equal(DATA.SAVE_VERSION, 10);
+  assert.equal(DATA.SAVE_VERSION, 11);
   assert.ok(ARTS && typeof ARTS.view === 'function' && typeof ARTS.sample === 'function');
 });
 

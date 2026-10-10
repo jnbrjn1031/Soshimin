@@ -442,38 +442,28 @@ canvas.pixel{image-rendering:pixelated; image-rendering:crisp-edges; display:blo
 .hold li{display:grid; grid-template-columns:1fr auto auto; gap:8px}
 .hold li .v{font-family:var(--mono)}
 .panel details summary{cursor:pointer; font-size:var(--fs-s); color:var(--muted); margin:2px 0}
-/* 준비 (prep patch §3.9) */
-.prep-top{font-size:var(--fs-s); color:var(--muted); margin:-4px 0 8px}
-.prep-top b{color:var(--text); font-weight:500}
-.prep-warn{font-size:var(--fs-s); color:var(--hard); margin:0 0 8px}
-.prep-cards{display:grid; gap:10px; margin:8px 0}
-.pcard{border:1px solid var(--line); border-radius:3px; padding:10px 12px; display:grid; gap:6px; font-size:var(--fs-s); background:rgba(255,255,255,.02)}
-.pcard-h{display:flex; justify-content:space-between; align-items:baseline; gap:8px}
-.pcard-h b{font-family:var(--serif); font-weight:400; font-size:var(--fs-body)}
-.pcard-h button{appearance:none; background:none; border:0; color:var(--muted); cursor:pointer; text-decoration:underline; text-underline-offset:3px; font-size:var(--fs-s); padding:0}
-.pbar{display:grid; grid-template-columns:repeat(4,1fr); gap:3px}
-.pbar i{height:6px; border-radius:1px; background:#2C3340}
-.pbar i.on{background:var(--accent)}
-.pband{display:flex; justify-content:space-between; color:var(--muted); font-size:var(--fs-xs)}
-.pband b{color:var(--text); font-weight:500}
-.prow{display:flex; flex-wrap:wrap; gap:6px 10px; align-items:center}
-.prow select{font:inherit; font-size:var(--fs-s); background:var(--frame); color:var(--text); border:1px solid var(--line); border-radius:2px; padding:2px 6px}
-.pseg{display:inline-flex; border:1px solid var(--line); border-radius:3px; overflow:hidden}
-.pseg button{appearance:none; border:0; border-right:1px solid var(--line); background:transparent; color:var(--text); padding:3px 9px; cursor:pointer; font-size:var(--fs-s)}
-.pseg button:last-child{border-right:0}
-.pseg button[aria-pressed="true"]{background:var(--accent); color:var(--frame)}
-.pseg button:disabled{opacity:.35; cursor:not-allowed}
-.pmeta{color:var(--muted); font-size:var(--fs-xs); line-height:1.5}
-.pmeta b{color:var(--text); font-weight:500}
-.pfore{font-size:var(--fs-s)}
-.pfore.lo{color:var(--hard)} .pfore.mid{color:var(--warn)} .pfore.hi{color:var(--good)}
-.presults{list-style:none; margin:4px 0 0; padding:0; display:grid; gap:3px; font-size:var(--fs-s)}
-.presults .no{color:var(--muted)}
-.padd-list{display:grid; gap:12px; max-height:min(64dvh,620px); overflow-y:auto; margin:10px 0}
-.padd-g h3{font-family:var(--serif); font-size:var(--fs-body); margin:0 0 6px; border-bottom:1px solid var(--paper-line); padding-bottom:3px}
-.padd-row{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px 10px; align-items:center; padding:6px 0; border-bottom:1px dashed var(--paper-line); font-size:var(--fs-s)}
-.padd-row b{font-weight:600}
-.padd-row .sub{color:var(--paper-muted); font-size:var(--fs-xs)}
+/* 재능 · 노력 (talent + effort) */
+.tal-head{margin:18px 0 8px}
+.tal-head h3{margin:0}
+.tal-head .sub{display:block; font-size:var(--fs-xs); margin-top:2px}
+.tal{display:grid; gap:9px}
+.trow{display:grid; grid-template-columns:4.6em minmax(0,1fr); gap:2px 8px; align-items:center; font-size:var(--fs-s)}
+.trow .tname small{display:block; color:var(--muted); font-size:var(--fs-xs); line-height:1.2}
+.tbar{position:relative; height:10px; background:#2C3340; border-radius:2px}
+.tbar i{position:absolute; top:0; bottom:0; border-radius:2px}
+.tbar i.t{left:0; background:var(--tc, #8A93A0)}
+.tbar i.r{background:repeating-linear-gradient(135deg, rgba(255,255,255,.22) 0 3px, transparent 3px 6px); border:1px dashed rgba(255,255,255,.35)}
+.tbar i.e{background:var(--tc, #8A93A0); opacity:.45}
+.tbar b{position:absolute; top:-4px; bottom:-4px; width:2px; margin-left:-1px; background:var(--accent)}
+.tbar b.met{background:var(--good)}
+.tbar b[hidden]{display:none}
+.trow .tw{grid-column:2; color:var(--muted); font-size:var(--fs-xs); line-height:1.45}
+.trow .tw b{color:var(--text); font-weight:500}
+.trow .tw .ok{color:var(--good)}
+.tlegend{display:flex; flex-wrap:wrap; gap:4px 12px; color:var(--muted); font-size:var(--fs-xs); margin:6px 0 0}
+.tlegend i{display:inline-block; width:14px; height:8px; border-radius:2px; margin-right:4px; vertical-align:-1px; background:#8A93A0}
+.tlegend i.e{opacity:.45}
+.tlegend i.c{width:2px; background:var(--accent)}
 .slip .stamp{flex:none}
 /* 기억 · 일기 */
 .mem-list{list-style:none; margin:0; padding:0; display:grid; gap:8px}
@@ -716,7 +706,6 @@ html.big .overlay, html.big .sheet, html.big .ev-stack, html.big .toast, html.bi
     <div id="sheet" class="sheet hud">
       <div class="tabs hud" role="tablist" aria-label="정보">
         <button type="button" role="tab" data-tab="status" aria-selected="false">상태</button>
-        <button type="button" role="tab" data-tab="prep" aria-selected="false">준비</button>
         <button type="button" role="tab" data-tab="money" aria-selected="false">돈</button>
         <button type="button" role="tab" data-tab="family" aria-selected="true">가족</button>
         <button type="button" role="tab" data-tab="work" aria-selected="false">직업</button>
@@ -727,7 +716,6 @@ html.big .overlay, html.big .sheet, html.big .ev-stack, html.big .toast, html.bi
       </div>
       <aside class="col-left">
         <section id="panel-status" class="panel hud" data-tab="status" role="tabpanel" aria-label="상태"></section>
-        <section id="panel-prep" class="panel hud" data-tab="prep" role="tabpanel" aria-label="준비"></section>
         <section id="panel-history" class="panel hud" data-tab="history" role="tabpanel" aria-label="이력"></section>
         <section id="panel-memory" class="panel hud" data-tab="memory" role="tabpanel" aria-label="기억"></section>
         <section id="panel-log" class="panel hud" data-tab="log" role="tabpanel" aria-label="기록"></section>
@@ -766,7 +754,7 @@ html.big .overlay, html.big .sheet, html.big .ev-stack, html.big .toast, html.bi
 
 // ===== MODULE: DATA =====
 const DATA = {
-  SAVE_VERSION: 10,
+  SAVE_VERSION: 11,
   START_YEAR: 2026,
 
   // §2 — real seconds per in-game year at 1×, by 만 나이 band.
@@ -1299,6 +1287,19 @@ DATA.FOCUS_FX = {
   grand: { rel: 0.30, hap: 0.20 }, odd: { sk: 0.05, fit: 0.10, hap: 0.08 }, leisure: { hap: 0.22, st: -0.15 }, social: { rel: 0.30, hap: 0.15 },
   art: { sk: 0.12, st: 0.12, hap: 0.14, rel: -0.03 },   // arts patch: practice and creation on a path (게임 설정)
 };
+// ---------- talent and effort (overrides the main spec §4.10 and §5, replaces the prep patch's 준비도) ----------
+// Five talents, each 0–50, rolled once at birth on a bell curve and hidden until childhood shows them. Each has an
+// effort score (0–50) built from the focus points. A gate reads talent + effort (0–100) against a fixed cutoff and a
+// talent floor. Cutoffs, floors, the roll's spread, effort rates and reveal ages are 「게임 설정」.
+DATA.TALENTS = [
+  { key: 'study', name: '공부', sub: '학업', color: '#8FB3D9' },
+  { key: 'sport', name: '운동', sub: '체력', color: '#9CC48A' },
+  { key: 'art', name: '예술', sub: '미적 감각', color: '#E0A35C' },
+  { key: 'expr', name: '표현', sub: '말·글·연기', color: '#D08AB0' },
+  { key: 'rel', name: '관계', sub: '사회성', color: '#C9B76A' },
+];
+// mean 25 and spread 8: about half of all lives land at 20–30, 45 and above is about 0.7%, and 44 marks the top 1%
+DATA.TALENT_ROLL = { mean: 25, sd: 8, max: 50 };
 // §7.2 — category weights for the fill events, by age band (게임 설정).
 DATA.EVENT_BANDS = [
   { from: 0, to: 6, cats: { family: 40, health: 25, growth: 25, means: 10 } },
@@ -1505,11 +1506,11 @@ DATA.ARTS = {
       words: { aspire: '음악 지망생', first: '첫 무대', active: '연주 활동', leap: '주목받는 음악가', fade: '활동이 뜸한 시기', second: '두 번째 막' },
       inc: { aspire: [40, 1.2], first: [300, 0.9], active: [600, 0.95], leap: [6000, 0.9], fade: [300, 1.0], second: [120, 1.0] }, firstP: 0.25, leapP: 0.0036,
       adj: ['레슨 강사', '세션 연주자', '행사·웨딩 연주', '교회 반주자', '실용음악 학원 강사'], second: ['음악 학원 원장', '레슨 강사', '음악 감독', '공연 기획자', '음향 엔지니어'], secondJob: [85, 85, 87, 87, 87] },
-    idol: { name: '아이돌·가수', skills: ['보컬', '댄스'], apt: ['artistic', 'social'], job: 81, peak: [17, 29], aud: ['팬카페', '명', 30],
+    idol: { name: '아이돌·가수', skills: ['보컬', '댄스'], apt: ['verbal', 'artistic'], job: 81, peak: [17, 29], aud: ['팬카페', '명', 30],
       words: { aspire: '연습생', first: '데뷔', active: '활동기', leap: '정상의 시간', fade: '공백기', second: '두 번째 막' },
       inc: { aspire: [0, 0], first: [150, 1.0], active: [1100, 1.15], leap: [60000, 1.0], fade: [500, 1.1], second: [150, 1.0] }, firstP: 0.25, leapP: 0.0048,
       adj: ['보컬 레슨 강사', '댄스 학원 강사', '행사 무대', '뮤지컬 앙상블'], second: ['보컬 트레이너', '안무가', '뮤지컬 배우', '기획사 A&R', '솔로 가수'], secondJob: [85, 85, 81, 87, 81] },
-    acting: { name: '연기', skills: ['연기', '발성'], apt: ['artistic', 'verbal'], job: 53, peak: [22, 64], aud: ['SNS 팔로워', '명', 40],
+    acting: { name: '연기', skills: ['연기', '발성'], apt: ['verbal', 'artistic'], job: 53, peak: [22, 64], aud: ['SNS 팔로워', '명', 40],
       words: { aspire: '배우 지망생', first: '이름 있는 첫 배역', active: '배우 활동', leap: '주연의 시간', fade: '오디션을 기다리는 시기', second: '두 번째 막' },
       inc: { aspire: [80, 1.1], first: [250, 1.0], active: [350, 1.2], leap: [25000, 1.0], fade: [300, 1.1], second: [200, 1.0] }, firstP: 0.24, leapP: 0.003,
       adj: ['단역·보조출연', '연기 학원 강사', '행사 MC', '광고 모델'], second: ['연기 학원 강사', '성우', '연극 연출가', '캐스팅 디렉터'], secondJob: [85, 53, 87, 87] },
@@ -1975,12 +1976,10 @@ const STATE = (() => {
     const constitution = clamp(Math.exp(T.normal(0, C.sigma)), C.min, C.max);
     // a child in care (보호 아동) has no parents to average: take the neutral middle, not 0/0 (that NaN reached every aptitude and net worth)
     const eduAvg = parents.length ? parents.reduce((a, p) => a + EDU_SCORE[p.edu], 0) / parents.length : 1.5;
-    const apt0 = (eduAvg - 1.5) * 2.5 + (q - 3);
-    const trait = shift => Math.round(clamp(T.normal(50 + shift, 15), 1, 99));
-    const traits = {
-      luck: Math.round(T.float() * 100), stressSens: trait(0), impulsive: trait(0),
-      academic: trait(apt0), logical: trait(apt0), verbal: trait(apt0 * 0.8), physical: trait(0), artistic: trait(0), social: trait(0),
-    };
+    const trait = () => Math.round(clamp(T.normal(50, 15), 1, 99));
+    // the five talents (TALENT) are their own stream; the old aptitude names stay as twice the talent for flavour code
+    const talents = TALENT.roll(RNG.stream(s, 'talent'));
+    const traits = Object.assign({ luck: Math.round(T.float() * 100), stressSens: trait(), impulsive: trait() }, TALENT.legacy(talents));
     const env = {
       books: Math.round(clamp(25 + eduAvg * 12 + q * 6 + T.normal(0, 10), 0, 100)),
       privateEd: Math.round(clamp([20, 35, 55, 70, 85][q - 1] + T.normal(0, 8), 0, 100)),
@@ -2053,7 +2052,7 @@ const STATE = (() => {
 
     s.person = {
       name: { sur: childSur, given }, sex, birth: { y: Y, m, d }, birthplace: place, place,
-      constitution, traits, env, look, alive: true, death: null,
+      constitution, traits, talents, env, look, alive: true, death: null,
     };
     s.family = {
       fatherId: fatherP ? fatherP.id : null, motherId: motherP ? motherP.id : null,
@@ -2276,6 +2275,9 @@ const SIM = (() => {
     const lean = { study: T.academic * (0.6 + E.privateEd / 120), sport: T.physical, play: T.social, hobby: T.artistic, rest: 55, parttime: 25, extra: 30,
       grades: T.academic, spec: (T.academic + T.verbal) / 2, work: 50, love: T.social, health: T.physical, career: 60, self: T.logical * 0.8, family: T.social * 0.9 + 10,
       invest: T.logical * 0.5, grand: 60, odd: 40, leisure: 55, social: T.social, exam: T.academic * 1.6 + 40, jobexam: T.academic * 2.4 + 90, art: 150 };
+    // a strong student leans harder into study, and high school (outside the 특성화·마이스터 schools) asks more of everyone;
+    // a child on an arts or sports path keeps the old balance (게임 설정)
+    if (set && set.key === 'child' && !(s.arts && s.arts.on)) { lean.study *= Math.pow(T.academic / 50, 1.5); if (s.edu && s.edu.hs && !DATA.HS_TYPES[s.edu.hs.type].vocational) lean.study *= 1.6; }
     if (set && set.key === 'young' && s.family) lean.work = 14 + (5 - s.family.quintile) * 9 + (s.career && s.career.job ? 40 : 0);   // 알바 depends on the family's means
     // a child on an arts or sports path gives more of the day to it and less to study (arts patch §3, 게임 설정)
     if (set && set.key === 'child' && s.arts && s.arts.on) { lean[s.arts.field === 'sport' ? 'sport' : 'hobby'] *= 2.6; lean.study *= 0.75; }
@@ -2289,6 +2291,12 @@ const SIM = (() => {
     for (const r of raw) { alloc[r.k] = Math.floor(r.v); left -= alloc[r.k]; }
     raw.sort((a, b) => (b.v % 1) - (a.v % 1));
     for (let i = 0; left > 0; i++, left--) alloc[raw[i % raw.length].k]++;
+    // every pupil studies some: one point at school, two in a general-track high school; a child on an arts or sports
+    // path keeps the practice time it had (게임 설정)
+    if (set.key === 'child' && alloc.study != null && !(s.arts && s.arts.on)) {
+      const min = s.edu && s.edu.hs && !DATA.HS_TYPES[s.edu.hs.type].vocational && s.edu.stage === 'high' ? 2 : 1;
+      while (alloc.study < min) { const k = Object.keys(alloc).filter(x => x !== 'study' && alloc[x] > 0).sort((a, b) => alloc[b] - alloc[a])[0]; if (!k) break; alloc[k]--; alloc.study++; }
+    }
     return { set: set.key, alloc };
   }
   function topFocus(s) {
@@ -3191,6 +3199,7 @@ const EVENTS = (() => {
     family: { sig: 80, road: 'gift', fx: {}, text: ['가족과 함께한 날이었다.'] },
     money: { sig: 70, road: 'gift', fx: {}, text: ['통장을 정리했다.'] },
     keep: { sig: 60, road: 'gift', fx: {}, text: ['오래된 물건을 꺼내 보았다.'] },
+    talent: { sig: 66, road: 'gift', fx: {}, text: ['선생님이 무언가를 알아본 날이었다.'] },   // TALENT forces its reveals with their own text
     uniGrad: { sig: 85, road: 'campus', fx: { hap: 3, st: -2 }, text: s => {
       const u = s.edu.uni, g = u.gpa.length ? (u.gpa.reduce((a, b) => a + b, 0) / u.gpa.length).toFixed(2) : null;
       return u.type === '전문대' ? [`${u.name} ${u.dept}${josa(u.dept, '을', '를')} 졸업했다. 전문학사 학위증을 {부모}께 먼저 보여 드렸다.`]
@@ -3786,22 +3795,14 @@ const ADMISSIONS = (() => {
     const q = p - 0.5, r = q * q;
     return (((((a[0] * r + a[1]) * r + a[2]) * r + a[3]) * r + a[4]) * r + a[5]) * q / (((((b[0] * r + b[1]) * r + b[2]) * r + b[3]) * r + b[4]) * r + 1);
   }
-  // Calibration constants (game settings, tuned with runMany): the spread of the raw standing, and the mean and
-  // spread of 생기부 quality in 고3 September, so that both map onto even national ranks.
-  // The raw standing grows through the school years as skill builds up, so it is centred on the cohort's mean for the
-  // school year (measured: −0.48 in 초1, +0.57 by 고3).
-  const ZS = 0.75, REC = [69, 7.6];
-  // prep patch: subject preparation adds spread to the 수능 standing; this keeps the cohort's spread where it was
-  // (calibration constants: the sitting cohort's mean standing and the shrink, measured with runMany)
-  const ZM = 0.35, SPREAD = 0.86;
-  const zx = z => ZM + (z - ZM) * SPREAD;
-  const z0 = s => { const k = schoolK(s); return k >= 10 ? 0.57 : -0.48 + 0.105 * Math.max(0, k); };
-  const zn = s => s.edu.z == null ? 0 : (s.edu.z - z0(s)) / ZS;
+  // Calibration constants (game settings, tuned with runMany): the mean and spread of 생기부 quality in 고3 September.
+  const REC = [69, 7.6];
+  // the national standing is the 공부 score (talent + effort) against the cohort's school year (TALENT)
+  const zn = s => s.edu.z == null ? 0 : s.edu.z;
   const topOf = z => clamp(100 * (1 - Phi(z)), 0.03, 99.97);          // normalized z → 상위 %
   const zOfTop = pct => invPhi(clamp(1 - pct / 100, 0.0003, 0.9997));
-  // chance of getting in when the measure `a` meets a programme whose typical admitted student sits at `c` (both 상위 %)
-  const L = (a, c, sp) => 1 / (1 + Math.exp((Math.log(Math.max(0.02, a)) - Math.log(c * 1.1)) / sp));
-  const tagOf = P => P >= 0.7 ? '안정' : P >= 0.35 ? '적정' : '상향';
+  // every school and programme is a fixed gate (TALENT): 1 at or above the cutoff and the floor, 0 below
+  const tagOf = P => P >= 1 ? '합격선 이상' : '미달';
   const fmtPct = v => v < 1 ? v.toFixed(2) : v < 10 ? v.toFixed(1) : String(Math.round(v));
   const entryY = s => s.person.birth.y + 7;
   const schoolK = s => (s.clock.y - entryY(s)) - (s.clock.m < 3 ? 1 : 0);     // 0 = 초1 … 11 = 고3
@@ -3889,58 +3890,28 @@ const ADMISSIONS = (() => {
     const dept = special ? (u.name === '경찰대학' ? '경찰학과' : '사관생도 · ' + special) : deptOf(name);
     const tuition = u.type === '특수' ? 0 : m.kind === 'med' && u.type === '사립' ? DATA.TUITION.med : (DATA.TUITION[u.type] || 800);
     return { key: ui + ':' + k, ui, uni: u.name + (u.fic ? '(가상)' : ''), sido: u.sido, type: u.type, mk: k, name, dept, field: m.field, kind: m.kind, med: m.kind === 'med',
-      band, jh, gun, years: m.years, tuition, contract: k === 'semi', women: S.women.includes(u.name), outside: ['과기원', '특수', '예술', '전문대'].includes(u.type) };
+      band, uc: Math.round(c * 100) / 100, jh, gun, years: m.years, tuition, contract: k === 'semi', women: S.women.includes(u.name), outside: ['과기원', '특수', '예술', '전문대'].includes(u.type) };
   }
   const prog = key => (programs(), PROG_BY[key]);
-  // 수능최저 (게임 설정): the 수능 rank a programme asks of 교과·논술·지역인재 (and of the most selective 종합) applicants
-  function minOf(p, j) {
-    if (j === '교과' || j === '논술' || j === '지역') { if (p.med) return j === '지역' ? 6 : 3.5; if (p.band <= 12) return clamp(p.band * 2.2 + 3, 5, 30); }
-    if (j === '종합' && (p.med || p.band <= 2.5)) return p.med ? 4 : p.band * 2 + 3;
-    return null;
-  }
   // 9-grade 수능 등급 from a 상위 %, and the 등급 sum that a 최저 roughly means
   const CUT9 = [4, 11, 23, 40, 60, 77, 89, 96];
   const grade9 = pct => { let g = 1; for (const c of CUT9) if (pct > c) g++; return g; };
-  const minText = mn => `수능최저 · 3개 영역 등급 합 ${Math.max(3, grade9(mn) * 3 - 1)} 이내 (상위 약 ${fmtPct(mn)}%)`;
 
   // ---------------- the person's record ----------------
-  const talent = (s, kind) => s.person.traits[kind] + Math.min(15, s.edu.practice[kind === 'artistic' ? 'art' : 'sport'] / 6) + PREP.silgiT(s)   // 실기 준비 (prep patch §3.7)
-    + ((s.arts && s.arts.on && (s.arts.field === 'sport') === (kind === 'physical')) ? ARTS.talentBonus(s) : 0);   // a path's practice (arts patch §3)
-  const talentTop = t => topOf((t - 60) / 12);
   const recTop = r => topOf((r - REC[0]) / REC[1]);
   const highSems = (s, forSusi) => s.edu.sem.filter(x => x.lv === 'high' && (!forSusi || x.k < 11 || x.sem === 1));
   const midPct = s => { const m = s.edu.sem.filter(x => x.lv === 'mid'); return m.length ? avg(m.map(x => x.pct)) : 50; };
   function naesin(s, forSusi) { const h = highSems(s, forSusi); return h.length ? { g: avg(h.map(x => x.g)), pct: avg(h.map(x => x.pct)), n: h.length } : null; }
   function profile(s) {
     const e = s.edu, T = s.person.traits, t = e.hs ? e.hs.type : 'general', n = naesin(s, true);
-    return { nat: topOf(zx(zn(s) + PREP.suneungZ(s))), nonsul: PREP.nonsulZ(s), intv: PREP.interviewHS(s), inPct: n ? n.pct : 50, g: n ? n.g : null, rec: recTop(e.record), sf: SF[t], hsT: t, voc: !!HS[t].vocational, track: e.track,
-      sido: s.person.place.short, region: DATA.REGION_GROUP[s.person.place.short] || null, art: talent(s, 'artistic'), sport: talent(s, 'physical'), T };
+    return { s, nat: topOf(zn(s)), inPct: n ? n.pct : 50, g: n ? n.g : null, rec: recTop(e.record), sf: SF[t], hsT: t, voc: !!HS[t].vocational, track: e.track,
+      sido: s.person.place.short, region: DATA.REGION_GROUP[s.person.place.short] || null, T };
   }
   const fieldFit = (pr, p) => { const F = TRACK_FIELDS[pr.track]; if (!F) return 0; if (F.includes(p.field)) return 0.6; if (pr.track === 'med' && (p.field === '자연' || p.field === '공학')) return 0.3; if (pr.track === 'edu' && (p.field === '인문' || p.field === '사회')) return 0.1; return -0.5; };
-  // the chance of admission for one application (§9.4 전형 rules); sPct is the real 수능 rank once known
-  function chance(pr, p, j, sPct) {
-    const sx = sPct != null ? sPct : pr.nat, T = pr.T;
-    let P;
-    switch (j) {
-      case '교과': P = L(pr.inPct, Math.min(92, p.band * 4 + 2), 0.25); break;
-      case '지역': P = L(pr.inPct, Math.min(95, (p.band * 4 + 2) * 1.6), 0.25); break;
-      case '종합': {
-        const a = Math.exp(0.45 * Math.log(pr.inPct * pr.sf) + 0.55 * Math.log(pr.rec)) * (fieldFit(pr, p) > 0 ? 0.85 : fieldFit(pr, p) < 0 ? 1.2 : 1);
-        P = L(a, Math.min(92, p.band * 4 + 2), 0.3);
-        if (p.band < 15) P *= clamp(0.8 + (T.verbal + T.social - 100) / 400 + (pr.intv || 0), 0.6, 1);   // 면접 (면접·학생부 준비, prep patch)
-        break;
-      }
-      case '논술': { const ez = 0.45 * (T.verbal - 50) / 15 + 0.35 * (T.logical - 50) / 15 + 0.5 * zOfTop(sx) + (pr.nonsul || 0); P = clamp(0.05 * Math.exp(ez) * (p.band < 3 ? 0.6 : 1), 0.004, 0.45); break; }
-      case '실기': P = L(talentTop(p.kind === 'sport' ? pr.sport : pr.art), p.band * 3 + 3, 0.3); break;
-      case '과기원': P = L(Math.exp(0.35 * Math.log(sx) + 0.25 * Math.log(pr.rec) + 0.4 * Math.log(pr.inPct * pr.sf)) * Math.exp(-(T.logical - 60) / 50), p.band * 2.2, 0.3); break;
-      case '특수': P = L(sx, p.band * 1.2, 0.25) * clamp(0.3 + T.physical / 100, 0.4, 0.97) * clamp(0.75 + (T.social - 50) / 200, 0.55, 0.95); break;
-      case '일반': P = L(pr.inPct, Math.min(100, p.band * (pr.voc ? 1.3 : 1)), 0.35); break;
-      case '정시': { let a = sx; if (p.kind === 'art' || p.kind === 'sport') a = Math.exp(0.5 * Math.log(sx) + 0.5 * Math.log(talentTop(p.kind === 'sport' ? pr.sport : pr.art))); P = L(a, p.band, 0.15); break; }
-      case '전문대정시': P = L(sx, p.band, 0.3); break;
-      default: P = 0;
-    }
-    return clamp(P, 0, 0.97);
-  }
+  // admission for one application: every 전형 of a programme reads the same fixed gates (TALENT.progGates)
+  function chance(pr, p) { return TALENT.meetsAll(pr.s, TALENT.progGates(p)) ? 1 : 0; }
+  const gateText = (s, p) => TALENT.progGates(p).map(g => TALENT.label(s, g)).join(' · ');
+  const gateWhy = (s, p) => TALENT.progGates(p).map(g => TALENT.shortfall(s, g)).filter(Boolean).join(' · ') || null;
   // Rows for an application form: every programme × 전형 the person may apply to, with a chance and a 배치 tag.
   function rows(s, form, pr) {
     pr = pr || profile(s);
@@ -3950,13 +3921,12 @@ const ADMISSIONS = (() => {
       if (form === 'susi') {
         for (const j of p.jh) {
           if (j === '지역' && !(pr.region && DATA.REGION_GROUP[p.sido] === pr.region)) continue;
-          const mn = minOf(p, j), P = chance(pr, p, j, null);
-          const meet = mn == null ? null : Phi((Math.log(mn) - Math.log(pr.nat)) / 0.45);
-          out.push({ id: p.key + '|' + j, p, j, P, tag: tagOf(P), min: mn, meet, outside: p.outside, dis: mn != null && !c.sit ? '수능을 보지 않아 수능최저를 맞출 수 없다' : null });
+          const P = chance(pr, p);
+          out.push({ id: p.key + '|' + j, p, j, P, tag: tagOf(P), gate: gateText(s, p), why: P ? null : gateWhy(s, p), outside: p.outside, dis: null });
         }
       } else if (p.gun) {
-        const j = p.gun === '전문대' ? '전문대정시' : '정시', P = chance(pr, p, j, c.sPct);
-        out.push({ id: p.key + '|' + j, p, j, P, tag: tagOf(P), gun: p.gun, outside: p.gun === '전문대' });
+        const j = p.gun === '전문대' ? '전문대정시' : '정시', P = chance(pr, p);
+        out.push({ id: p.key + '|' + j, p, j, P, tag: tagOf(P), gate: gateText(s, p), why: P ? null : gateWhy(s, p), gun: p.gun, outside: p.gun === '전문대' });
       }
     }
     return out;
@@ -3972,37 +3942,30 @@ const ADMISSIONS = (() => {
     s.decisions = [];
   }, 60);
 
-  // the student's national standing: skill, aptitude, 사교육, books at home, effort, strain, and the school (게임 설정)
-  function rawZ(s) {
-    const T = s.person.traits, E = s.person.env, st = s.stats, a = s.focus.alloc, H = s.edu.hs ? HS[s.edu.hs.type] : null;
-    const study = (a.study || 0) + (a.exam || 0) + (a.grades || 0) * 0.5;
-    return 0.5 * (st.skill - 55) / 18 + 0.42 * (T.academic - 50) / 15 + 0.16 * (E.privateEd - 50) / 25 + 0.08 * (E.books - 50) / 25
-      + 0.06 * (study - 1.5) - 0.3 * Math.max(0, st.stress - 65) / 20 - 0.15 * Math.max(0, 45 - st.health) / 20 + (H ? H.zShift : 0);
-  }
-  function updateZ(s, R) { const e = s.edu, z = rawZ(s); e.z = e.z == null ? z + R.normal(0, 0.2) : 0.65 * e.z + 0.35 * z + R.normal(0, 0.1); }
+  // the student's national standing: the 공부 score against the cohort's school year (TALENT.z, no draw)
+  function updateZ(s) { s.edu.z = TALENT.z(s); }
   // rank inside the school's own peer group (내신 competition depends on who sits beside you)
   function inSchool(z, type, R, noise) { const H = HS[type]; return clamp(100 * (1 - Phi(((z - H.mu) / H.sd + R.normal(0, noise)) / Math.sqrt(1 + noise * noise))), 0.3, 99.7); }
   const gradeOf = p => p <= 10 ? 1 : p <= 34 ? 2 : p <= 66 ? 3 : p <= 90 ? 4 : 5;   // 5등급: 10 · 24 · 32 · 24 · 10%
   function gradeSemester(s, k, sem, R) {
-    updateZ(s, R);
+    updateZ(s);
     const e = s.edu, z = zn(s), y = s.clock.y;
     if (k < 6) { e.sem.push({ y, k, sem, lv: 'elem', pct: Math.round(topOf(z + R.normal(0, 0.3))) }); return; }
-    if (k < 9) { e.sem.push({ y, k, sem, lv: 'mid', pct: r1(inSchool(z + PREP.naesinZ(s, true), 'general', R, 0.3)) }); return; }
+    if (k < 9) { e.sem.push({ y, k, sem, lv: 'mid', pct: r1(inSchool(z, 'general', R, 0.3)) }); return; }
     const type = e.hs ? e.hs.type : 'general', subj = [];
-    const zi = z + PREP.naesinZ(s, false);   // 내신 준비 (prep patch §3.7)
-    for (let i = 0; i < 5; i++) subj.push(inSchool(zi, type, R, 0.45));
+    for (let i = 0; i < 5; i++) subj.push(inSchool(z, type, R, 0.45));
     e.sem.push({ y, k, sem, lv: 'high', pct: r1(avg(subj)), g: Math.round(avg(subj.map(gradeOf)) * 100) / 100 });
   }
   // 생활기록부 quality (§9.1): 비교과, 동아리, teachers, 진로 consistency and the school's own programmes (게임 설정)
   function growRecord(s) {
     const e = s.edu, a = s.focus.alloc, st = s.stats, H = HS[e.hs.type];
     const d = 0.2 + 1.2 * (a.extra || 0) + 0.2 * (a.study || 0) + 0.2 * (a.hobby || 0) + 0.05 * (a.sport || 0) + (st.relationships - 50) * 0.045
-      + (s.person.traits.social - 50) * 0.03 + (st.skill - 55) * 0.025 + (e.track ? 0.2 : 0) + H.rec - 0.15 * (a.parttime || 0) + PREP.recordD(s);
+      + (s.person.traits.social - 50) * 0.03 + (st.skill - 55) * 0.025 + (e.track ? 0.2 : 0) + H.rec - 0.15 * (a.parttime || 0);
     e.record = clamp(e.record + Math.max(0, d) * (1 - e.record / 115), 0, 100);
   }
   function gradeUni(s, R) {
     const a = s.focus.alloc, st = s.stats;
-    const g = clamp(3.15 + 0.32 * zn(s) + 0.22 * ((a.grades || 0) - 1.5) + 0.06 * (st.skill - 60) / 10 - 0.25 * Math.max(0, st.stress - 70) / 15 - 0.08 * (a.work || 0) + PREP.gpaD(s) + R.normal(0, 0.28), 1.2, 4.5);
+    const g = clamp(3.15 + 0.32 * zn(s) + 0.22 * ((a.grades || 0) - 1.5) + 0.06 * (st.skill - 60) / 10 - 0.25 * Math.max(0, st.stress - 70) / 15 - 0.08 * (a.work || 0) + R.normal(0, 0.28), 1.2, 4.5);
     s.edu.uni.gpa.push(Math.round(g * 100) / 100);
   }
   // 재수·반수 add 수능 공부 to the focus list; leaving the exam track folds those points into 학업·학점
@@ -4023,14 +3986,12 @@ const ADMISSIONS = (() => {
     e.enterYear = s.clock.y + 1;
     SIM.push(s, { kind: 'apply', form: 'susi', y: s.clock.y });
   }
-  function sitExam(s, R) {
-    updateZ(s, R);
-    const e = s.edu, c = e.cycle, st = s.stats, a = s.focus.alloc;
-    const day = R.normal(0, 0.2) - 0.3 * Math.max(0, st.stress - 70) / 20 + 0.04 * ((a.study || 0) + (a.exam || 0) - 2);
-    // the four subjects' preparation shapes each area and, weighted by track, the overall standing (prep patch §3.7)
-    const base = zn(s) + day, z = zx(base + PREP.suneungZ(s));
-    c.sat = true; c.sPct = r1(topOf(z));
-    c.areas = ['국어', '수학', '영어', '탐구'].map(n => { const p = topOf(zx(base + PREP.areaZ(s, n)) + R.normal(0, 0.35)); return { n, g: grade9(p), pct: Math.round(100 - p) }; });
+  // the 수능 reads the 공부 score: no luck on the day (the four areas spread a little around it, fixed per life)
+  function sitExam(s) {
+    updateZ(s);
+    const e = s.edu, c = e.cycle;
+    c.sat = true; c.sPct = r1(topOf(zn(s)));
+    c.areas = ['국어', '수학', '영어', '탐구'].map((n, i) => { const p = topOf(zn(s) + (RNG.hash32(s.seed + ':area:' + n) / 4294967296 - 0.5) * 0.5); return { n, g: grade9(p), pct: Math.round(100 - p) }; });
     e.sittings.push({ y: s.clock.y, attempt: c.attempt, pct: c.sPct, mode: c.mode });
   }
   function afterSusi(s) {
@@ -4067,7 +4028,6 @@ const ADMISSIONS = (() => {
       case 'uni': enroll(s, n); break;
       case 'retake':
         e.stage = 'retake'; e.retakes++; e.retakeMode = n.mode; e.examYear = s.clock.y; e.cycle = null;
-        PREP.carry(s, 0.8);   // what was learned carries over at 80% (prep patch §3.2)
         refocus(s, true);
         YEARLY6.force(s, { kind: 'mile', key: 'suneung', m: 11, sig: 92 });
         break;
@@ -4107,7 +4067,7 @@ const ADMISSIONS = (() => {
     }
     if (k >= 0 && k <= 11 && (m === 7 || m === 12)) gradeSemester(s, k, m === 7 ? 1 : 2, R);
     if (e.stage === 'high') growRecord(s);
-    if ((e.stage === 'retake' || e.banSu) && (m === 6 || m === 9)) updateZ(s, R);      // 6월·9월 모의평가
+    if ((e.stage === 'retake' || e.banSu) && (m === 6 || m === 9)) updateZ(s);      // 6월·9월 모의평가
     if (e.stage === 'univ' && (m === 6 || m === 12) && !e.uni.done) gradeUni(s, R);
     if (e.stage === 'univ' && m === 2 && y === e.gradY) { e.uni.done = true; e.stage = 'grad'; }
     // §9.2 — the high-school application in 중3 October; results in December
@@ -4119,29 +4079,21 @@ const ADMISSIONS = (() => {
     // §9.4 — September 수시, November 수능, December 수시 발표 and 정시 원서, February 정시 발표
     const c = e.cycle;
     if (m === 9 && ((e.stage === 'high' && k === 11) || e.stage === 'retake')) startCycle(s);
-    if (m === 11 && c && c.y === y && c.sit && !c.optOut) sitExam(s, R);
+    if (m === 11 && c && c.y === y && c.sit && !c.optOut) sitExam(s);
     if (m === 12 && c && c.y === y && !c.optOut) { if (c.susi.length) pushResults(s, 'susi'); else afterSusi(s); }
     if (m === 2 && c && c.y === y - 1 && c.jungsi.length && !c.jungsiRes) pushResults(s, 'jungsi');
   }, 37);
 
   // ---------------- results ----------------
   function judge(pr, app, c, R, form) {
-    const p = prog(app.p);
-    if (form === 'susi') { const mn = minOf(p, app.j); if (mn != null && (!c.sat || c.sPct > mn)) return { st: '최저' }; }
-    const P = chance(pr, p, app.j, c.sat ? c.sPct : null), u = R.float();
-    if (u < P) return { st: '합격' };
-    const wait = form === 'jungsi' ? 0.55 : 0.35;
-    if (P > 0.05 && u < P + (1 - P) * wait) {
-      const n = 1 + Math.floor((u - P) / ((1 - P) * wait) * (form === 'jungsi' ? 60 : 30));
-      return { st: '예비', n, add: R.float() < clamp((form === 'jungsi' ? 0.85 : 0.7) - n / (form === 'jungsi' ? 70 : 40), 0.05, 0.85) };
-    }
-    return { st: '불합격' };
+    // a fixed gate: at or above every cutoff and floor is a place, below is a no (no 예비 draw)
+    return chance(pr, prog(app.p)) ? { st: '합격' } : { st: '불합격' };
   }
   const accepted = r => r.st === '합격' || (r.st === '예비' && r.add);
   function pushResults(s, form) {
     const e = s.edu, R = RNG.stream(s, 'admit');
     if (form === 'hs') {
-      const rs = e.hsApply.map(t => ({ type: t, st: R.float() < hsChance(s, t) ? '합격' : '불합격' }));
+      const rs = e.hsApply.map(t => ({ type: t, st: hsChance(s, t) ? '합격' : '불합격' }));
       const fin = rs.find(r => r.st === '합격' && HS[r.type].phase === '전기') || rs.find(r => r.st === '합격');
       for (const r of rs) if (fin && r !== fin && r.st === '합격') r.st = '무효';   // 전기고에 붙으면 후기고 지원은 무효
       e.hsApply = null;
@@ -4155,25 +4107,10 @@ const ADMISSIONS = (() => {
   }
 
   // ---------------- the high-school application (§9.2) ----------------
-  // 특목·자사고 대비 lifts the selective schools' odds (prep patch §3.7)
-  function hsChance(s, t) { const v = hsChance0(s, t); return ['auto', 'fl', 'intl', 'sci', 'gifted'].includes(t) ? Math.min(0.97, v * PREP.tokmokMult(s)) : v; }
-  function hsChance0(s, t) {
-    const mp = midPct(s), T = s.person.traits;
-    switch (t) {
-      case 'voc': return 0.96;
-      case 'meister': return L(mp, 45, 0.4) * 0.85;
-      case 'auto': return L(mp, 12, 0.4) * 0.9;
-      case 'fl': return L(mp * Math.exp(-(T.verbal - 55) / 40), 12, 0.4) * 0.9;
-      case 'intl': return L(mp * Math.exp(-(T.verbal + T.social - 110) / 60), 11, 0.4) * 0.9;
-      case 'arts': return L(talentTop(talent(s, 'artistic')), 20, 0.35);
-      case 'sports': return L(talentTop(talent(s, 'physical')), 20, 0.35);
-      case 'sci': return L(mp, 5, 0.4) * clamp((T.logical - 40) / 30, 0.05, 1) * 0.9;
-      case 'gifted': return L(mp, 1, 0.3) * clamp((T.logical - 50) / 40, 0.05, 1) * 0.6;
-      default: return 1;
-    }
-  }
+  // the selective schools are fixed gates (TALENT.HS); 일반고 and 특성화고 take everyone
+  const hsChance = (s, t) => TALENT.meets(s, TALENT.HS[t]) ? 1 : 0;
   function hsRows(s) {
-    const pl = s.person.place, mp = midPct(s), T = s.person.traits, P = s.edu.practice, rural = pl.type === '농어촌';
+    const pl = s.person.place, rural = pl.type === '농어촌';
     const away = rural ? ' · 집을 떠나 기숙사 생활' : '';
     const L0 = [
       ['general', pl.sgg, '집 가까운 학교에 추첨으로 배정된다. 후기 학교에 떨어져도 이곳으로 간다.', null],
@@ -4182,19 +4119,26 @@ const ADMISSIONS = (() => {
       ['auto', '광역 단위', `면접 · 학비 연 약 ${HS.auto.cost}만 원 (게임 설정)${away}`, null],
       ['fl', pl.short, `영어 면접 · 학비 연 약 ${HS.fl.cost}만 원 (게임 설정)${away}`, null],
       ['intl', pl.short, `영어 면접 · 학비 연 약 ${HS.intl.cost}만 원 (게임 설정)${away}`, null],
-      ['arts', pl.short, `실기 고사 · 학비 연 약 ${HS.arts.cost}만 원 (게임 설정)`, T.artistic < 55 || P.art < 18 ? '실기 준비가 부족하다 (취미·예체능에 꾸준히 2점 이상 필요)' : null],
-      ['sports', pl.short, '실기 · 경기 실적', T.physical < 55 || P.sport < 18 ? '운동 경력이 부족하다 (운동에 꾸준히 2점 이상 필요)' : null],
-      ['sci', pl.short, `수학·과학 면접 · 기숙사${away}`, mp > 10 ? '중학교 성적 상위 10% 안에 들어야 한다' : null],
-      ['gifted', '전국 단위', '영재성 검사 · 캠프 · 기숙사', mp > 5 ? '중학교 성적 상위 5% 안에 들어야 한다' : null],
+      ['arts', pl.short, `실기 고사 · 학비 연 약 ${HS.arts.cost}만 원 (게임 설정)`, null],
+      ['sports', pl.short, '실기 · 경기 실적', null],
+      ['sci', pl.short, `수학·과학 면접 · 기숙사${away}`, null],
+      ['gifted', '전국 단위', '영재성 검사 · 캠프 · 기숙사', null],
     ];
-    return L0.map(([type, region, note, dis]) => { const P2 = hsChance(s, type); return { key: type, type, name: HS[type].name, phase: HS[type].phase, region, note, dis, P: P2, tag: type === 'general' ? '배정' : tagOf(P2) }; });
+    return L0.map(([type, region, note, dis]) => {
+      const P2 = hsChance(s, type), g = TALENT.HS[type];
+      return { key: type, type, name: HS[type].name, phase: HS[type].phase, region, note: g ? `${note} · ${TALENT.label(s, g)}` : note, dis, why: P2 ? null : TALENT.shortfall(s, g), P: P2, tag: type === 'general' || type === 'voc' ? '배정' : tagOf(P2) };
+    });
   }
 
   // ---------------- choices the character makes on their own ----------------
-  const scoreOf = (pr, r) => -Math.log(r.p.band) + fieldFit(pr, r.p) + (r.p.sido === pr.sido ? 0.25 : DATA.REGION_GROUP[r.p.sido] && DATA.REGION_GROUP[r.p.sido] === pr.region ? 0.1 : 0) + (r.p.med ? 0.8 : 0) - (r.p.type === '전문대' ? 0.2 : 0);
+  // how the character ranks a place: the university's standing (one gate for its ordinary majors), a liking for the
+  // subject that is their own (fixed per life, 게임 설정), the track, home and the medical schools
+  const level = p => p.type === '전문대' || p.med ? p.band : p.uc;   // where a place stands: its university's gate, or its own
+  const likes = (pr, p) => pr.s ? (RNG.hash32(pr.s.seed + ':major:' + p.mk) / 4294967296 - 0.5) * 0.8 : 0;
+  const scoreOf = (pr, r) => -Math.log(level(r.p)) + likes(pr, r.p) + fieldFit(pr, r.p) + (r.p.sido === pr.sido ? 0.25 : DATA.REGION_GROUP[r.p.sido] && DATA.REGION_GROUP[r.p.sido] === pr.region ? 0.1 : 0) + (r.p.med ? 0.8 : 0) - (r.p.type === '전문대' ? 0.2 : 0);
   function autoHs(s, R) {
     const rs = hsRows(s), mp = midPct(s), T = s.person.traits, q = s.family.quintile;
-    const ok = t => rs.some(r => r.type === t && !r.dis);
+    const ok = t => rs.some(r => r.type === t && r.P >= 1);   // only a school whose gate is met
     let early = null, late = null;
     // a child on an arts or sports path tries the school that fits it first (arts patch §3, 게임 설정 share)
     const path = s.arts && s.arts.on ? (s.arts.field === 'sport' ? 'sports' : 'arts') : null;
@@ -4204,16 +4148,21 @@ const ADMISSIONS = (() => {
     else if (ok('arts') && R.chance(0.55)) early = 'arts';
     else if (ok('sports') && R.chance(0.5)) early = 'sports';
     else {
-      const pVoc = clamp(0.02 + 0.59 / (1 + Math.exp(-(mp - 75) / 9)) + (q <= 2 ? 0.07 : 0) - (q >= 4 ? 0.04 : 0) + (T.academic < 40 ? 0.04 : 0), 0, 0.85); // 게임 설정: calibrated with the childhood choices
-      if (R.chance(pVoc)) early = mp <= 60 && R.chance(0.3) ? 'meister' : 'voc';
+      const pVoc = clamp(0.02 + 0.74 / (1 + Math.exp(-(mp - 75) / 9)) + (q <= 2 ? 0.07 : 0) - (q >= 4 ? 0.04 : 0) + (T.academic < 40 ? 0.04 : 0), 0, 0.85); // 게임 설정: calibrated with the childhood choices
+      if (R.chance(pVoc)) early = mp <= 60 && ok('meister') && R.chance(0.3) ? 'meister' : 'voc';
     }
-    if (!(early && HS[early].vocational) && mp <= 22 && q >= 2 && R.chance(q >= 5 ? 0.7 : q >= 3 ? 0.6 : 0.25)) late = T.verbal > T.logical + 8 ? (R.chance(0.6) ? 'fl' : 'intl') : 'auto';
+    if (!(early && HS[early].vocational) && mp <= 22 && q >= 2 && R.chance(q >= 5 ? 0.7 : q >= 3 ? 0.6 : 0.25)) {
+      const want = T.verbal > T.logical + 8 ? (R.chance(0.6) ? 'fl' : 'intl') : 'auto';
+      late = ok(want) ? want : ['auto', 'fl', 'intl'].find(ok) || null;
+    }
     return [early, late].filter(Boolean);
   }
   function pickSusi(s, pr, R) {
-    // the character weighs the 수능최저 risk into each chance
-    const all = rows(s, 'susi', pr).filter(r => !r.dis).map(r => r.meet == null ? r : Object.assign({}, r, { P: r.P * r.meet })).filter(r => r.P > 0.03);
-    const fits = r => !pr.track || TRACK_FIELDS[pr.track] == null || fieldFit(pr, r.p) >= 0;
+    // only programmes whose gates are met: the character sends six to the best of them
+    const all = rows(s, 'susi', pr).filter(r => !r.dis && r.P > 0);
+    const fit0 = r => !pr.track || TRACK_FIELDS[pr.track] == null || fieldFit(pr, r.p) >= 0;
+    // with fewer than three places open inside the track, the character looks outside it too
+    const fits = all.filter(r => !r.outside && fit0(r)).length >= 3 ? fit0 : () => true;
     const best = new Map();
     for (const r of all) { if (r.j === '논술' || !fits(r)) continue; const b = best.get(r.p.key); if (!b || b.P < r.P) best.set(r.p.key, r); }
     const pool = [...best.values()], picks = [];
@@ -4243,7 +4192,8 @@ const ADMISSIONS = (() => {
   function pickJungsi(s, pr, R) {
     const c = s.edu.cycle, all = rows(s, 'jungsi', pr).filter(r => r.P > 0.02);
     if (c.sPct > 88 && c.mode !== 'bansu' && R.chance(0.25)) return [];
-    const fits = r => !pr.track || TRACK_FIELDS[pr.track] == null || fieldFit(pr, r.p) >= 0;
+    const fit0 = r => !pr.track || TRACK_FIELDS[pr.track] == null || fieldFit(pr, r.p) >= 0;
+    const fits = all.filter(r => r.gun !== '전문대' && fit0(r)).length >= 2 ? fit0 : () => true;
     const picks = [];
     for (const [gun, target] of [['가', 0.25], ['나', 0.5], ['다', 0.75]]) {
       const cand = all.filter(r => r.gun === gun && fits(r));
@@ -4260,7 +4210,7 @@ const ADMISSIONS = (() => {
     const pr = profile(s);
     if (item.form === 'susi') {
       if (c.attempt === 1 && !pr.voc) {
-        const pNo = clamp(0.02 + 0.3 / (1 + Math.exp(-(pr.nat - 75) / 8)) + (q <= 2 ? 0.04 : 0) - (q >= 4 ? 0.02 : 0), 0, 0.6);
+        const pNo = clamp(0.02 + 0.16 / (1 + Math.exp(-(pr.nat - 75) / 8)) + (q <= 2 ? 0.04 : 0) - (q >= 4 ? 0.02 : 0), 0, 0.6);
         if (R.chance(pNo)) return { keys: [], skip: 'work' };
       }
       if (c.sit && R.chance(clamp(0.08 + (pr.sido === '서울' ? 0.08 : 0) + (pr.nat < 3 ? 0.05 : 0) + (c.attempt > 1 ? 0.55 : 0), 0, 0.9))) return { keys: [], skip: 'jungsiOnly' };
@@ -4274,11 +4224,11 @@ const ADMISSIONS = (() => {
     const acc = item.rows.map((r, i) => ({ r, i, p: prog(r.p) })).filter(x => accepted(x.r));
     if (!acc.length) return { pick: null };
     const best = acc.sort((a, b) => scoreOf(pr, { p: b.p }) - scoreOf(pr, { p: a.p }))[0];
-    if (c.mode === 'bansu') { const cur = prog(e.uni.p); return best.p.band < cur.band * 0.75 || (best.p.med && !cur.med) ? { pick: best.i } : { pick: null }; }
+    if (c.mode === 'bansu') { const cur = prog(e.uni.p); return level(best.p) < level(cur) * 0.75 || (best.p.med && !cur.med) ? { pick: best.i } : { pick: null }; }
     // results well below what the 수능 (or the mock exams) promised: some would rather try again
-    const ratio = best.p.band / Math.max(0.3, c.sat ? c.sPct : pr.nat), q = s.family.quintile;
+    const ratio = level(best.p) / Math.max(0.3, c.sat ? c.sPct : pr.nat), q = s.family.quintile;
     if (e.retakes < 2) {
-      const p = (ratio > 1.15 ? 0.25 : 0.07) + (ratio > 1.6 ? 0.2 : 0) + (ratio > 3 ? 0.15 : 0) + (q >= 3 ? 0.1 : -0.04) + (pr.sido === '서울' ? 0.08 : 0) + (best.p.type === '전문대' ? 0.15 : 0) - e.retakes * 0.2;
+      const p = (ratio > 1.35 ? 0.25 : 0.07) + (ratio > 1.8 ? 0.2 : 0) + (ratio > 3 ? 0.15 : 0) + (q >= 3 ? 0.1 : -0.04) + (pr.sido === '서울' ? 0.08 : 0) + (best.p.type === '전문대' ? 0.15 : 0) - e.retakes * 0.2;
       if (R.chance(clamp(item.form === 'susi' ? p : p * 1.3, 0, 0.85))) return { pick: null, retake: true };
     }
     return { pick: best.i };
@@ -4387,13 +4337,13 @@ const ADMISSIONS = (() => {
     title: '요즘 좋아하는 것', short: '관심 분야',
     text: () => '좋아하는 과목과 쉬는 시간에 하는 일이 조금씩 달라졌다. 한 가지를 골라 세 달 동안 더 해 보고 싶다. 지금 고르는 것이 평생의 직업을 정하는 것은 아니다.',
     options: () => [
-      { key: 'logical', label: '수학과 작은 실험', sign: '탐구', desc: '논리 적성을 알아보고 공부 시간을 늘린다.', fx: { sk: 1 }, cost: '집중 재배분 · 게임 설정' },
-      { key: 'verbal', label: '이야기와 글쓰기', sign: '이야기', desc: '언어 적성을 알아보고 친구와 이야기를 나눈다.', fx: { rel: 1 }, cost: '집중 재배분 · 게임 설정' },
-      { key: 'artistic', label: '그림과 음악', sign: '표현', desc: '예술 적성을 알아보고 취미 시간을 늘린다.', fx: { hap: 1 }, cost: '집중 재배분 · 게임 설정' },
-      { key: 'physical', label: '운동과 경기', sign: '운동', desc: '신체 적성을 알아보고 운동 시간을 늘린다.', fx: { fit: 1 }, cost: '집중 재배분 · 게임 설정' },
+      { key: 'logical', label: '수학과 작은 실험', sign: '탐구', desc: '공부 재능을 한 걸음 더 알아보고 공부 시간을 늘린다.', fx: { sk: 1 }, cost: '집중 재배분 · 게임 설정' },
+      { key: 'verbal', label: '이야기와 글쓰기', sign: '이야기', desc: '표현 재능을 한 걸음 더 알아보고 친구와 이야기를 나눈다.', fx: { rel: 1 }, cost: '집중 재배분 · 게임 설정' },
+      { key: 'artistic', label: '그림과 음악', sign: '표현', desc: '예술 재능을 한 걸음 더 알아보고 취미 시간을 늘린다.', fx: { hap: 1 }, cost: '집중 재배분 · 게임 설정' },
+      { key: 'physical', label: '운동과 경기', sign: '운동', desc: '운동 재능을 한 걸음 더 알아보고 운동 시간을 늘린다.', fx: { fit: 1 }, cost: '집중 재배분 · 게임 설정' },
     ],
     auto(s) { return ['logical', 'verbal', 'artistic', 'physical'].sort((a, b) => s.person.traits[b] - s.person.traits[a])[0]; },
-    apply(s, key) { const C = s.edu.childhood; C.interest = key; if (!C.revealed.includes(key)) C.revealed.push(key); childFocus(s, key === 'artistic' ? 'art' : key === 'physical' ? 'sport' : key); }, note: () => 'leisure',
+    apply(s, key) { const C = s.edu.childhood; C.interest = key; if (!C.revealed.includes(key)) C.revealed.push(key); TALENT.reveal(s, { logical: 'study', verbal: 'expr', artistic: 'art', physical: 'sport' }[key], 'interest'); childFocus(s, key === 'artistic' ? 'art' : key === 'physical' ? 'sport' : key); }, note: () => 'leisure',
   };
   DECISIONS.DEF.tutoring = {
     title: '중학교 사교육', short: '중학교 사교육',
@@ -4509,8 +4459,8 @@ const ADMISSIONS = (() => {
   };
 
   const recordWord = r => ['빈약함', '평범함', '충실함', '탄탄함', '돋보임'][Math.min(4, Math.floor(r / 20))];
-  return { programs, prog, profile, rows, rowById, hsRows, chance, minOf, minText, tagOf, fmtPct, accepted, autoApply, autoResults, resolveApply, resolveResults,
-    naesin, midPct, recordWord, grade9, LIMITS, TRACK, topOf, zn, schoolK, ZS, REC, MAJOR };
+  return { programs, prog, profile, rows, rowById, hsRows, chance, gateText, gateWhy, tagOf, fmtPct, accepted, autoApply, autoResults, resolveApply, resolveResults,
+    naesin, midPct, recordWord, grade9, LIMITS, TRACK, topOf, zOfTop, zn, schoolK, REC, MAJOR };
 })();
 
 // ===== MODULE: JOBS =====
@@ -4529,7 +4479,7 @@ const JOBS = (() => {
   // take-home pay: gross × 0.80–0.90, falling with income (game assumption covering tax, insurance and pension)
   const net = g => Math.round(g * (0.9 - 0.1 * clamp((g - 200) / 800, 0, 1)));
   // calibration constants (게임 설정), tuned against the §16 work bounds with runMany(2000)
-  const K = { contractPay: 0.6, payFloor: 200, oldReg: 0.35, convert: 0.03, quit: 0.12, docHard: 1.0, openDoc: 0.4, openInt: 0.05, flatStep: 0.02, taste: 0.6, artWait: 0.15, hopeUniv: 280, hopeCollege: 230, hsReg: 0.7, afterContract: 0.55, regPow: 3, freshOpen: 0.15, pass: 0.36, contractTeach: 0.75, fit: 0.45, fitNone: 0.3,
+  const K = { contractPay: 0.6, payFloor: 200, oldReg: 0.35, convert: 0.03, quit: 0.12, docHard: 1.0, openDoc: 0.4, openInt: 0.05, flatStep: 0.02, taste: 0.6, artWait: 0.15, hopeUniv: 330, hopeCollege: 260, hsReg: 0.7, afterContract: 0.55, regPow: 3, freshOpen: 0.15, pass: 0.36, contractTeach: 0.75, fit: 0.45, fitNone: 0.3,
     // how readily employers take each field's graduates beyond the job's own field list; fades with experience (게임 설정, calibrated to Appendix C)
     demand: { 인문: 0.4, 사회: 1.05, 교육: 0.85, 공학: 1.05, 자연: 0.66, 의약: 1, 예체능: 0.5 },
     promote: [0.8, 0.6, 0.35, 0.06, 0.006] };
@@ -4638,7 +4588,7 @@ const JOBS = (() => {
     if (age >= 55) pool = pool.filter(job => [41, 60, 61, 68, 69, 73, 74, 18, 14, 39, 13, 75].includes(job.id));
     if (!pool.length) pool = DATA.JOBS.filter(job => [60, 61, 18, 68].includes(job.id));
     const fit = job => { const f = X[job.id].fields; if (!mj || !f.length) return 1; return f.includes(mj.field) ? 2.2 : 0.6; };
-    const weight = job => fit(job) * (job.c || 1) * (PREP.certFit(s, job.id) ? 1.05 : 1) * (X[job.id].hire === 'open' && RANK_EDU[lv] >= 2 ? 0.35 : 1) * (job.minAge > age ? 0 : 1);
+    const weight = job => fit(job) * (job.c || 1) * (X[job.id].hire === 'open' && RANK_EDU[lv] >= 2 ? 0.35 : 1) * (job.minAge > age ? 0 : 1);
     const n = track === 'work' || lv === 'hs' ? 14 : track === 'public' ? 8 : 28;
     // a dual labour market: older applicants, those without a degree and those coming off a contract job see fewer
     // regular openings (게임 설정, calibrated to the A.6 non-regular share)
@@ -4655,20 +4605,24 @@ const JOBS = (() => {
     }
     return out;
   }
-  // chance through each stage for one application; n = applications sent this season (focused ones fare better)
+  // chance through each stage for one application; n = applications sent this season (focused ones fare better).
+  // The first job is a fixed gate (TALENT.jobGate): at or above the cutoff and the floor passes every stage, below
+  // stops at 서류. After it, effort is frozen and moves follow the odds below (main spec §10.3).
+  const firstGate = s => !s.career.firstJob;
   function stageOdds(s, pos, n) {
     const c = s.career, T = s.person.traits, st = s.stats, x = X[pos.job], mj = majorOf(s), sp = c.spec;
+    if (firstGate(s)) { const ok = TALENT.meets(s, TALENT.jobGate(pos.job, s)); return stagesOf(pos.job).map((_, i) => ok || i ? 1 : 0); }
     const yrs = expYears(s), blind = x.hire === 'ncs';
     const wHak = blind ? 0 : 0.45 * Math.exp(-yrs / 8);
     const fitF = !x.fields.length || !mj ? K.fitNone : x.fields.includes(mj.field) ? 1 : 0;
     const essay = (T.verbal - 50) / 50 + (s.focus.alloc.spec || 0) * 0.1;
     const age = ageOf(s), gap = c.seekFrom != null ? (mi(s) - c.seekFrom) / 12 : 0;
-    const doc = wHak * hak(s) + K.fit * fitF + 0.15 * (gpaOf(s) - 2.5) / 2 + 0.12 * PREP.lang(s) / 990 + PREP.certScore(s, pos.job) + PREP.docExtra(s, pos.job) + 0.15 * Math.min(1, yrs / 5) + 0.1 * Math.min(1, sp.intern / 6)
+    const doc = wHak * hak(s) + K.fit * fitF + 0.15 * (gpaOf(s) - 2.5) / 2 + 0.12 * sp.lang / 990 + Math.min(0.12, 0.05 * sp.certs.length) + 0.15 * Math.min(1, yrs / 5) + 0.1 * Math.min(1, sp.intern / 6)
       + 0.08 * essay - 0.04 * Math.max(0, age - 30) - 0.05 * Math.max(0, gap - 1) - DOWN.recordDrag(s);
     const focus = 1 + 0.3 * (1 - Math.min(20, n) / 20);
     const pDoc = x.tier > 0 ? Math.min(0.97, sig((doc - x.tier * K.docHard) / 0.12) * focus) : Math.min(0.97, K.openDoc * focus);
-    const pTest = x.hire === 'corp' || x.hire === 'ncs' || x.hire === 'grad' ? sig((A.zn(s) + PREP.ncsZ(s) + 0.3 * (T.logical - 50) / 15 - (x.tier - 0.5) * 2) / 0.8) : 1;
-    const pInt = clamp(0.45 + (T.social - 50) / 120 + (st.skill - 60) / 150 - Math.max(0, st.stress - 70) / 100 + (x.tier ? 0 : K.openInt), 0.15, 0.9) * K.pass * (mj && !blind ? Math.pow(K.demand[mj.field] || 1, Math.exp(-yrs / 3)) : 1) * PREP.interviewMult(s);
+    const pTest = x.hire === 'corp' || x.hire === 'ncs' || x.hire === 'grad' ? sig((A.zn(s) + 0.3 * (T.logical - 50) / 15 - (x.tier - 0.5) * 2) / 0.8) : 1;
+    const pInt = clamp(0.45 + (T.social - 50) / 120 + (st.skill - 60) / 150 - Math.max(0, st.stress - 70) / 100 + (x.tier ? 0 : K.openInt), 0.15, 0.9) * K.pass * (mj && !blind ? Math.pow(K.demand[mj.field] || 1, Math.exp(-yrs / 3)) : 1);
     const pFin = (stagesOf(pos.job).length > 2 ? clamp(0.55 + (T.social - 50) / 150, 0.3, 0.8) : 1) * (1 - DOWN.recordDrag(s));   // a record (전과) weighs on the last round too
     return [pDoc, pTest, pInt, pFin].slice(0, stagesOf(pos.job).length === 2 ? 1 : 4).concat(stagesOf(pos.job).length === 2 ? [pInt] : []);
   }
@@ -4707,16 +4661,13 @@ const JOBS = (() => {
       return !['cpa', 'tax', 'labor'].includes(k);
     }).map(([k]) => k);
   }
+  // an exam is a fixed gate (TALENT.EXAM): the score at the sitting against the cutoff and the floor, nothing drawn
   function examChance(s, k) {
     if (DOWN.barred(s)) return 0;   // 결격: no appointment while the bar lasts (§11.7, 게임 설정 simplification)
-    // prep patch §3.7: the exam's 준비도 against a cutoff set by competition
-    const pm = PREP.examMastery(s, k);
-    if (pm != null) return PREP.examP(k, pm, s);
-    const e = EXAMS[k], c = s.career, T = s.person.traits, ex = c.exam || { focus: 0, months: 0, attempts: 0 };
-    const f = ex.months ? ex.focus / ex.months : 1;
-    const score = 0.55 * (f - 2) / 1.2 + 0.25 * (T.academic - 50) / 15 + 0.2 * (T.verbal - 50) / 15 + 0.15 * Math.min(3, ex.attempts) + (e.phys ? 0.2 * (T.physical - 50) / 15 : 0);
-    return clamp(e.base * Math.exp((e.soft ? 0.5 : 1.6) * score), 0.003, e.soft ? 0.95 : 0.8);
+    return TALENT.meets(s, TALENT.EXAM[k]) ? 1 : 0;
   }
+  // the exam families: switching inside one keeps most of the same reading (공무원 · 임용 · 전문 자격 · 변호사)
+  const EXAM_GROUP = { '9n': 'pub', '9l': 'pub', '7': 'pub', '5': 'pub', police: 'pub', fire: 'pub', teachE: 'teach', teachS: 'teach', cpa: 'pro', tax: 'pro', labor: 'pro', bar: 'bar' };
 
   // ---------------- hiring and pay ----------------
   function addColleagues(s, j, emp) {
@@ -4748,6 +4699,7 @@ const JOBS = (() => {
     c.status = x.ladder === 'self' ? 'self' : x.ladder === 'art' ? 'art' : 'employed';
     c.seekFrom = null; c.round = null; c.failRounds = 0; c.moving = false; c.licWait = 0; c.retrackAsked = false;
     if (!pos.keepExam) c.exam = null;
+    if (first) TALENT.freeze(s);   // effort stops counting toward gates from the first job
     if (first) c.firstJob = { y: s.clock.y, m: s.clock.m, age: ageOf(s), pay: c.job.pay, job: pos.job, emp: pos.emp, size: c.job.size };
     if (s.focus.alloc.jobexam && !pos.keepExam) { s.focus = SIM.stats.autoFocus(s, ageOf(s)); s.focusNext = null; }
     addColleagues(s, pos.job, pos.emp);
@@ -4858,7 +4810,7 @@ const JOBS = (() => {
     const need = L.years[j.rank];
     if (j.rankY < need * 0.8) return false;
     const base = X[j.id].ladder === 'corp' ? K.promote[j.rank] : X[j.id].ladder === 'public' ? [0.6, 0.5, 0.35, 0.15, 0.06][j.rank] : 0.3;
-    const p = base * { S: 1.4, A: 1.15, B: 0.8, C: 0.3, D: 0 }[g] * (j.type === '계약' ? 0.2 : 1) * (j.promoBonus === s.clock.y ? 1.6 : 1);   // 승진 시험 통과 (prep patch)
+    const p = base * { S: 1.4, A: 1.15, B: 0.8, C: 0.3, D: 0 }[g] * (j.type === '계약' ? 0.2 : 1);
     if (!R.chance(p)) return false;
     j.rank++; j.rankY = 0;
     const t = rankTitle(j);
@@ -4942,8 +4894,6 @@ const JOBS = (() => {
     const ptime = !c.job && (a.work || 0) > 0 && (['seeking', 'exam', 'rest'].includes(c.status) || (c.status === 'none' && ['univ', 'retake', 'work', 'grad', 'leave'].includes(e.stage)));
     c.side = ptime ? { kind: c.side ? c.side.kind : R.pick(['편의점', '카페', '음식점', '물류센터', '학원 보조', '매장']), pay: Math.round(a.work * 30 * (0.9 + R.float() * 0.2)) } : null;
     if (c.side) c.earned += c.side.pay;
-    // a 대학원 입시 passed through 준비 starts the course the next March (prep patch)
-    if (c.gradPlan && m === 3 && y >= c.gradPlan) { c.gradPlan = null; if (c.job) leave(s, 'quit'); startSchool(s, '석사'); }
     // graduate and law school
     if (c.status === 'school' && c.school && now >= c.school.end) finishSchool(s, R);
     // seeking: a round each quarter (상반기·하반기 공채 and 수시), plus the autumn before graduation
@@ -4995,7 +4945,7 @@ const JOBS = (() => {
   }, 38);
 
   // share of new nurses, pharmacists and therapists who wait months for a place (game setting, calibrated to Appendix C 의약)
-  const LIC_WAIT = 0.25;
+  const LIC_WAIT = 0.35;
   const licensed = mk => ['md', 'dds', 'pharm', 'nurse', 'c-nurse', 'pt', 'elem'].includes(mk);
   const LIC = { md: 34, dds: 35, pharm: 37, nurse: 38, 'c-nurse': 38, pt: 40 };
   function licenseHire(s, R) {
@@ -5014,7 +4964,7 @@ const JOBS = (() => {
     if (LIC[mk]) {
       c.track = 'lic'; c.status = 'seeking'; c.seekFrom = mi(s);
       // 국가시험 (game setting: about 95% pass; a failed year is retaken) and, for some, months before a hospital place opens
-      if (!R.chance(PREP.licP(s) || (mk === 'md' || mk === 'dds' ? 0.95 : 0.93))) { STATE.note(s, 'job', '국가시험에 떨어졌다. 한 해를 더 준비하기로 했다.'); c.licWait = 12; return; }
+      if (!TALENT.meets(s, TALENT.LIC[mk])) { STATE.note(s, 'job', '국가시험에 떨어졌다. 한 해를 더 준비하기로 했다.'); c.licWait = 12; return; }
       mile(s, `${{ md: '의사', dds: '치과의사', pharm: '약사', pt: '물리치료사' }[mk] || '간호사'} 국가시험에 합격했다. 면허증의 이름을 한참 들여다보았다.`, 86, { hap: 6, st: -5 }, 'gift', true);
       if ((mk === 'md' || mk === 'dds') && s.person.sex === 'M' && !c.mil.exempt && !c.mil.done) { c.status = 'none'; enlist(s, 'doc'); return; }
       if (mk !== 'md' && R.chance(LIC_WAIT)) { c.licWait = R.int(6, 18); return; }
@@ -5057,9 +5007,9 @@ const JOBS = (() => {
   function startSchool(s, kind) {
     const c = s.career, R = RNG.stream(s, 'career'), u = s.edu.uni;
     if (kind === '로스쿨') {
-      const T = s.person.traits, leet = 0.5 * (T.verbal - 50) / 15 + 0.5 * (T.logical - 50) / 15 + 0.6 * hak(s) + 0.4 * (gpaOf(s) - 3.3) + R.normal(0, 0.5);
-      if (leet < 0.4) { STATE.note(s, 'job', '법학전문대학원 입시에서 떨어졌다. 기업 취업으로 방향을 바꿨다.'); c.track = 'corp'; c.status = 'seeking'; c.seekFrom = mi(s); return; }
+      if (!TALENT.meets(s, TALENT.SCHOOL.로스쿨)) { STATE.note(s, 'job', '법학전문대학원 입시에서 떨어졌다. 기업 취업으로 방향을 바꿨다.'); c.track = 'corp'; c.status = 'seeking'; c.seekFrom = mi(s); return; }
     }
+    if (kind !== '로스쿨' && !TALENT.meets(s, TALENT.SCHOOL[kind])) { STATE.note(s, 'job', `대학원 ${kind}과정 입시에서 떨어졌다. 일자리를 찾기로 했다.`); c.status = 'seeking'; c.seekFrom = mi(s); c.track = 'corp'; return; }
     const years = kind === '석사' ? 2 : kind === '박사' ? 4 : 3;
     const where = kind === '박사' || R.chance(0.6) || !u ? (u ? u.name : '대학') : R.pick(['서울대', 'KAIST', '연세대', '고려대', '성균관대']);
     c.status = 'school';
@@ -5072,7 +5022,7 @@ const JOBS = (() => {
     if (k === '로스쿨') { c.deg = '로스쿨'; c.track = 'law'; startExam(s); c.exam.only = ['bar']; return; }
     c.deg = k;
     mile(s, `${c.school.uni}에서 ${k} 학위를 받았다.`, 76, { hap: 4, sk: 3 }, 'campus');
-    if (k === '석사' && s.person.traits.academic >= 62 && R.chance(0.35)) { startSchool(s, '박사'); return; }
+    if (k === '석사' && TALENT.meets(s, TALENT.SCHOOL.박사) && R.chance(0.35)) { startSchool(s, '박사'); return; }
     c.status = 'seeking'; c.seekFrom = mi(s); c.track = 'corp';
   }
   function startArt(s, R) {
@@ -5211,11 +5161,9 @@ const JOBS = (() => {
         const emp = j === 24 ? `${pl.sgg === '세종시' ? '세종특별자치시' : pl.sgg}청` : j === 27 ? `${pl.short}경찰청` : j === 28 ? `${pl.short}소방본부` : j === 29 ? `${DATA.FIRM_PARTS.head[s.seed % 20]}초등학교 (가상)` : j === 30 ? `${DATA.FIRM_PARTS.head[(s.seed >> 3) % 20]}중학교 (가상)` : j === 42 ? `${DATA.FIRM_PARTS.head[(s.seed >> 5) % 20]} 법률사무소 (가상)` : j === 43 ? `${DATA.FIRM_PARTS.head[(s.seed >> 2) % 20]}회계법인 (가상)` : [44, 45].includes(j) ? `${DATA.FIRM_PARTS.head[(s.seed >> 4) % 20]} 사무소 (가상)` : '중앙행정기관';
         mile(s, `${e.name}에 최종 합격했다. 합격자 명단에서 수험번호를 세 번 확인했다.`, 90, { hap: 8, st: -8 }, 'gift', true);
         if (c.examLog[item.log]) c.examLog[item.log].pass = true;
-        PREP.onExamPass(s, k);
         hire(s, { job: j, emp, fic: /가상/.test(emp), region: pl.short, size: '공공', type: '정규', pay: J(j).lo }, ch.how);
         return;
       }
-      for (const r of item.rows) PREP.onExamFail(s, r.k);
       DECISIONS.log(s, `시험 결과 · 불합격 (${item.attempts}번째)`, ch.how);
       if (c.exam && !c.exam.side && c.exam.attempts >= 2 && !c.retrackAsked) { c.retrackAsked = true; DECISIONS.offer(s, 'retrack', { exam: true }); }
       return;
@@ -5496,10 +5444,10 @@ const JOBS = (() => {
     note: () => 'pension',
   };
   // the exam being prepared, and another the person could switch to (the same group first)
-  function curExam(s) { const p = s.prep && s.prep.list.find(x => x.key.startsWith('ex_')); return p ? p.key.slice(3) : s.career.exam && s.career.exam.only ? s.career.exam.only[0] : null; }
+  function curExam(s) { return s.career.exam && s.career.exam.only ? s.career.exam.only[0] : null; }
   function otherExam(s) {
-    const L = examList(s), k0 = curExam(s), g = k0 ? PREP.EXAM_GROUP[k0] : null;
-    return L.find(k => k !== k0 && PREP.EXAM_GROUP[k] === g) || L.find(k => k !== k0) || null;
+    const L = examList(s), k0 = curExam(s), g = k0 ? EXAM_GROUP[k0] : null;
+    return L.find(k => k !== k0 && EXAM_GROUP[k] === g) || L.find(k => k !== k0) || null;
   }
   D.retrack = {
     title: '진로를 다시 생각한다', short: '진로 재고',
@@ -5516,9 +5464,8 @@ const JOBS = (() => {
     apply(s, key) {
       const c = s.career, cur = curExam(s);
       if (key === 'keep') { c.failRounds = 0; c.retrackAsked = false; return; }
-      // what was learned transfers in part (prep patch §3.8)
-      if (key === 'switch') { const k = otherExam(s); if (!k) return; if (cur) PREP.transfer(s, 'ex_' + cur, 'ex_' + k, 0.5); if (c.exam) c.exam.only = [k]; c.retrackAsked = false; if (s.prep) s.prep.sig = ''; return; }
-      if (key === 'corp' && cur) PREP.transfer(s, 'ex_' + cur, 'ncs', 0.4);
+      // 공부 effort is one number, so it carries to the other exam whole
+      if (key === 'switch') { const k = otherExam(s); if (!k) return; if (c.exam) c.exam.only = [k]; c.retrackAsked = false; return; }
       if (key === 'exam') { c.track = 'exam'; startExam(s); return; }
       c.exam = null; c.status = 'seeking'; c.track = key === 'work' ? 'work' : 'corp'; c.failRounds = 0;
     },
@@ -6478,7 +6425,7 @@ const MONEY = (() => {
     if (age(s) >= 50 && ['retire', 'early'].includes(reason) && sev >= 3000) DECISIONS.offer(s, 'severance', { amt: sev });
     else lump(s, sev, `퇴직금 · ${j.emp}`);
   }
-  // preparation fees month by month (prep patch §3.8): out of the cash flow, without a ledger line each time
+  // small running costs month by month (materials, lessons): out of the cash flow, without a ledger line each time
   function charge(s, amount, why) { return pay(s, amount, why, {}); }
   function spend(s, amount, why) { const left = pay(s, amount, why, { parents: age(s) < 40 }); s.money.ledger.push({ y: s.clock.y, text: why, amt: -Math.round(amount) }); return left; }
 
@@ -7518,425 +7465,298 @@ const DOWN = (() => {
   return { K, NAME, LOW, label, recordDrag, barred, inPrison };
 })();
 
-// ===== MODULE: PREP =====
-// Stage 6.5 (soshimin-prep-patch.md): preparation projects. Each project's hidden 준비도 (0–100) grows from the hours
-// that study-type focus supplies, the method, aptitude and condition; real tests arrive on their schedules; the results
-// feed admissions (ADMISSIONS) and hiring and exams (JOBS). Every rate, hour count and fee here is 게임 설정 unless a
-// comment cites the patch's real anchors. Effects on outcomes are centred on what an unattended life prepares (C), so
-// the calibrated population stays where it was while a player's extra effort clearly shifts the odds.
-const PREP = (() => {
-  const clamp = STATE.clamp, mi = s => s.clock.y * 12 + s.clock.m, age = s => STATE.age(s);
-  const H_PER_POINT = 10;   // §3.3: one focus point on 공부·스펙·시험 공부 ≈ 10 hours a week
-  const STUDY_KEYS = ['study', 'grades', 'spec', 'exam', 'jobexam', 'self', 'extra'];
-  const WEEKS = 4.33;
-  const INT = { light: { name: '가볍게', h: 5, st: 0, fit: 0 }, steady: { name: '꾸준히', h: 15, st: 0.1, fit: 0 }, full: { name: '몰입', h: 35, st: 0.5, fit: -0.15 } };
-  // §3.4 methods: monthly cost (만 원) and efficiency
-  const METHODS = {
-    self: { name: '독학', eff: 0.8, cost: 3 }, online: { name: '인강', eff: 1, cost: 10 }, group: { name: '스터디', eff: 1, cost: 1 },
-    academy: { name: '학원', eff: 1.25, cost: 50 }, tutor: { name: '과외·1:1', eff: 1.4, cost: 100 }, boarding: { name: '기숙학원', eff: 1.5, cost: 300 },
-  };
-  const BANDS = ['기초', '보통', '탄탄', '완성'];
-  const band = m => m < 30 ? 0 : m < 55 ? 1 : m < 80 ? 2 : 3;
+// ===== MODULE: TALENT =====
+// Talent + effort (user design; overrides the main spec §4.10 and §5 and replaces the prep patch's 준비도). Five talents
+// (s.person.talents, 0–50) are rolled at birth and stay fixed; childhood reveals them in four steps, from a vague word
+// to the exact number. Effort (s.talent.eff, 0–50 each) grows each month from the focus points that feed that talent,
+// at a speed set by family income, 사교육 and region, and fades when it gets no points. Every gate — a school, a
+// university and its major, an exam, a licence, a first job, a team or agency — has a fixed cutoff on talent + effort
+// and a talent floor: at or above both is a pass, below is a no. Nothing is drawn at a gate. Effort counts only until
+// the first job: it is frozen then, and later careers follow the work systems in JOBS and ARTS.
+// The legacy traits (academic, logical, verbal, physical, artistic, social: 1–99) are kept as twice the talent so the
+// flavour code (events, automatic choices) keeps reading them.
+const TALENT = (() => {
+  const clamp = STATE.clamp, age = s => STATE.age(s), D = DATA.TALENTS, KEYS = D.map(d => d.key);
+  const NAME = Object.fromEntries(D.map(d => [d.key, d.name]));
+  const hash = (s, k) => RNG.hash32(s.seed + ':talent:' + k) / 4294967296;
 
-  // ---------------- the catalog (§3.2, §3.6) ----------------
-  // kind: cont (no test of its own; used continuously) · suneung · pass (a certificate test) · score (토익) · level (스피킹)
-  //       · finish (done at 준비도 60) · contest · promo · gradAdm · exam (JOBS 시험 트랙) · license
-  // need: hours to reach about 65 (「탄탄」) at efficiency 1 — k = 123 / need (from the growth law below)
-  const stageOf = s => { const e = s.edu, c = s.career; if (!e) return 'none';
-    if (e.stage === 'mid') return 'mid'; if (e.stage === 'high') return 'high'; if (e.stage === 'retake' || e.banSu) return 'retake';
-    if (e.stage === 'univ' || e.stage === 'leave') return 'univ'; if (c && c.status === 'exam') return 'exam'; if (c && c.job) return 'work';
-    if (c && (c.status === 'seeking' || c.status === 'rest' || c.status === 'none')) return 'seek'; return 'other'; };
-  const adult = s => age(s) >= 19, any = () => true;
-  const hasDeg = s => !!s.edu.uni && s.edu.uni.done;
-  const CAT = [
-    { key: 'naesinM', name: '내신 (중학교)', group: '중학생', apt: 'academic', need: 300, kind: 'cont', use: '중학교 성적 · 고교 원서', when: s => stageOf(s) === 'mid' },
-    { key: 'tokmok', name: '특목·자사고 대비', group: '중학생', apt: 'logical', need: 400, kind: 'cont', use: '과학고·영재학교·외고·국제고·자사고 합격', when: s => stageOf(s) === 'mid' },
-    { key: 'silgi', name: '예체능 실기', group: '중학생', apt: 'talent', need: 500, kind: 'cont', use: '예고·체고 · 예체능 실기 전형', when: s => ['mid', 'high', 'retake'].includes(stageOf(s)) },
-    { key: 'naesinH', name: '내신', group: '고등학생', apt: 'academic', need: 400, kind: 'cont', use: '학기별 내신 등급 · 학생부교과', when: s => stageOf(s) === 'high' },
-    { key: 'snKor', name: '수능 국어', group: '고등학생', apt: 'verbal', need: 700, kind: 'suneung', area: '국어', use: '수능 국어 · 정시 · 수능최저', when: s => ['high', 'retake'].includes(stageOf(s)) },
-    { key: 'snMath', name: '수능 수학', group: '고등학생', apt: 'logical', need: 800, kind: 'suneung', area: '수학', use: '수능 수학 · 정시 · 수능최저', when: s => ['high', 'retake'].includes(stageOf(s)) },
-    { key: 'snEng', name: '수능 영어', group: '고등학생', apt: 'verbal', need: 600, kind: 'suneung', area: '영어', use: '수능 영어 · 정시 · 수능최저', when: s => ['high', 'retake'].includes(stageOf(s)) },
-    { key: 'snSci', name: '수능 탐구', group: '고등학생', apt: 'academic', need: 500, kind: 'suneung', area: '탐구', use: '수능 탐구 · 정시 · 수능최저', when: s => ['high', 'retake'].includes(stageOf(s)) },
-    { key: 'nonsul', name: '논술', group: '고등학생', apt: 'verbal', need: 300, kind: 'cont', use: '수시 논술 전형', when: s => ['high', 'retake'].includes(stageOf(s)) },
-    { key: 'record', name: '면접·학생부 활동', group: '고등학생', apt: 'social', need: 300, kind: 'cont', use: '생활기록부 · 학생부종합 면접', when: s => stageOf(s) === 'high' },
-    { key: 'vocCert', name: '기능사 자격증', group: '고등학생', apt: 'logical', need: 150, kind: 'pass', months: [1, 3, 5, 7, 9, 11], fee: 2, cert: '기능사 (전공)', tier: 'low', helps: [5, 14, 21, 22, 70, 71, 72], use: '생산·기술직 서류', when: s => stageOf(s) === 'high' && !!s.edu.hs && !!DATA.HS_TYPES[s.edu.hs.type].vocational },
-    { key: 'gpa', name: '학점', group: '대학생·취준생', apt: 'academic', need: 400, kind: 'cont', use: '학기 학점 · 서류', when: s => stageOf(s) === 'univ' },
-    { key: 'toeic', name: '토익', group: '대학생·취준생', apt: 'verbal', need: 300, kind: 'score', months: 'all', fee: 5, use: '대기업·금융·공기업·외국계 서류 (2년 유효)', when: adult },
-    { key: 'speak', name: '오픽·토익스피킹', group: '대학생·취준생', apt: 'verbal', need: 100, kind: 'level', months: 'all', fee: 8, helps: [2, 7, 11, 16, 65], use: '영업·해외·외국계 서류 (2년 유효)', when: adult },
-    { key: 'jip', name: '정보처리기사', group: '대학생·취준생', apt: 'logical', need: 130, kind: 'pass', months: [3, 6, 9], fee: 4.2, cert: '정보처리기사', tier: 'gisa', cut: 70, helps: [3, 4, 9, 10, 12, 15], use: '개발자·IT · 공기업 가산점', anchor: 'jipPass', when: adult },
-    { key: 'comp', name: '컴퓨터활용능력 1급', group: '대학생·취준생', apt: 'logical', need: 80, kind: 'pass', months: [1, 3, 5, 7, 9, 11], fee: 4, cert: '컴퓨터활용능력 1급', tier: 'mid', helps: [1, 8, 9, 13, 17, 20, 46], use: '사무직 · 공기업 가산점', when: adult },
-    { key: 'hist', name: '한국사능력검정', group: '대학생·취준생', apt: 'verbal', need: 40, kind: 'pass', months: [2, 5, 8, 10], fee: 2, cert: '한국사능력검정 1급', tier: 'mid', helps: [9, 10, 23, 24, 25, 26, 27, 28], use: '공무원·공기업 응시 요건', when: s => age(s) >= 15 },
-    { key: 'elec', name: '전기기사·산업안전기사', group: '대학생·취준생', apt: 'logical', need: 200, kind: 'pass', months: [3, 6, 9], fee: 4, cert: '전기기사', tier: 'gisa', helps: [5, 10, 21, 22, 70, 72], use: '기술직 · 공기업 기술직 · 건설', when: adult },
-    { key: 'acct', name: '전산회계·재경관리사', group: '대학생·취준생', apt: 'logical', need: 110, kind: 'pass', months: [2, 4, 6, 8, 10, 12], fee: 4, cert: '전산회계 1급', tier: 'mid', helps: [8, 13, 17, 20, 43, 44], use: '경리·회계', when: adult },
-    { key: 'intern', name: '인턴', group: '대학생·취준생', apt: 'social', need: 300, kind: 'finish', use: '서류 (경력 한 줄)', when: s => (stageOf(s) === 'univ' && s.edu.uni.year >= 3) || stageOf(s) === 'seek' },
-    { key: 'contest', name: '공모전·대외활동', group: '대학생·취준생', apt: 'verbal', need: 150, kind: 'contest', months: [6, 11], use: '서류 (수상 경력)', when: s => ['univ', 'seek'].includes(stageOf(s)) },
-    { key: 'portfolio', name: '포트폴리오', group: '대학생·취준생', apt: 'artistic', need: 300, kind: 'cont', helps: [12, 15, 16, 54, 57, 58], use: '개발·디자인·예체능 서류', when: adult },
-    { key: 'ncs', name: '인적성·NCS', group: '대학생·취준생', apt: 'logical', need: 200, kind: 'cont', use: '인적성·NCS 필기', when: s => adult(s) && stageOf(s) !== 'exam' },
-    { key: 'interview', name: '면접', group: '대학생·취준생', apt: 'social', need: 80, kind: 'cont', use: '면접 전형', when: adult },
-    { key: 'essay', name: '자소서', group: '대학생·취준생', apt: 'verbal', need: 60, kind: 'cont', use: '서류 (자기소개서)', when: adult },
-    { key: 'lic', name: '의사·간호사 국가고시', group: '시험 트랙', apt: 'academic', need: 600, kind: 'cont', use: '면허 국가시험 합격', when: s => stageOf(s) === 'univ' && ['md', 'dds', 'pharm', 'nurse', 'c-nurse', 'pt'].includes(ADMISSIONS.prog(s.edu.uni.p).mk) && s.edu.uni.year >= s.edu.uni.years - 1 },
-    { key: 'promo', name: '승진 시험·사내 자격', group: '직장인', apt: 'academic', need: 200, kind: 'promo', months: [11], use: '연말 승진 심사', when: s => !!s.career.job && ['corp', 'public'].includes(DATA.JOB_X[s.career.job.id].ladder) },
-    { key: 'gradAdm', name: '대학원 입시', group: '직장인', apt: 'academic', need: 300, kind: 'gradAdm', months: [10], use: '대학원 석사과정 (다음 해 3월 입학)', when: s => adult(s) && hasDeg(s) && !s.career.deg && s.career.status !== 'school' },
-    { key: 'drive', name: '운전면허', group: '직장인', apt: 'physical', need: 25, kind: 'license', months: 'all', fee: 7, helps: [2, 67, 73, 74, 75, 76], use: '배송·영업·운전직 · 일상', when: s => age(s) >= 18 && !s.person.license },
-    { key: 'care', name: '요양보호사', group: '중장년·은퇴', apt: 'social', need: 240, kind: 'pass', months: [2, 5, 8, 11], fee: 3, cert: '요양보호사', tier: 'mid', helps: [41], use: '요양보호사 (늘어나는 일자리)', when: s => age(s) >= 30 },
-    { key: 'realtor', name: '공인중개사', group: '중장년·은퇴', apt: 'academic', need: 600, kind: 'pass', months: [10], fee: 3, cert: '공인중개사', tier: 'gisa', helps: [66], use: '공인중개사 · 은퇴 후', when: s => age(s) >= 25 },
-    { key: 'forklift', name: '지게차 운전기능사', group: '중장년·은퇴', apt: 'physical', need: 60, kind: 'pass', months: 'all', fee: 2, cert: '지게차운전기능사', tier: 'low', helps: [14, 18, 70], use: '물류·생산 현장', when: s => age(s) >= 18 },
-    { key: 'cook', name: '조리기능사', group: '중장년·은퇴', apt: 'artistic', need: 120, kind: 'pass', months: [2, 4, 6, 8, 10], fee: 3, cert: '한식조리기능사', tier: 'low', helps: [61, 62, 77], use: '음식점 · 창업', when: s => age(s) >= 18 },
-    { key: 'farm', name: '귀농 교육', group: '중장년·은퇴', apt: 'physical', need: 100, kind: 'finish', helps: [80], use: '농업·어업 · 귀촌', when: s => age(s) >= 40 },
-  ];
-  // 시험 트랙: one project per JOBS exam. need = a year or more at 몰입; off moves the cutoff with competition (A.12)
-  const EXAM_X = { '9n': [1700, 0], '9l': [1700, -2], '7': [2200, 6], '5': [4000, 14], police: [1600, -2], fire: [1500, -3], teachE: [1500, -25], teachS: [2200, 2], cpa: [4000, 12], tax: [3500, 10], labor: [3000, 8], bar: [3000, -20] };
-  const EXAM_GROUP = { '9n': 'pub', '9l': 'pub', '7': 'pub', '5': 'pub', police: 'pub', fire: 'pub', teachE: 'teach', teachS: 'teach', cpa: 'pro', tax: 'pro', labor: 'pro', bar: 'bar' };
-  for (const [k, [need]] of Object.entries(EXAM_X)) CAT.push({ key: 'ex_' + k, name: JOBS.EXAMS[k].name, group: '시험 트랙', apt: k === 'police' || k === 'fire' ? 'physical' : 'academic', need, kind: 'exam', exam: k, use: `${JOBS.J(JOBS.EXAMS[k].job).name} 임용`, anchor: 'civilPrep',
-    when: s => !!s.career && (!!s.career.exam || s.career.track === 'exam' || s.career.track === 'pro' || s.career.deg === '로스쿨') && JOBS.examList(s).includes(k) });
-  const BY = Object.fromEntries(CAT.map(p => [p.key, p]));
-  const kOf = p => 123 / p.need;
+  // ---------------- the roll (called from STATE.create, its own 'talent' stream) ----------------
+  function roll(R) {
+    const T = DATA.TALENT_ROLL;
+    return Object.fromEntries(KEYS.map(k => [k, Math.round(clamp(R.normal(T.mean, T.sd), 0, T.max))]));
+  }
+  const legacy = t => ({ academic: t.study * 2, logical: t.study * 2, verbal: t.expr * 2, physical: t.sport * 2, artistic: t.art * 2, social: t.rel * 2 });
 
   // ---------------- state ----------------
-  const fresh = () => ({ auto: true, list: [], mem: {}, results: [], tests: [], news: [], spent: 0, spentY: 0, burn: 0, restUntil: 0, sig: '' });
-  SIM.on('born', s => { s.prep = fresh(); }, 78);
-  function migrate(s) { if (!s.prep) s.prep = fresh(); }
-  const proj = (s, key) => s.prep.list.find(p => p.key === key) || null;
-  const mOf = (s, key) => { const p = proj(s, key); return p ? p.m : s.prep.mem[key] || 0; };
+  // reveal steps: 0 hidden · 1 a word · 2 a wide range (±8) · 3 a narrow range (±3) · 4 the exact number
+  const STEP_AGE = [5, 7.5, 10, 12.5];   // each step lands within two years of these ages (게임 설정)
+  function fresh(s) {
+    const born = s.person.birth.y * 12 + s.person.birth.m;
+    const plan = Object.fromEntries(KEYS.map(k => [k, STEP_AGE.map((a, i) => born + Math.round((a + 2 * hash(s, k + i)) * 12))]));
+    return { eff: Object.fromEntries(KEYS.map(k => [k, 0])), rev: Object.fromEntries(KEYS.map(k => [k, 0])), plan, frozen: null, pace: {}, pts: {} };
+  }
+  SIM.on('born', s => { s.talent = fresh(s); }, 12);
+  // a save from before this system: talents from the old traits, steps by age, effort estimated from the life so far
+  function migrate(s) {
+    delete s.prep;
+    if (s.talent && s.person.talents) return;
+    const T = s.person.traits;
+    s.person.talents = { study: Math.round(clamp((T.academic + T.logical) / 4, 0, 50)), sport: Math.round(clamp(T.physical / 2, 0, 50)), art: Math.round(clamp(T.artistic / 2, 0, 50)), expr: Math.round(clamp(T.verbal / 2, 0, 50)), rel: Math.round(clamp(T.social / 2, 0, 50)) };
+    Object.assign(T, legacy(s.person.talents));
+    s.talent = fresh(s);
+    const a = age(s), now = s.clock.y * 12 + s.clock.m;
+    for (const k of KEYS) { s.talent.rev[k] = s.talent.plan[k].filter(m => m <= now).length; s.talent.eff[k] = clamp((a - 6) * 2.2, 0, 30); }
+    if (s.career && s.career.firstJob) freeze(s);
+  }
 
-  // ---------------- limits, hours, payer ----------------
-  function limit(s) {
-    const st = stageOf(s);
-    if (st === 'exam') return 2;
-    if (st === 'work') return s.love && FAMILY.kidsAt(s, 0, 5).length ? 1 : 2;
-    if (st === 'seek' || st === 'other') return s.love && FAMILY.kidsAt(s, 0, 5).length ? 1 : 3;
-    return 4;
-  }
-  const fullOk = s => ['exam', 'retake', 'seek'].includes(stageOf(s)) || (stageOf(s) === 'univ' && !!s.edu.uni && s.edu.uni.year >= s.edu.uni.years);
-  // without a job, the hours given to 일·커리어 or 소일거리 also go to preparation (게임 설정)
-  function points(s) { const a = s.focus.alloc, idle = !!s.career && !s.career.job; return STUDY_KEYS.reduce((x, k) => x + (a[k] || 0), 0) + (idle ? (a.career || 0) + (a.odd || 0) : 0); }
-  function hours(s) {
-    const H = points(s) * H_PER_POINT, want = s.prep.list.reduce((x, p) => x + INT[p.int].h, 0);
-    const f = s.meta.prepForce ? 1 : want > 0 ? Math.min(1, H / want) : 0;
-    return { H, want, f };
-  }
-  const minorPays = s => age(s) < 19 || ['mid', 'high'].includes(stageOf(s));
-  function methodCost(s, p) { const M = METHODS[p.method]; return p.method === 'academy' && minorPays(s) ? (stageOf(s) === 'mid' ? 40 : 55) : M.cost; }
-
-  // ---------------- the planner: what the character would prepare on their own ----------------
-  const pick = (s, key, opts) => Object.assign({ key, method: 'online', int: 'steady' }, opts);
-  function minorMethod(s, key) {
-    const tutor = s.edu.childhood ? s.edu.childhood.tutor : null, q = s.family.quintile;
-    if (tutor === 2) return 'academy';
-    if (tutor === 0) return q >= 3 ? 'online' : 'self';
-    // A.5: 사교육 participation rises with income (52.8% → 84.9%)
-    const p = [0.53, 0.62, 0.72, 0.8, 0.85][q - 1], u = RNG.hash32(s.seed + ':prep:' + key) / 4294967296;
-    return u < p ? 'academy' : q >= 3 ? 'online' : 'self';
-  }
-  function mainExam(s) {
-    const c = s.career, L = JOBS.examList(s);
-    if (c.exam && c.exam.only) return c.exam.only[0];
-    const mk = JOBS.majorOf(s) ? JOBS.majorOf(s).mk : null;
-    if (mk === 'elem' && L.includes('teachE')) return 'teachE';
-    if (['kedu', 'medu'].includes(mk) && L.includes('teachS')) return 'teachS';
-    if (c.track === 'pro') return L.includes('cpa') && ['biz', 'econ'].includes(mk) ? 'cpa' : L.find(k => ['tax', 'labor', 'cpa'].includes(k)) || L[0];
-    for (const k of ['9l', '9n', 'police', 'fire', '7']) if (L.includes(k)) return k;
-    return L[0] || null;
-  }
-  const certFor = s => { const mj = JOBS.majorOf(s) || (s.edu.uni ? ADMISSIONS.prog(s.edu.uni.p) : null); if (!mj) return 'comp';
-    if (['ee', 'elec', 'me', 'civil', 'arch', 'mse', 'che'].includes(mj.mk)) return 'elec';
-    if (['cs', 'semi', 'math', 'phys'].includes(mj.mk) || mj.field === '공학') return 'jip';
-    if (['biz', 'econ', 'trade'].includes(mj.mk)) return 'acct';
-    if (mj.field === '예체능') return 'portfolio';
-    return 'comp'; };
-  const passed = (s, key) => s.prep.results.some(r => r.key === key && r.pass);
-  function plan(s) {
-    const st = stageOf(s), e = s.edu, c = s.career, a = age(s), m = s.clock.m, q = s.family.quintile, out = [];
-    const force = s.meta.prepForce, sn = force ? { light: 'light', steady: 'steady', full: 'full' }[force] : null;
-    if (st === 'mid') {
-      out.push(pick(s, 'naesinM', { method: minorMethod(s, 'naesinM') }));
-      const k = ADMISSIONS.schoolK(s);
-      if (k === 8 && q >= 3 && ADMISSIONS.midPct(s) <= 25) out.push(pick(s, 'tokmok', { method: minorMethod(s, 'tokmok') }));
-    } else if (st === 'high') {
-      const voc = !!DATA.HS_TYPES[e.hs.type].vocational, k = ADMISSIONS.schoolK(s);
-      if (voc) { out.push(pick(s, 'naesinH', { method: 'self', int: 'light' })); if (!passed(s, 'vocCert')) out.push(pick(s, 'vocCert', { method: 'self' })); }
-      else {
-        const sub = key => pick(s, key, { method: minorMethod(s, key), int: sn || 'steady' });
-        if (k < 11 || m < 8) out.push(pick(s, 'naesinH', { method: minorMethod(s, 'naesinH') }));
-        if (e.track === 'arts') out.push(pick(s, 'silgi', { method: 'academy' }));
-        out.push(sub('snMath'), sub('snEng'), sub('snKor'));
-        if (k >= 11 && m >= 8) out.push(sub('snSci'));
-      }
-    } else if (st === 'retake') {
-      const meth = e.retakeMode === 'academy' || e.banSu ? (q >= 4 && !e.banSu ? 'boarding' : 'academy') : q >= 3 ? 'online' : 'self';
-      for (const key of ['snKor', 'snMath', 'snEng', 'snSci']) out.push(pick(s, key, { method: meth, int: sn || (e.banSu ? 'steady' : 'full') }));
-    } else if (st === 'univ') {
-      const u = e.uni;
-      out.push(pick(s, 'gpa', { method: 'self' }));
-      if (proj(s, 'lic') || BY.lic.when(s)) out.push(pick(s, 'lic', { method: 'online', int: 'steady' }));
-      else if (c.track === 'exam' || c.track === 'pro') { const k = mainExam(s); if (k) out.push(pick(s, 'ex_' + k, { method: 'online', int: 'light' })); }   // alongside the last year; full time after graduation
-      else if (u.year >= 2 && u.type !== '특수') {
-        if (!langOk(s, 700)) out.push(pick(s, 'toeic', { method: 'online', int: u.year >= 3 ? 'steady' : 'light' }));
-        if (u.year >= 3) { const ck = certFor(s); if (!passed(s, ck)) out.push(pick(s, ck, { method: 'online', int: 'light' })); if (u.year >= u.years && out.length < 4) out.push(pick(s, 'ncs', { method: 'online', int: 'light' })); }
-      }
-    } else if (st === 'exam') {
-      const k = mainExam(s);
-      if (k) out.push(pick(s, 'ex_' + k, { method: MONEY.liquid(s) >= 3000 ? 'academy' : 'online', int: 'full' }));
-      if (k && EXAM_GROUP[k] === 'pub' && !passed(s, 'hist')) out.push(pick(s, 'hist', { method: 'online', int: 'light' }));
-    } else if (st === 'seek') {
-      const lv = JOBS.level(s);
-      if (a >= 50) out.push(pick(s, s.person.sex === 'F' || s.person.traits.social >= 55 ? 'care' : 'forklift', { method: 'academy' }));
-      else if (['univ', 'grad', 'phd', 'college'].includes(lv) && c.track !== 'work') {
-        if (!langOk(s, 700) && lv !== 'college') out.push(pick(s, 'toeic', { method: 'online' }));
-        const ck = certFor(s); if (!passed(s, ck)) out.push(pick(s, ck, { method: 'online', int: 'light' }));
-        out.push(pick(s, 'interview', { method: 'group', int: 'light' }));
-      } else if (!s.person.license && a < 45) out.push(pick(s, 'drive', { method: 'academy', int: 'light' }));
-    } else if (st === 'work' && c.job) {
-      const x = DATA.JOB_X[c.job.id];
-      if (x.ladder === 'corp' && c.job.rank >= 1 && RNG.hash32(s.seed + ':promo:' + s.clock.y) / 4294967296 < 0.15) out.push(pick(s, 'promo', { method: 'self', int: 'light' }));
+  // ---------------- effort ----------------
+  // which talents a focus point feeds (게임 설정)
+  function feeds(s, act) {
+    const f = s.arts && s.arts.on ? s.arts.field : null;
+    switch (act) {
+      case 'study': case 'grades': case 'exam': case 'jobexam': case 'self': return { study: 1 };
+      case 'sport': case 'health': return { sport: 1 };
+      case 'hobby': return f === 'idol' || f === 'acting' || f === 'writing' ? { expr: 1 } : f === 'film' ? { art: 0.5, expr: 0.5 } : { art: 0.7, expr: 0.3 };
+      case 'art': return f === 'sport' ? { sport: 1 } : f === 'idol' ? { expr: 0.6, art: 0.4 } : f === 'acting' || f === 'writing' ? { expr: 1 } : f === 'film' ? { art: 0.5, expr: 0.5 } : { art: 1 };
+      case 'play': case 'love': case 'social': case 'family': return { rel: 1 };
+      case 'extra': return { expr: 0.6, rel: 0.4 };
+      case 'spec': return { study: 0.5, expr: 0.5 };
+      case 'parttime': case 'work': return { rel: 0.3 };
+      default: return null;
     }
-    return out.slice(0, limit(s)).filter(p => BY[p.key] && BY[p.key].when(s));
   }
-  const langOk = (s, min) => lang(s) >= min;
-  function apply(s, want) {
-    const P = s.prep, keep = new Set(want.map(w => w.key));
-    for (const p of P.list) if (!keep.has(p.key)) P.mem[p.key] = p.m;
-    const old = Object.fromEntries(P.list.map(p => [p.key, p]));
-    P.list = want.map(w => old[w.key] ? Object.assign(old[w.key], { method: w.method, int: w.int }) : newProj(s, w));
+  // organised training on an arts or sports path counts like focus points while at school (게임 설정; a team or a
+  // trainee programme is hours a day on top of the five points)
+  const TRAIN = { trainee: 2.4, team: 2.6, hs: 1.6, major: 1.2, lessons: 1, school: 1, track: 0.6, parallel: 0.6 };
+  function points(s) {
+    const out = Object.fromEntries(KEYS.map(k => [k, 0]));
+    for (const [act, n] of Object.entries(s.focus.alloc)) { const f = feeds(s, act); if (f && n) for (const k in f) out[k] += f[k] * n; }
+    const A = s.arts;
+    if (A && A.on && TRAIN[A.mode] && (ARTS.youthNow(s) || ARTS.studentNow(s))) { const f = feeds(s, 'art'); for (const k in f) out[k] += f[k] * TRAIN[A.mode]; }
+    return out;
   }
-  function newProj(s, w) {
-    const m0 = s.prep.mem[w.key] || 0;
-    delete s.prep.mem[w.key];
-    return { key: w.key, method: w.method, int: w.int, m: m0, since: mi(s), hrs: 0, spent: 0, fails: 0, mock: null, last: null };
-  }
-  // 재수·N수: what was learned carries over at 80% (§3.2)
-  function carry(s, f) { for (const k of ['snKor', 'snMath', 'snEng', 'snSci']) { const p = proj(s, k); if (p) p.m *= f; else if (s.prep.mem[k]) s.prep.mem[k] *= f; } }
-
-  // ---------------- tests ----------------
-  const sig = x => 1 / (1 + Math.exp(-x));
-  const testMonth = (p, m) => p.months === 'all' || (Array.isArray(p.months) && p.months.includes(m));
-  function dayCond(s, R) { const st = s.stats; return R.normal(0, 6) - (st.stress > 75 ? 5 : 0) - (st.health < 35 ? 5 : 0); }
-  function passP(s, p, m) {   // the shown forecast and the real chance share this curve
-    const def = BY[p.key];
-    if (def.kind === 'exam') return examP(def.exam, m, s);
-    if (def.kind === 'contest') return sig((m - 62) / 10) * 0.8;
-    if (def.kind === 'promo') return sig((m - 55) / 10);
-    if (def.kind === 'gradAdm') return sig((m - 55) / 10) * 0.9;
-    if (def.kind === 'license') return sig((m - 40) / 8);
-    return sig((m - (def.cut || 60)) / 10);
-  }
-  const toeicOf = (m, n) => clamp(Math.round((290 + 6.6 * m + n * 4) / 5) * 5, 10, 990);
-  const SPEAK = ['NL', 'IL', 'IM1', 'IM2', 'IM3', 'IH', 'AL'];
-  const speakOf = (m, n) => SPEAK[clamp(Math.floor((m + n * 0.6) / 14), 0, 6)];
-  function record(s, r) {
-    const P = s.prep;
-    P.results.push(r);
-    if (P.results.length > 80) P.results.splice(0, P.results.length - 80);
-    P.news.push(r); if (P.news.length > 5) P.news.shift();
-  }
-  function fee(s, amt, why) { if (amt > 0) pay(s, amt, why); }
-  function sit(s, p, R) {
-    const def = BY[p.key], y = s.clock.y, m = s.clock.m, c = s.career;
-    fee(s, def.fee || 0, `${def.name} 응시료`);
-    const n = dayCond(s, R);
-    P_tests(s, { key: p.key, hrs: Math.round(p.hrs) });
-    if (def.kind === 'score') {
-      const sc = toeicOf(p.m, n / 6 * 8 + R.normal(0, 4));
-      p.last = { y, m, t: `${sc}점` };
-      record(s, { key: p.key, name: def.name, y, m, score: sc, label: `${sc}점`, exp: mi(s) + 24, pass: true });
-      if (sc >= 800 && !s.prep.mem['toeic800']) { s.prep.mem['toeic800'] = 1; mem(s, `토익 ${sc}점 성적표를 받은 날`, 52); }
-      return;
+  // how fast the same focus builds effort (never a direct addition to the score): family income, 사교육, a 학원 nearby
+  const NEAR = { '대도시': 1.12, '대도시권 시': 1.06, '중소도시': 0.96, '농어촌': 0.84 };
+  function paceOf(s, k) {
+    const q = s.family.quintile, E = s.person.env, near = NEAR[s.person.place.type] || 1, grown = age(s) >= 19;
+    const inc = grown ? 1 + ([0.82, 0.9, 1, 1.08, 1.16][q - 1] - 1) * 0.5 : [0.82, 0.9, 1, 1.08, 1.16][q - 1];
+    const priv = E.privateEd / 100, tutor = s.edu && s.edu.childhood && s.edu.childhood.tutor != null && age(s) < 19 ? [0.95, 1, 1.08][s.edu.childhood.tutor] : 1;
+    const lessons = s.arts && s.arts.on && ['lessons', 'trainee', 'team', 'school', 'hs', 'major'].includes(s.arts.mode) ? 1.15 : 1;
+    let p;
+    switch (k) {
+      case 'study': p = inc * (0.8 + 0.4 * priv) * tutor * near * (s.edu && s.edu.stage === 'retake' && s.edu.retakeMode === 'academy' ? 1.1 : 1); break;
+      case 'art': p = inc * (0.9 + 0.2 * priv) * (1 + (near - 1) * 0.7) * lessons; break;
+      case 'sport': p = Math.sqrt(inc) * (s.person.place.type === '농어촌' ? 0.95 : 1) * lessons; break;
+      case 'expr': p = Math.sqrt(inc) * (0.95 + 0.1 * priv) * (1 + (near - 1) * 0.5) * (s.arts && s.arts.on && ['idol', 'acting', 'writing'].includes(s.arts.field) ? lessons : 1); break;
+      default: p = 1;
     }
-    if (def.kind === 'level') {
-      const lv = speakOf(p.m, n + R.normal(0, 6));
-      p.last = { y, m, t: lv };
-      record(s, { key: p.key, name: def.name, y, m, label: lv, exp: mi(s) + 24, pass: SPEAK.indexOf(lv) >= 3, lvl: SPEAK.indexOf(lv) });
-      return;
-    }
-    const pr = passP(s, p, clamp(p.m + n, 0, 100)), ok = R.chance(pr);
-    s.prep.tests[s.prep.tests.length - 1].pass = ok;
-    if (!ok) {
-      p.fails++; p.last = { y, m, t: '불합격' };
-      record(s, { key: p.key, name: def.name, y, m, label: '불합격', pass: false });
-      if (p.fails === 3) mem(s, `${def.name} 시험장을 세 번째로 나서던 날`, 45);
-      return;
-    }
-    p.last = { y, m, t: '합격' };
-    const label = def.kind === 'contest' ? R.pick(['입선', '장려상', '우수상']) : def.kind === 'promo' ? '통과' : '합격';
-    record(s, { key: p.key, name: def.name, y, m, label, pass: true });
-    if (def.cert && !c.spec.certs.includes(def.cert)) c.spec.certs.push(def.cert);
-    if (def.kind === 'license') s.person.license = true;
-    if (def.kind === 'contest') { (s.person.awards = s.person.awards || []).push({ y, name: `공모전 ${label}` }); p.m *= 0.6; return; }
-    if (def.kind === 'promo') { if (c.job) c.job.promoBonus = y; finish(s, p); return; }
-    if (def.kind === 'gradAdm') { c.gradPlan = y + 1; STATE.note(s, 'prep', `대학원 입시에 합격했다. ${y + 1}년 3월부터 석사과정을 다니게 된다.`); finish(s, p); mem(s, '대학원 합격 문자를 받은 날', 60); return; }
-    mem(s, `${def.name} 합격 문자를 받은 날`, def.tier === 'gisa' ? 62 : 50);
-    finish(s, p);
+    return clamp(p, 0.6, 1.6);
   }
-  function P_tests(s, t) { const T = s.prep.tests; T.push(Object.assign({ y: s.clock.y }, t)); if (T.length > 60) T.shift(); }
-  function finish(s, p) { s.prep.list = s.prep.list.filter(x => x !== p); }
-  const mem = (s, text, w) => { if (typeof MEMORY !== 'undefined') MEMORY.add(s, { text, w, icon: 'book', kind: 'moment' }); };
-  function pay(s, amt, why) {
-    s.prep.spent += amt; s.prep.spentY += amt;
-    if (minorPays(s)) {
-      s.family.wealth = Math.max(0, s.family.wealth - amt);
-      // §3.8: the parents feel it when the fees are a stretch (once a year)
-      if (!s.family.orphan && s.family.wealth < amt * 24 && s.prep.strainY !== s.clock.y) { s.prep.strainY = s.clock.y; STATE.note(s, 'prep', '밤늦게 부모님이 학원비 이야기를 하시는 소리가 들렸다.'); SIM.stats.applyFx(s, { st: 2 }); }
-    } else if (s.money) MONEY.charge(s, amt, why);
-  }
-
-  // mock tests: 6월·9월 모의평가 for 수능 subjects; a noisy 기출 풀이 band for the rest (§3.5)
-  function mock(s, R) {
-    const subs = s.prep.list.filter(p => BY[p.key].kind === 'suneung');
-    if (!subs.length) return;
-    const z0 = ADMISSIONS.zn(s), out = [];
-    for (const p of subs) { const pct = ADMISSIONS.topOf(z0 + areaZ(s, BY[p.key].area) + R.normal(0, 0.3)); const g = ADMISSIONS.grade9(pct); p.mock = { y: s.clock.y, m: s.clock.m, t: `${g}등급` }; out.push(`${BY[p.key].area} ${g}`); }
-    STATE.note(s, 'prep', `${s.clock.m}월 모의평가 · ${out.join(' · ')}등급`);
-  }
-
-  // ---------------- the month ----------------
+  // growth law (게임 설정): G × points × pace × (1 − (E/50)³) a month; a talent left without points loses DECAY of its effort a month
+  const G = 0.15, DECAY = 0.012, FROM = 6;
   SIM.on('month', s => {
-    const P = s.prep;
-    if (!P || age(s) < 12 || (s.career && s.career.status === 'prison') || (s.career && s.career.status === 'military')) return;
-    const R = RNG.stream(s, 'prep'), now = mi(s), st = s.stats, T = s.person.traits;
-    if (P.auto) { const want = plan(s), sg = want.map(w => `${w.key}:${w.method}:${w.int}`).join('|'); if (sg !== P.sig) { P.sig = sg; apply(s, want); } }
-    // drop projects that no longer fit the stage (a finished school year, a job found)
-    P.list = P.list.filter(p => { const ok = BY[p.key].when(s); if (!ok) P.mem[p.key] = p.m; return ok; });
-    // forgetting (§3.5): untouched work fades about 2.5 points a month; records and certificates do not
-    for (const k in P.mem) { if (BY[k]) { P.mem[k] = Math.max(0, P.mem[k] - 2.5); if (P.mem[k] <= 0) delete P.mem[k]; } }
-    const { f } = hours(s), resting = now < P.restUntil;
-    const cond = st.stress > 80 || st.health < 30 ? 0.5 : 1;
-    let cost = 0;
-    for (const p of P.list) {
-      const def = BY[p.key], I = INT[p.int], M = METHODS[p.method];
-      const h = resting ? 0 : I.h * f * WEEKS;
-      const apt = def.apt === 'talent' ? Math.max(T.artistic, T.physical) : T[def.apt];
-      const fit = 0.6 + 0.8 * clamp(apt / 100, 0, 1);
-      // 독학 rewards aptitude and discipline (§3.4)
-      const eff = p.method === 'self' ? 0.8 * (0.85 + 0.3 * ((T.academic + (100 - T.impulsive)) / 200)) : M.eff * (p.method === 'academy' && s.person.place.type === '농어촌' ? 0.92 : 1);
-      if (h > 0) p.m = Math.min(100, p.m + h * eff * fit * cond * Math.pow(1 - p.m / 100, 1.3) * kOf(def));
-      else p.m = Math.max(0, p.m - 2.5);
-      p.hrs += h;
-      const c = methodCost(s, p); cost += c; p.spent += c;
-      // strain (§3.8): 몰입 and 기숙학원 wear on stress and fitness; a 스터디 softens it
-      SIM.stats.applyFx(s, { st: I.st + (p.method === 'boarding' ? 0.6 : 0) - (p.method === 'group' ? 0.1 : 0), fit: I.fit, rel: p.method === 'group' ? 0.3 : p.method === 'boarding' ? -0.3 : 0 });
-      if (def.kind !== 'suneung' && def.kind !== 'exam' && h > 0) p.mock = { y: s.clock.y, m: s.clock.m, t: BANDS[band(clamp(p.m + R.normal(0, 8), 0, 100))] };
+    const T = s.talent;
+    if (!T) return;
+    const now = s.clock.y * 12 + s.clock.m;
+    // reveals arrive on their schedule
+    for (const k of KEYS) while (T.rev[k] < 4 && T.plan[k][T.rev[k]] <= now) reveal(s, k, null);
+    if (T.frozen || age(s) < FROM) return;
+    if (s.career && (s.career.status === 'prison' || (s.career.status === 'military' && !(s.arts && s.arts.on)))) return;
+    const P = points(s);
+    for (const k of KEYS) {
+      const pace = paceOf(s, k), e = T.eff[k];
+      T.pace[k] = Math.round(pace * 100) / 100; T.pts[k] = Math.round(P[k] * 10) / 10;
+      T.eff[k] = P[k] >= 0.3 ? Math.min(50, e + G * P[k] * pace * (1 - Math.pow(e / 50, 3))) : Math.max(0, e * (1 - DECAY));
     }
-    if (cost > 0) pay(s, cost, '준비 비용 (학원·인강·교재)');
-    // burnout (§3.8): three months over 85 force a month of rest
-    P.burn = st.stress > 85 && P.list.length ? P.burn + 1 : 0;
-    if (P.burn >= 3) {
-      P.burn = 0; P.restUntil = now + 1;
-      YEARLY6.force(s, { kind: 'mile', key: 'health', m: s.clock.m, sig: 72, text: '책상 앞에 앉아도 글자가 눈에 들어오지 않았다. 한 달 동안 공부를 내려놓고 쉬기로 했다.', fx: { st: -15, h: -2 }, road: 'rain' });
-    }
-    // tests on their schedules (§3.6)
-    for (const p of P.list.slice()) {
-      const def = BY[p.key], months = now - p.since;
-      if (def.kind === 'finish' && p.m >= 60) {
-        record(s, { key: p.key, name: def.name, y: s.clock.y, m: s.clock.m, label: '수료', pass: true });
-        if (p.key === 'intern') { s.career.spec.intern += 3; mem(s, '인턴 마지막 날, 출입증을 반납했다', 50); }
-        if (p.key === 'farm') s.person.farmEdu = true;
-        finish(s, p); continue;
-      }
-      if (!['pass', 'score', 'level', 'contest', 'promo', 'gradAdm', 'license'].includes(def.kind) || !testMonth(def, s.clock.m) || months < 1) continue;
-      if (def.kind === 'score' || def.kind === 'level') { if (p.m >= 15 && (!p.last || (s.clock.y * 12 + s.clock.m) - (p.last.y * 12 + p.last.m) >= 3)) sit(s, p, R); continue; }
-      // sit once reasonably ready; after a failure wait three months before trying again
-      if (p.lastSit != null && now - p.lastSit < 3) continue;
-      // most book the next session once they have started (§3.10: many sit before they are ready)
-      if (months >= 1 && (p.m >= 15 || months >= 4)) { p.lastSit = now; sit(s, p, R); }
-    }
-    if (s.edu && (((s.edu.stage === 'high' && ADMISSIONS.schoolK(s) === 11) || s.edu.stage === 'retake' || s.edu.banSu) && (s.clock.m === 6 || s.clock.m === 9))) mock(s, R);
-    // a year's fees in the ledger, once (Amendment 1)
-    if (s.clock.m === 12 && P.spentY >= 300 && s.money && !minorPays(s)) s.money.ledger.push({ y: s.clock.y, text: `준비 비용 (${s.clock.y}년)`, amt: -Math.round(P.spentY) });
-    if (s.clock.m === 12) P.spentY = 0;
-  }, 34);
+  }, 31);
+  // the first job freezes effort for every gate after it
+  function freeze(s) {
+    const T = s.talent;
+    if (!T || T.frozen) return;
+    T.frozen = { y: s.clock.y, m: s.clock.m, age: age(s), eff: Object.fromEntries(KEYS.map(k => [k, Math.round(T.eff[k])])) };
+  }
 
-  // ---------------- effects on outcomes (§3.7) ----------------
-  // what an unattended life brings to each use (measured with runMany; 게임 설정)
-  // Projects every such life prepares are centred (more or less than usual moves the result either way); optional
-  // ones only add above the level a life that takes them up on its own reaches (OPT).
-  const C = { naesinM: 85, naesinH: 44, snKor: 53, snMath: 50, snEng: 59, snSci: 24, gpa: 72, tokmok: 54, silgi: 31, nonsul: 0, record: 0, ncs: 62, interview: 76, essay: 0, portfolio: 50 };   // ncs/interview: about the top quarter of what lives reach on their own
-  const OPT = new Set(['tokmok', 'silgi', 'nonsul', 'record', 'ncs', 'interview', 'essay', 'portfolio']);
-  const AREA = { 국어: 'snKor', 수학: 'snMath', 영어: 'snEng', 탐구: 'snSci' };
-  const TRACK_W = { scieng: { 수학: 1.3, 탐구: 1.1, 국어: 0.8, 영어: 0.8 }, med: { 수학: 1.3, 탐구: 1.2, 국어: 0.8, 영어: 0.7 }, humsoc: { 국어: 1.3, 영어: 1.1, 수학: 0.8, 탐구: 0.8 } };
-  const term = (s, key) => { if (!s.prep) return 0; const d = mOf(s, key) - C[key]; return OPT.has(key) ? Math.max(0, d) : d; };
-  function areaZ(s, area) { return 0.02 * term(s, AREA[area]); }
-  // the overall 수능 standing is built from the four subjects, weighted by track (§3.7)
-  function suneungZ(s) {
-    if (!s.prep) return 0;
-    const W = TRACK_W[s.edu.track] || {}, A = Object.keys(AREA);
-    let t = 0, w = 0;
-    for (const a of A) { const x = W[a] || 1; t += x * areaZ(s, a); w += x; }
-    return t / w;
+  // ---------------- reading the numbers ----------------
+  const talentOf = (s, k) => s.person.talents[k];
+  const effortOf = (s, k) => s.talent.frozen ? s.talent.frozen.eff[k] : Math.round(s.talent.eff[k]);
+  const score = (s, k) => talentOf(s, k) + effortOf(s, k);
+  const WORD = t => t >= 38 ? '눈에 띈다' : t >= 30 ? '곧잘 한다' : t >= 20 ? '평범하다' : t >= 12 ? '서툰 편이다' : '많이 서툴다';
+  // what the player knows: { step, lo, hi, word }
+  function known(s, k) {
+    const st = s.talent.rev[k], t = talentOf(s, k);
+    if (st <= 0) return { step: 0, lo: 0, hi: 50, word: '아직 모른다' };
+    if (st >= 4) return { step: 4, lo: t, hi: t, word: WORD(t) };
+    const w = st === 1 ? 12 : st === 2 ? 8 : 3, u = hash(s, k + 'off' + st);
+    let lo = Math.round(t - u * 2 * w); lo = clamp(lo, 0, 50 - 2 * w);
+    return { step: st, lo, hi: lo + 2 * w, word: WORD(t) };
   }
-  const naesinZ = (s, mid) => 0.012 * term(s, mid ? 'naesinM' : 'naesinH');
-  const recordD = s => 0.5 * term(s, 'record') / 50;
-  const nonsulZ = s => 0.02 * term(s, 'nonsul');
-  const interviewHS = s => 0.004 * term(s, 'record');
-  const silgiT = s => clamp(term(s, 'silgi') / 5, -8, 12);
-  const tokmokMult = s => clamp(1 + 0.01 * term(s, 'tokmok'), 0.6, 1.6);
-  const gpaD = s => 0.008 * term(s, 'gpa');
-  // hiring: the best valid 토익 or the older 스펙 estimate; scores older than two years do not count (§3.5)
-  function lang(s) {
-    const sp = s.career.spec, now = mi(s);
-    const best = s.prep ? Math.max(0, ...s.prep.results.filter(r => r.key === 'toeic' && r.exp > now).map(r => r.score)) : 0;
-    // a valid score counts above the older estimate, half-weighted (게임 설정, keeps the calibrated 서류 scale)
-    return sp.lang + 0.5 * Math.max(0, best - sp.lang);
-  }
-  const certTier = name => { const d = CAT.find(p => p.cert === name); return d ? d : null; };
-  // relevant certificates count, the first most (×0.5 each after); unrelated ones barely (§3.7)
-  function certScore(s, jobId) {
-    const W = s.career.spec.certs.map(n => { const d = certTier(n); const rel = d && d.helps && d.helps.includes(jobId); return rel ? (d.tier === 'gisa' ? 0.06 : d.tier === 'mid' ? 0.045 : 0.04) : 0.012; }).sort((a, b) => b - a);   // 게임 설정, on the old 0.05-per-certificate scale
-    return Math.min(0.12, W.reduce((x, w, i) => x + w * Math.pow(0.5, i), 0));
-  }
-  const certFit = (s, jobId) => s.career.spec.certs.some(n => { const d = certTier(n); return d && d.helps && d.helps.includes(jobId); }) || (s.person.license && BY.drive.helps.includes(jobId));
-  function docExtra(s, jobId) {
-    if (!s.prep) return 0;
-    const now = mi(s), sp = s.prep.results.filter(r => r.key === 'speak' && r.exp > now).reduce((x, r) => Math.max(x, r.lvl), 0);
-    const awards = (s.person.awards || []).filter(a => /공모전/.test(a.name)).length;
-    return 0.002 * term(s, 'essay') + (BY.portfolio.helps.includes(jobId) ? 0.0015 * term(s, 'portfolio') : 0)
-      + (sp >= 3 ? (BY.speak.helps.includes(jobId) ? 0.06 : 0.02) : 0) + 0.03 * Math.min(2, awards);
-  }
-  const ncsZ = s => 0.02 * term(s, 'ncs');
-  const interviewMult = s => clamp(1 + 0.006 * term(s, 'interview'), 0.7, 1.35);
-  // exam tracks (§3.7): logistic around a cutoff set by competition; an average candidate a year at 몰입 ≈ 24%, ≈ 55% within two (game setting: a notch under §3.7's 60% to hold the Appendix C rows)
-  function examP(k, m, s) {
-    const off = EXAM_X[k] ? EXAM_X[k][1] : 0, att = s && s.career.exam ? Math.min(3, s.career.exam.attempts) : 0;
-    return clamp(sig((m - (85 + off)) / 20 + 0.1 * att), 0.003, 0.95);
-  }
-  // mastery for an exam: its own project, or part of a related one (공무원 → 공무원 · 공기업 NCS partly)
-  function examMastery(s, k) {
-    if (!s.prep) return null;
-    const own = mOf(s, 'ex_' + k);
-    if (own > 0) return own;
-    let best = 0;
-    for (const [kk, g] of Object.entries(EXAM_GROUP)) { const v = mOf(s, 'ex_' + kk); if (v > 0) best = Math.max(best, v * (g === EXAM_GROUP[k] ? 0.35 : 0.15)); }
-    return best;
-  }
-  const licP = s => { const m = mOf(s, 'lic'); return m > 0 ? 0.85 + 0.14 * m / 100 : null; };
-  // the retrack card: mastery that transfers when the player switches (§3.8)
-  function transfer(s, fromKey, toKey, share) { const m = mOf(s, fromKey) * share; if (m <= 0) return; const p = proj(s, toKey); if (p) p.m = Math.max(p.m, m); else s.prep.mem[toKey] = Math.max(s.prep.mem[toKey] || 0, m); }
-  const onExamPass = (s, k) => { const p = proj(s, 'ex_' + k); record(s, { key: 'ex_' + k, name: JOBS.EXAMS[k].name, y: s.clock.y, m: s.clock.m, label: '최종 합격', pass: true, prepY: p ? (mi(s) - p.since) / 12 : null }); if (p) finish(s, p); };
-  const onExamFail = (s, k) => { const p = proj(s, 'ex_' + k); if (p) p.fails++; };
+  const shown = (s, k) => s.talent.rev[k] >= 1;
 
-  // ---------------- readers for the UI ----------------
-  function nextTest(s, p) {
-    const def = BY[p.key], y = s.clock.y, m = s.clock.m;
-    if (def.kind === 'suneung') return s.edu.examYear ? `${s.edu.examYear}년 11월 수능` : '수능';
-    if (def.kind === 'exam') return '1월 원서 · 8월 발표';
-    if (def.kind === 'cont' || def.kind === 'finish') return null;
-    if (def.months === 'all') return '매달';
-    const nx = def.months.find(x => x > m);
-    return nx ? `${y}년 ${nx}월` : `${y + 1}년 ${def.months[0]}월`;
+  // ---------------- reveals: childhood moments that narrow the word toward the number ----------------
+  const LINES = {
+    study: {
+      hi: ['받아쓰기 시험지를 본 담임 선생님이 「한 번 들으면 잊지 않는 아이」라고 하셨다.', '수학 익힘책의 어려운 문제를 혼자 풀었다. 선생님이 풀이를 칠판에 옮겨 적었다.', '진단평가 결과지를 받아 든 {부모|이/가} 두 번 읽었다.', '담임 선생님이 상담 날 「공부 쪽으로 키워 보셔도 좋겠다」고 하셨다.'],
+      mid: ['선생님이 알림장에 「차근차근 잘 따라옵니다」라고 적어 주셨다.', '단원평가에서 반 평균보다 조금 높은 점수를 받았다.', '모르는 문제를 끝까지 붙잡고 있다가 결국 풀었다.'],
+      lo: ['받아쓰기에서 또 몇 개를 틀렸다. 선생님이 「천천히 해도 괜찮다」고 하셨다.', '구구단 7단에서 자꾸 막혔다. 저녁마다 {부모|와/과} 다시 외웠다.', '시험지를 받아 들고 한참 동안 첫 문제만 보았다.'],
+    },
+    sport: {
+      hi: ['운동회 달리기에서 1등을 했다. 손등에 찍힌 도장을 오래 들여다보았다.', '체육 선생님이 「육상부 해 볼 생각 없니」라고 물었다.', '반 대항 피구에서 끝까지 살아남았다. 친구들이 이름을 불렀다.'],
+      mid: ['줄넘기 급수 시험을 한 번에 통과했다.', '운동회 계주에서 바통을 놓치지 않고 넘겼다.', '체력 측정에서 대부분 보통 등급을 받았다.'],
+      lo: ['운동회 달리기에서 꼴찌로 들어왔다. 그래도 끝까지 뛰었다.', '철봉에 매달려 버티는 시간이 반에서 가장 짧았다.', '공이 날아오면 자꾸 눈을 감았다.'],
+    },
+    art: {
+      hi: ['그린 그림이 교실 뒤 게시판 한가운데 걸렸다.', '미술 시간에 선생님이 그림을 들고 반 친구들에게 보여 주었다.', '한 번 들은 노래를 피아노로 더듬더듬 따라 쳤다. 선생님이 놀란 얼굴이었다.'],
+      mid: ['만들기 숙제를 끝까지 꼼꼼하게 마쳤다. 색이 고르게 칠해져 있었다.', '리코더 시험을 무사히 통과했다.', '그림일기의 그림을 보고 {부모|이/가} 웃었다.'],
+      lo: ['그림을 그리다 말고 지우개로 다 지워 버렸다.', '음악 시간에 박자를 자꾸 놓쳤다.', '만들기 시간에 풀이 손에만 잔뜩 묻었다.'],
+    },
+    expr: {
+      hi: ['학예회에서 맡은 대사를 또박또박 말하자 박수가 길게 이어졌다.', '일기장을 읽은 선생님이 「글에 마음이 담겼다」고 적어 주셨다.', '발표 시간에 손을 들고 이야기를 끝까지 조리 있게 했다.'],
+      mid: ['독서 감상문을 제때 냈다. 선생님이 밑줄을 두 군데 그어 주셨다.', '학예회에서 짧은 대사 하나를 맡았다.', '책을 소리 내어 읽는 차례에 한 번도 막히지 않았다.'],
+      lo: ['발표 차례가 오자 목소리가 기어들어 갔다.', '일기장에 「오늘은 재미있었다」 한 줄만 적었다.', '학예회 대사를 잊어버려 친구가 대신 말해 주었다.'],
+    },
+    rel: {
+      hi: ['쉬는 시간마다 친구들이 자리로 모여들었다.', '새 학기 첫날, 처음 보는 아이들과 금방 친해졌다.', '싸운 두 친구 사이에서 먼저 말을 걸어 화해를 시켰다.'],
+      mid: ['짝꿍과 사이좋게 한 학기를 보냈다.', '모둠 활동에서 맡은 몫을 해냈다.', '생일 파티에 친구 몇 명이 찾아왔다.'],
+      lo: ['쉬는 시간에 혼자 책상에 앉아 있는 날이 많았다.', '모둠을 짤 때 마지막까지 이름이 불리지 않았다.', '친구에게 먼저 말을 걸려다 그만두었다.'],
+    },
+  };
+  // step text: how the talent shows itself; the result is the next step of knowledge
+  function reveal(s, k, why) {
+    const T = s.talent;
+    if (T.rev[k] >= 4) return;
+    T.rev[k]++;
+    if (why) { const nx = T.plan[k][T.rev[k] - 1]; if (nx > s.clock.y * 12 + s.clock.m) T.plan[k].splice(T.rev[k] - 1, 1, s.clock.y * 12 + s.clock.m); }
+    const t = talentOf(s, k), band = t >= 32 ? 'hi' : t >= 19 ? 'mid' : 'lo', R = RNG.stream(s, 'talentReveal');
+    const kn = known(s, k);
+    const what = kn.step >= 4 ? `${NAME[k]} 재능 ${t}` : kn.step === 1 ? `${NAME[k]} 재능 · ${kn.word}` : `${NAME[k]} 재능 ${kn.lo}~${kn.hi}`;
+    const text = `${R.pick(LINES[k][band])} (${what})`;
+    const forced = age(s) >= 4 && YEARLY6.force(s, { kind: 'mile', key: 'talent', m: s.clock.m, sig: 66, text, fx: band === 'hi' ? { hap: 2 } : band === 'lo' ? { st: 1 } : {}, road: band === 'hi' ? 'gift' : null, good: band === 'hi' && kn.step >= 3 });
+    if (!forced) STATE.note(s, 'talent', text);
   }
-  function forecast(s, p) {
-    const def = BY[p.key];
-    if (def.kind === 'score') { const lo = toeicOf(p.m, -8), hi = toeicOf(p.m, 8); return `예상 ${lo}~${hi}점`; }
-    if (def.kind === 'level') return `예상 ${speakOf(p.m, -6)}~${speakOf(p.m, 6)}`;
-    if (['cont', 'suneung', 'finish'].includes(def.kind)) return null;
-    const P = passP(s, p, p.m);
-    return `지금 이대로면 합격 가능성: ${P < 0.3 ? '낮음' : P < 0.6 ? '반반' : '높음'}`;
+
+  // ---------------- gates ----------------
+  const gate = (k, floor, cut, name) => ({ k, floor, cut, name });
+  // a university programme's typical admitted student (top %) → [talent floor, cutoff]; the 서울대 and 의대 rows are
+  // the user's anchors (서울대 44 / 92, 의대 48 / 99), the rest follow the cohort's measured 고3 distribution (게임 설정)
+  const ANCH = [[0.2, 48, 99], [0.63, 44, 92], [1.5, 41, 89], [3, 38, 86], [6, 35, 80], [12, 31, 74], [25, 26, 63], [45, 20, 54], [70, 10, 44], [100, 0, 18]];
+  function byPct(pct) {
+    const x = Math.log(clamp(pct, ANCH[0][0], 100));
+    for (let i = 1; i < ANCH.length; i++) {
+      const a = ANCH[i - 1], b = ANCH[i];
+      if (x <= Math.log(b[0])) { const f = (x - Math.log(a[0])) / (Math.log(b[0]) - Math.log(a[0])); return [Math.round(a[1] + f * (b[1] - a[1])), Math.round(a[2] + f * (b[2] - a[2]))]; }
+    }
+    return [0, 18];
   }
-  const studying = s => !!s.prep && s.prep.list.some(p => p.int !== 'light');
-  const hagwon = s => !!s.prep && s.prep.list.some(p => p.method === 'academy' || p.method === 'boarding');
-  const available = s => CAT.filter(p => p.when(s));
-  return { CAT, BY, METHODS, INT, BANDS, band, migrate, proj, mOf, limit, fullOk, hours, points, methodCost, plan, apply, newProj, carry, nextTest, forecast,
-    suneungZ, areaZ, naesinZ, recordD, nonsulZ, interviewHS, silgiT, tokmokMult, gpaD, lang, certScore, certFit, docExtra, ncsZ, interviewMult,
-    examP, examMastery, licP, transfer, onExamPass, onExamFail, studying, hagwon, available, stageOf, EXAM_GROUP, C, H_PER_POINT };
+  // the cohort's top % for a 고3-level score (the cutoff column read backwards)
+  function pctOfScore(sc) {
+    if (sc >= ANCH[0][2]) return ANCH[0][0];
+    for (let i = 1; i < ANCH.length; i++) {
+      const a = ANCH[i - 1], b = ANCH[i];
+      if (sc >= b[2]) { const f = (a[2] - sc) / (a[2] - b[2]); return Math.exp(Math.log(a[0]) + f * (Math.log(b[0]) - Math.log(a[0]))); }
+    }
+    return 100;
+  }
+  const MED = { md: gate('study', 48, 99, '의예'), dds: gate('study', 45, 94, '치의예'), pharm: gate('study', 40, 87, '약학') };
+  const ART_TAL = { vd: 'art', music: 'art', film: 'expr', pe: 'sport' };
+  function progGates(p) {
+    if (p.__g) return p.__g;
+    const out = [];
+    if (MED[p.mk]) out.push(Object.assign({}, MED[p.mk], { name: `${p.uni} ${p.dept}` }));
+    else if (ART_TAL[p.mk]) {
+      // 실기 programmes read the field's own talent at the university's own standing (an arts major is no side door
+      // into a university), plus a lighter 수능 gate outside the arts universities
+      const [f, c] = byPct(p.type === '예술' ? p.band : p.uc);
+      out.push(gate(ART_TAL[p.mk], f, c, `${p.uni} ${p.dept} 실기`));
+      if (p.type !== '예술') { const [f2, c2] = byPct(Math.min(100, p.uc * 4)); out.push(gate('study', Math.round(f2 * 0.6), Math.round(c2 * 0.8), `${p.uni} 수능`)); }
+    } else {
+      // a four-year university has one gate for its ordinary majors (from its place in Appendix B); 전문대 majors differ
+      const [f, c] = byPct(p.type === '전문대' ? p.band : p.uc);
+      out.push(gate('study', f, c, p.type === '전문대' ? `${p.uni} ${p.dept}` : p.uni));
+    }
+    if (p.type === '특수') out.push(gate('sport', 24, 58, `${p.uni} 체력 검사`));
+    Object.defineProperty(p, '__g', { value: out, enumerable: false });
+    return out;
+  }
+  const HS_G = { gifted: gate('study', 42, 88, '영재학교'), sci: gate('study', 38, 80, '과학고'), auto: gate('study', 31, 70, '자사고'), fl: gate('expr', 31, 68, '외국어고'), intl: gate('expr', 30, 67, '국제고'),
+    arts: gate('art', 27, 58, '예술고'), sports: gate('sport', 27, 58, '체육고'), meister: gate('study', 18, 48, '마이스터고') };
+  const EXAM_G = { '9n': gate('study', 25, 70, '국가직 9급'), '9l': gate('study', 25, 70, '지방직 9급'), '7': gate('study', 32, 80, '7급 공채'), '5': gate('study', 42, 91, '5급 공채'),
+    police: gate('sport', 27, 70, '경찰 순경'), fire: gate('sport', 27, 69, '소방 공채'), teachE: gate('study', 24, 64, '초등 임용'), teachS: gate('study', 32, 79, '중등 임용'),
+    cpa: gate('study', 40, 88, '공인회계사'), tax: gate('study', 36, 84, '세무사'), labor: gate('study', 35, 82, '공인노무사'), bar: gate('study', 33, 80, '변호사시험') };
+  const LIC_G = { md: gate('study', 0, 82, '의사 국가시험'), dds: gate('study', 0, 80, '치과의사 국가시험'), pharm: gate('study', 0, 72, '약사 국가시험'), nurse: gate('study', 0, 44, '간호사 국가시험'), 'c-nurse': gate('study', 0, 42, '간호사 국가시험'), pt: gate('study', 0, 42, '물리치료사 국가시험') };
+  const SCHOOL_G = { 로스쿨: gate('study', 38, 86, '법학전문대학원 (LEET)'), 석사: gate('study', 26, 66, '대학원 석사과정'), 박사: gate('study', 34, 80, '대학원 박사과정') };
+  const ARTS_G = { pro: gate('sport', 42, 90, '프로 구단 입단'), team: gate('sport', 36, 82, '실업팀 입단'), agency: gate('expr', 40, 86, '대형 기획사 연습생'), agencyFic: gate('expr', 28, 62, '기획사 연습생'),
+    orchestra: gate('art', 42, 90, '오케스트라 단원'), spring: gate('expr', 40, 88, '신춘문예 등단'), pd: gate('expr', 36, 84, '방송사 PD 공채') };
+  // a first job through an ordinary application: the talent the work reads, and a cutoff by how hard the door is (DATA.JOB_X tier)
+  const JOB_TAL = { study: [1, 3, 4, 6, 7, 8, 9, 10, 12, 13, 15, 17, 20, 21, 22, 46, 47, 48, 49], rel: [2, 16, 19, 39, 41, 60, 61, 62, 64, 65, 67], sport: [5, 14, 18, 32, 59, 68, 69, 70, 71, 72, 73, 74, 75, 76, 86], art: [50, 51, 52, 56, 57, 58, 63, 85], expr: [11, 31, 53, 54, 55, 81, 82, 83, 87] };
+  const JOB_K = {}; for (const [k, ids] of Object.entries(JOB_TAL)) for (const id of ids) JOB_K[id] = k;
+  // how much harder employers make it for each field's graduates (게임 설정, calibrated to Appendix C's first-year rates)
+  const FIELD_OFF = { 인문: 8, 사회: 0, 교육: 2, 공학: 11, 자연: 9, 의약: 2, 예체능: 16 };
+  // With a person, the cutoff also reads the major: a degree outside the job's fields raises it by 5, and each field has its own
+  // offset (FIELD_OFF).
+  function jobGate(id, s) {
+    const x = DATA.JOB_X[id];
+    if (!x || !x.tier || !JOB_K[id]) return null;
+    let cut = 40 + 50 * x.tier;
+    const mj = s && JOBS.majorOf(s);
+    if (mj && x.hire !== 'ncs') cut += (x.fields.length && !x.fields.includes(mj.field) ? 5 : 0) + (FIELD_OFF[mj.field] || 0);
+    return gate(JOB_K[id], Math.round(6 + 32 * x.tier), Math.min(99, Math.round(cut)), DATA.JOBS[id - 1].name);
+  }
+  const meets = (s, g) => !g || (talentOf(s, g.k) >= g.floor && score(s, g.k) >= g.cut);
+  const meetsAll = (s, gs) => gs.every(g => meets(s, g));
+  // what a form shows: the cutoff and the floor once that talent has shown itself
+  function label(s, g) {
+    if (!g) return '';
+    return shown(s, g.k) ? `${NAME[g.k]} 재능 ${g.floor} · 점수 ${g.cut} 이상` : `${NAME[g.k]} 기준 (재능이 드러나면 보인다)`;
+  }
+  function shortfall(s, g) {
+    if (!g || meets(s, g)) return null;
+    if (!shown(s, g.k)) return `${NAME[g.k]} 기준에 못 미친다`;
+    return talentOf(s, g.k) < g.floor ? `${NAME[g.k]} 재능이 ${g.floor}에 못 미친다` : `${NAME[g.k]} 점수 ${score(s, g.k)} · ${g.cut} 필요`;
+  }
+
+  // ---------------- the next cutoff for each talent (the stats panel's marker) ----------------
+  function candidates(s, k) {
+    const e = s.edu, st = e ? e.stage : 'pre', c = s.career, out = [];
+    if (['pre', 'elem', 'mid'].includes(st)) { for (const g of Object.values(HS_G)) if (g.k === k) out.push(g); }
+    if (['pre', 'elem', 'mid', 'high', 'retake', 'post'].includes(st) || (e && e.banSu)) {
+      const seen = new Set();
+      for (const p of ADMISSIONS.programs()) { const g = progGates(p)[0]; if (g.k === k && !seen.has(g.cut) && p.type !== '전문대') { seen.add(g.cut); out.push(g); } }
+    }
+    if (s.arts && s.arts.on && !(e && ['pre', 'elem'].includes(st))) {
+      const f = s.arts.field;
+      if (f === 'sport') { const x = DATA.ARTS.subs.sport[s.arts.sub]; out.push(x && x.pro === 'team' ? ARTS_G.team : ARTS_G.pro); }
+      if (f === 'idol') out.push(ARTS_G.agencyFic, ARTS_G.agency);
+      if (f === 'music' && s.arts.sub === 'classic') out.push(ARTS_G.orchestra);
+      if (f === 'writing') out.push(ARTS_G.spring);
+      if (f === 'film' && s.arts.sub === 'broadcast') out.push(ARTS_G.pd);
+    }
+    if (c && ['univ', 'grad', 'work', 'leave'].includes(st) || (c && c.status === 'exam')) {
+      if (c.exam || c.track === 'exam' || c.track === 'pro') for (const kk of JOBS.examList(s)) if (EXAM_G[kk] && EXAM_G[kk].k === k) out.push(EXAM_G[kk]);
+      for (const id of Object.keys(JOB_K)) { const g = jobGate(+id, s); if (g && g.k === k && ['corp', 'ncs', 'open', 'grad'].includes(DATA.JOB_X[id].hire)) out.push(g); }
+    }
+    return out.filter(g => g.k === k);
+  }
+  function nextGate(s, k) {
+    if (s.talent.frozen) return null;
+    const L = candidates(s, k).sort((a, b) => a.cut - b.cut), sc = score(s, k), t = talentOf(s, k);
+    // the nearest one not yet met that the talent can reach; otherwise the hardest one already met
+    return L.find(g => !meets(s, g) && t >= g.floor) || L.filter(g => meets(s, g)).pop() || L.find(g => !meets(s, g)) || null;
+  }
+
+  // ---------------- standing among peers (내신 and the 수능 read the 공부 score) ----------------
+  // the cohort's mean and spread of the 공부 score by school year 0 (초1) … 11 (고3), measured with runMany (게임 설정)
+  const COHORT = [[27.5, 8.3], [30.2, 9.1], [32.8, 10.1], [35.5, 11.1], [38, 12], [40.6, 12.8], [43, 13.5], [45.4, 14.1], [47.7, 14.5], [49.8, 14.8], [51.8, 14.9], [53.7, 14.9]];
+  // the score is first carried to its 고3 equivalent, then read through the cutoff table, so a standing shown on a form
+  // and the gates that form lists agree
+  function z(s) {
+    const k = clamp(ADMISSIONS.schoolK(s), 0, 11), [m, sd] = COHORT[k], [m11, sd11] = COHORT[11];
+    const sc = m11 + (score(s, 'study') - m) / sd * sd11;
+    return clamp(ADMISSIONS.zOfTop(pctOfScore(sc)), -3.5, 3.5);
+  }
+
+  return { KEYS, NAME, roll, legacy, migrate, freeze, points, paceOf, feeds, talentOf, effortOf, score, known, shown, reveal, WORD,
+    gate, byPct, pctOfScore, progGates, jobGate, meets, meetsAll, label, shortfall, nextGate, candidates, z, COHORT,
+    HS: HS_G, EXAM: EXAM_G, LIC: LIC_G, SCHOOL: SCHOOL_G, ARTS: ARTS_G, ANCH, G, DECAY };
 })();
 
 // ===== MODULE: ARTS =====
@@ -7960,10 +7780,9 @@ const ARTS = (() => {
     serious: 0,          // how readily an eligible twelve-year-old takes a path seriously on their own
     adjMin: 38,          // 실력 needed before lessons and session work pay (in-field side work)
     adjRate: 52,         // in-field side work a focus point a month (만 원); ordinary part-time pays 30
-    draftMid: 74, draftW: 5.2,   // KBO draft: the applicant's 실력 at a one-in-two chance and the spread (target 8.7% of applicants)
-    proP: { contract: 0.16, test: 0.12, team: 0.32, draft: 0.3 },   // first contract outside the KBO draft, at an average 실력
-    fadeBase: 0.05, disband: 0.15, cutYear: 0.12, debutYear: 0.17,
-    leave: 0.24, form: 0.24,      // the 「흐름에 맡긴다」 weights of decision 7
+    // drafts and first contracts are fixed gates on 운동 talent + effort (TALENT.ARTS)
+    fadeBase: 0.075, disband: 0.15, cutYear: 0.12, debutYear: 0.17,
+    leave: 0.38, form: 0.24,      // the 「흐름에 맡긴다」 weights of decision 7
     injury: 0.006,       // an athlete's monthly chance of an injury (a third of them serious)
   };
 
@@ -8006,7 +7825,7 @@ const ARTS = (() => {
     if (hint === 'sport') return 'sport';
     const sc = {
       sport: T.physical + (ch.interest === 'physical' ? 10 : 0) + (ch.after === 'sport' ? 6 : 0) + 2,
-      music: 0.7 * T.artistic + 0.3 * T.logical + 2, idol: 0.5 * T.artistic + 0.5 * T.social + 5, acting: 0.4 * T.artistic + 0.3 * T.social + 0.3 * T.verbal + 6,
+      music: 0.7 * T.artistic + 0.3 * T.logical + 2, idol: 0.4 * T.artistic + 0.4 * T.verbal + 0.2 * T.social + 5, acting: 0.25 * T.artistic + 0.15 * T.social + 0.6 * T.verbal + 6,
       visual: 0.7 * T.artistic + 0.3 * T.logical + 3 + (ch.after === 'art' ? 4 : 0), webtoon: 0.6 * T.artistic + 0.4 * T.verbal + 2, writing: 0.85 * T.verbal + 0.15 * T.academic - 4, film: 0.4 * T.artistic + 0.3 * T.logical + 0.3 * T.verbal + 6,
     };
     if (hint === 'art') delete sc.sport;
@@ -8034,7 +7853,7 @@ const ARTS = (() => {
     const first = !A.ever;
     Object.assign(A, { on: true, ever: true, field, sub: A.field === field && A.sub ? A.sub : subFor(s, field), entry, mode: mode || entry, since: s.clock.y, sinceAge: age(s),
       stage: 'aspire', stageY: s.clock.y, left: null, rej: 0 });
-    if (first) { const T = s.person.traits; A.resolve = Math.round(clamp(60 + (T.artistic + T.physical) / 10 - T.stressSens / 8 + R(s).normal(0, 8), 35, 92)); A.sk = [Math.round(clamp(8 + aptOf(s) / 5 + (s.edu.practice.art + s.edu.practice.sport) / 8, 5, 40)), Math.round(clamp(6 + aptOf(s) / 6, 4, 32))]; }
+    if (first) { const T = s.person.traits; A.resolve = Math.round(clamp(54 + (T.artistic + T.physical) / 10 - T.stressSens / 8 + R(s).normal(0, 8), 35, 92)); A.sk = [Math.round(clamp(8 + aptOf(s) / 5 + (s.edu.practice.art + s.edu.practice.sport) / 8, 5, 40)), Math.round(clamp(6 + aptOf(s) / 6, 4, 32))]; }
     if (c) { c.track = 'arts'; if (adultOn(s) && ['none', 'seeking', 'rest'].includes(c.status)) { c.status = 'art'; c.seekFrom = null; c.round = null; } }
     // the people who open doors (§4 연줄): a teacher or coach, and the others on the same road
     if (first && s.people.length < 40) STATE.newPerson(s, { role: 'mentor', label: MENTOR[field], by: s.person.birth.y - R(s).int(14, 30), bm: R(s).int(1, 12), rel: R(s).int(55, 70), met: PEERS[field], metY: s.clock.y });
@@ -8145,7 +7964,7 @@ const ARTS = (() => {
     const A = s.arts, m = s.clock.m, a = age(s);
     if (!A.org) {
       // an agency audition once a year until one says yes
-      if (m === 4 && a >= 11) { const pass = r.chance(sig((E(s) + (s.person.traits.social - 50) / 3 - 34) / 6) * 0.55); if (pass) DECISIONS.offer(s, 'artsOffer', { kind: 'agency', offers: agencyOffers(s, r) }); else { A.rej++; A.resolve = clamp(A.resolve - 3, 0, 100); STATE.note(s, 'arts', '기획사 오디션에서 떨어졌다. 대기실에서 같은 번호표를 든 아이들이 많았다.'); } }
+      if (m === 4 && a >= 11) { const pass = TALENT.meets(s, TALENT.ARTS.agencyFic); if (pass) DECISIONS.offer(s, 'artsOffer', { kind: 'agency', offers: agencyOffers(s, r) }); else { A.rej++; A.resolve = clamp(A.resolve - 3, 0, 100); STATE.note(s, 'arts', '기획사 오디션에서 떨어졌다. 대기실에서 같은 번호표를 든 아이들이 많았다.'); } }
       return;
     }
     if (m % 3 === 0) STATE.note(s, 'arts', `월말 평가. ${r.pick(['보컬 점수가 지난번보다 조금 올랐다.', '안무 동선을 한 박자 놓쳤다.', '평가가 끝나고 연습실 거울 앞에 오래 앉아 있었다.', '트레이너가 「요즘 많이 늘었다」고 짧게 말했다.'])}`);
@@ -8159,7 +7978,7 @@ const ARTS = (() => {
   }
   function agencyOffers(s, r) {
     const out = [];
-    if (r.chance(0.18 + 0.1 * Math.max(0, skZ(s)))) out.push({ name: r.pick(O.agency), real: true, years: 7, settle: '데뷔 뒤 비용을 회수한 다음부터 정산', note: '연습 일정이 촘촘하고 평가가 엄격하다' });
+    if (TALENT.meets(s, TALENT.ARTS.agency)) out.push({ name: r.pick(O.agency), real: true, years: 7, settle: '데뷔 뒤 비용을 회수한 다음부터 정산', note: '연습 일정이 촘촘하고 평가가 엄격하다' });
     out.push({ name: r.pick(O.agencyFic), real: false, years: 7, settle: '데뷔 비용을 먼저 갚고 나서 7:3 정산 (조건이 불리하다)', note: '데뷔를 서두르는 작은 회사다' });
     return out;
   }
@@ -8169,17 +7988,24 @@ const ARTS = (() => {
   function proTry(s, r, when) {
     const A = s.arts, x = sportX(s);
     if (A.sub === 'baseball') { draft(s, r, when); return; }
-    const p = clamp(K.proP[x.pro] * Math.exp(1.25 * skZ(s)), 0.01, 0.85);
-    if (r.chance(p)) { signPro(s, r, when, null); return; }
+    // a first contract is a fixed gate (TALENT): 프로 구단 and 투어 시드 read 운동 42 · 90, a 실업팀 36 · 82
+    if (TALENT.meets(s, TALENT.ARTS[x.pro === 'team' ? 'team' : 'pro'])) { signPro(s, r, when, null); return; }
+    // a footballer short of the pros but at the 실업팀 gate signs with a semi-pro club in the home city (K3·K4; same fixed gate)
+    if (x.pro === 'contract' && TALENT.meets(s, TALENT.ARTS.team)) {
+      const pl = s.person.place;
+      signPro(s, r, when, { name: `${pl.sgg.replace(/(시|군|구)$/, '')}${pl.sgg.endsWith('군') ? '청' : '시청'} 실업팀`, real: true, region: pl.short, league: '실업팀', pay: Math.round(x.pay[0] * 0.6) });
+      return;
+    }
     A.rej++; A.resolve = clamp(A.resolve - 5, 0, 100);
     const what = x.pro === 'draft' ? `${x.league} 드래프트` : x.pro === 'test' ? '프로 테스트' : x.pro === 'team' ? '실업팀 입단 테스트' : '프로 구단 입단 테스트';
     STATE.note(s, 'arts', `${what}에서 이번에도 이름이 불리지 않았다.`);
     if (x.pro === 'draft') DECISIONS.offer(s, 'artsUndrafted', { when });
   }
-  // the KBO draft: 1,261 applied and 110 were picked in the 2026 draft (8.7%, §9) — the odds sit on that share
+  // the KBO draft (1,261 applied and 110 were picked in 2026, 8.7%, §9) is the 프로 구단 gate: 운동 재능 42 · 점수 90;
+  // the round follows how far above the cutoff the score sits
   function draft(s, r, when) {
-    const A = s.arts, p = clamp(sig((E(s) - K.draftMid) / K.draftW), 0.002, 0.95), ok = r.float() < p;
-    A.drafts.push({ y: s.clock.y, when, p: Math.round(p * 10000) / 10000, ok });
+    const A = s.arts, ok = TALENT.meets(s, TALENT.ARTS.pro), over = TALENT.score(s, 'sport') - TALENT.ARTS.pro.cut, p = ok ? clamp(0.3 + over / 12, 0.3, 0.95) : 0;
+    A.drafts.push({ y: s.clock.y, when, p: ok ? 1 : 0, ok });
     if (!ok) {
       A.rej++; A.resolve = clamp(A.resolve - 7, 0, 100);
       mile(s, '신인 드래프트 날, 휴대전화를 손에 쥐고 중계를 끝까지 보았다. 이름은 불리지 않았다.', 82, { hap: -7, st: 6 }, 'rain', false, 'kboDraft');
@@ -8249,12 +8075,12 @@ const ARTS = (() => {
     // the season of each field
     if (A.stage === 'aspire') {
       if (A.field === 'sport' && m === 8 && a <= (A.sub === 'golf' ? 30 : 25) && !(A.org && A.org.kind === 'indep' && A.sub !== 'baseball')) proTry(s, r, A.org ? 'indep' : 'adult');
-      if (A.field === 'writing' && m === 1 && r.chance(0.012 * Math.exp(1.4 * skZ(s)))) firstStep(s, r, 'spring');
+      if (A.field === 'writing' && m === 1 && TALENT.meets(s, TALENT.ARTS.spring)) firstStep(s, r, 'spring');   // 신춘문예: a fixed gate (TALENT)
       if (A.field === 'idol' && A.org && A.org.kind === 'agency') trainee(s, r);
       if (A.field === 'idol' && !A.org && m === 4 && a <= 23) trainee(s, r);
     }
-    if (A.field === 'music' && A.sub === 'classic' && ['aspire', 'active', 'fade'].includes(A.stage) && !(A.org && A.org.salary) && m === 6 && r.chance(0.008 * Math.exp(1.3 * skZ(s)))) orchestra(s, r);
-    if (A.field === 'film' && A.sub === 'broadcast' && A.stage === 'aspire' && m === 10 && r.chance(0.07 * Math.exp(skZ(s)))) firstStep(s, r, 'pd');
+    if (A.field === 'music' && A.sub === 'classic' && ['aspire', 'active', 'fade'].includes(A.stage) && !(A.org && A.org.salary) && m === 6 && TALENT.meets(s, TALENT.ARTS.orchestra)) orchestra(s, r);
+    if (A.field === 'film' && A.sub === 'broadcast' && A.stage === 'aspire' && m === 10 && TALENT.meets(s, TALENT.ARTS.pd)) firstStep(s, r, 'pd');
     // §6.3 — an audition programme, at most twice in a life
     if (['idol', 'acting'].includes(A.field) || (A.field === 'music' && A.sub === 'pop')) {
       if (a >= 17 && a <= 28 && ['aspire', 'fade'].includes(A.stage) && (A.asked.aud || 0) < 2 && m === 5 && !(A.org && A.org.real) && r.chance(0.12)) { A.asked.aud = (A.asked.aud || 0) + 1; DECISIONS.offer(s, 'artsAudition', {}); }
@@ -8633,7 +8459,6 @@ const ARTS = (() => {
       works: A.works.slice(-10).reverse(), pts: pts(s), youth: youthNow(s), student: studentNow(s) };
   }
   // the 실기 of an arts or sports high school and of a university's 실기 전형 count the path's practice (ADMISSIONS.talent)
-  const talentBonus = s => on(s) ? clamp((E(s) - 30) / 5, 0, 8) : 0;
   // the call-up waits until 28 for someone working in the field (게임 설정); athletes may serve in 상무
   const deferAge = s => adultOn(s) && ['first', 'active', 'leap'].includes(s.arts.stage) ? 28 : 22;
   const sangmu = s => on(s) && s.arts.field === 'sport' && s.arts.stage !== 'aspire' && s.arts.stage !== 'second' && E(s) >= 60;
@@ -8696,7 +8521,8 @@ const ARTS = (() => {
     auto(s, item) {
       const T = s.person.traits, f = item.ctx.field, r = C(s), ch = s.edu.childhood, q = s.family.quintile;
       const t = f === 'sport' ? T.physical : f === 'writing' ? T.verbal : T.artistic;
-      const p = clamp(K.serious + (t - 60) / 180 + (['artistic', 'physical'].includes(ch.interest) ? 0.05 : 0) + (q >= 4 ? 0.03 : q <= 1 ? -0.03 : 0), 0.02, 0.5);
+      // an exceptional talent (TALENT 40 and above) is far more often taken seriously: coaches and teachers notice (게임 설정)
+      const p = clamp(K.serious + (t - 68) / 180 + Math.max(0, t - 80) / 30 + (['artistic', 'physical'].includes(ch.interest) ? 0.05 : 0) + (q >= 4 ? 0.03 : q <= 1 ? -0.03 : 0), 0.02, 0.6);
       if (!r.chance(p)) return 'hobby';
       const keys = item.opts.map(o => o.key).filter(k => k !== 'hobby');
       return r.weighted(keys, k => ({ team: 0.45, trainee: 0.35, school: 0.2, lessons: 0.35, parallel: 0.35 })[k] || 0.2);
@@ -8926,7 +8752,7 @@ const ARTS = (() => {
     },
     note: s => NOTE(s),
   };
-  return { K, sample, on, adultOn, is, practiceAct, youthNow, studentNow, enter, enterBy, eligible, fieldFor, resume, afterService, afterGrad, deferAge, sangmu, talentBonus,
+  return { K, sample, on, adultOn, is, practiceAct, youthNow, studentNow, enter, enterBy, eligible, fieldFor, resume, afterService, afterGrad, deferAge, sangmu,
     label, youthTag, view, aud, stageWord, manages, leavePath, toSecond, setStage, firstStep, leap, fade, lastGame, placeJob, signPro, proTry, title, bare, jo, E, skZ, sportX, subName, isOffice, FDof, pts, mem, mile, work, station, agencyOffers, trainee, R };
 })();
 
@@ -9292,8 +9118,7 @@ const SAVE = (() => {
       const raw = localStorage.getItem(KEY);
       if (!raw) return { status: 'none' };
       const o = JSON.parse(raw);
-      // a version-8 life gains the empty 준비 state (prep patch) and carries on
-      if (o && o.v === 8 && o.state && o.state.person) { PREP.migrate(o.state); o.v = DATA.SAVE_VERSION; }
+      if (o && o.v >= 8 && o.v < DATA.SAVE_VERSION && o.state && o.state.person) { TALENT.migrate(o.state); o.v = DATA.SAVE_VERSION; }   // an older life gains talents and effort (TALENT)
       if (!o || o.v !== DATA.SAVE_VERSION || !o.state || !o.state.person) return { status: 'outdated' };
       if (!o.state.person.alive) return { status: 'none' };
       return { status: 'ok', state: o.state, savedAt: o.savedAt };
@@ -11456,7 +11281,7 @@ void main() {
     } else {
       const over = {};
       if (running) Object.assign(over, { top: 20, bot: ctx.seasonKey === 'winter' ? 2 : 4, botT: ctx.seasonKey === 'summer' ? 'shorts' : 'pants', outer: null, oLong: 0, bag: null, umb: null, pose: 'swing', scarf: null, shoes: 8, sleeve: ctx.seasonKey === 'summer' ? 'short' : 'long' });
-      else if ((['study', 'grades', 'spec', 'self', 'exam', 'jobexam'].includes(top) && age >= 7) || (age >= 12 && PREP.studying(s))) over.book = 1;   // books under the arm (prep patch)
+      else if ((['study', 'grades', 'spec', 'self', 'exam', 'jobexam'].includes(top) && age >= 7) || (age >= 12 && TALENT.points(s).study >= 2)) over.book = 1;   // books under the arm when study takes two points or more
       else if (['work', 'career'].includes(top) && age >= 19) { over.bag = 'brief'; over.bagC = 1; }
       if ((top === 'invest' || (sc.phoneUntil && sc.t < sc.phoneUntil)) && age >= 13 && !running) over.pose = 'phone';
       const self = specFor(me, P.sex, age, ctx, gait, { over });
@@ -12259,7 +12084,7 @@ const UI = (() => {
     renderStatus();
     renderFamily();
     renderWork();
-    renderMoney(); renderMemory(); renderMarket(); renderPrep(true);
+    renderMoney(); renderMemory(); renderMarket();
     $('ev-stack').replaceChildren(); $('recap-slot').replaceChildren();
     renderLog();
     renderTop();
@@ -12272,7 +12097,6 @@ const UI = (() => {
     setSaveStatus(SAVE.available ? 'saved' : 'off');
     lastT = performance.now();
     tod = ((S.clock.m - 1) + S.clock.frac) / 12;
-    if (S.prep) S.prep.news.length = 0;   // results from before this visit stay in 「준비」 and 이력, not as slips
     SIM.clock.attach(S, { frame: renderFrame, tick: onTick, pending: onPending });
     applyMode();
     // turn mode: a life saved at a year's end reopens on that year's card
@@ -12292,7 +12116,7 @@ const UI = (() => {
     const now = performance.now(), dt = Math.min(0.1, (now - lastT) / 1000);
     lastT = now;
     const ym = S.clock.y * 12 + S.clock.m;
-    if (ym !== shownYM) { shownYM = ym; renderTop(); renderTimelinePos(); renderStatus(); renderWork(); renderMarket(); renderPrep(); if (S.clock.m % 3 === 0) renderMoney(); }
+    if (ym !== shownYM) { shownYM = ym; renderTop(); renderTimelinePos(); renderStatus(); renderWork(); renderMarket(); if (S.clock.m % 3 === 0) renderMoney(); }
     if (S.log.length !== shownLog) { renderLog(); }
     const fk = `${S.clock.y}|${S.clock.m}|${S.people.filter(p => p.alive).length}|${S.people.length}`;
     if (fk !== famKey) { famKey = fk; renderFamily(); renderStatus(); }
@@ -12313,7 +12137,7 @@ const UI = (() => {
     const CJ = S.career && S.career.job, look = CJ ? RENDER.workLook(S, age) : null;
     const low = S.career && S.career.status === 'prison' ? 'prison' : S.down && S.down.low;
     const place = low ? low : E.stage === 'univ' ? 'univ' : E.stage === 'retake' || E.banSu || (S.career && S.career.status === 'exam') ? 'retake' : E.stage === 'high' && E.examYear === S.clock.y && S.clock.m >= 6 && S.clock.m <= 11 ? 'exam'
-      : look === 'office' ? 'office' : look === 'coat' || look === 'scrubs' ? 'clinic' : look === 'apron' || (CJ && CJ.biz != null) ? 'shop' : S.prep && PREP.hagwon(S) && age < 30 ? 'study' : null;
+      : look === 'office' ? 'office' : look === 'coat' || look === 'scrubs' ? 'clinic' : look === 'apron' || (CJ && CJ.biz != null) ? 'shop' : null;
     const AR = S.arts, artF = ARTS.on(S) && !low && (ARTS.youthNow(S) || ARTS.studentNow(S) || (S.career && S.career.status === 'art')) ? AR.field : null;
     const crowd = artF && !ARTS.youthNow(S) ? (AR.stage === 'leap' ? 2.4 : AR.stage === 'active' || AR.stage === 'first' ? Math.max(0, (AR.rec - 20) / 40) : 0) : 0;
     sc.setWorld({ type: pl.type, coastal: pl.coastal, seed: RNG.hash32(pl.sido + pl.sgg), age: Math.floor(age), focus: cast.top, place, cat: S.people.some(p => p.species === 'cat' && p.alive && p.household), artF, crowd });
@@ -12522,8 +12346,7 @@ const UI = (() => {
     const panel = $('panel-status'), age = STATE.age(S);
     const set = SIM.stats.focusSet(age);
     const acts = set ? SIM.stats.actsFor(set, age, S) : [['play', '놀이'], ['rest', '휴식'], ['study', '배움'], ['hobby', '그리기·노래']];
-    const child = S.edu.childhood;
-    const key = (set ? set.key : 'early') + '|' + acts.length + '|' + child.revealed.join(',') + '|' + child.tutor;
+    const key = (set ? set.key : 'early') + '|' + acts.length;
     if (key !== statusKey) {
       statusKey = key;
       const rows = acts.map(([k, name]) => el('div', { class: 'frow', 'data-k': k },
@@ -12535,8 +12358,12 @@ const UI = (() => {
         el('div', { class: 'stats', id: 'stat-rows' }, DATA.STAT_DEFS.map(d => el('div', { class: 'stat', 'data-k': d.key },
           icon(d.icon, '#9AA3AE'), el('span', { text: d.name }), el('span', { class: 'bar' }, el('i')), el('span', { class: 'w' })))),
         el('p', { class: 'sub', id: 'health-words' }),
-        el('p', { class: 'sub', text: child.revealed.map(k => `${({ logical: '논리', verbal: '언어', artistic: '예술', physical: '신체' })[k]} 적성 · ${S.person.traits[k] >= 65 ? '두드러짐' : S.person.traits[k] >= 45 ? '꾸준히 자라는 중' : '천천히 익히는 중'}`).join(' / ') }),
-        child.revealed.length ? gameTag() : null,
+        el('div', { class: 'tal-head' }, el('h3', { text: '재능 · 노력' }), el('span', { class: 'sub', id: 'tal-note' })),
+        el('div', { class: 'tal', id: 'tal-rows' }, DATA.TALENTS.map(d => el('div', { class: 'trow', 'data-k': d.key, style: `--tc:${d.color}` },
+          el('span', { class: 'tname' }, d.name, el('small', { text: d.sub })),
+          el('span', { class: 'tbar', role: 'img' }, el('i', { class: 't' }), el('i', { class: 'r' }), el('i', { class: 'e' }), el('b')),
+          el('span', { class: 'tw' })))),
+        el('p', { class: 'tlegend' }, el('span', {}, el('i'), '재능'), el('span', {}, el('i', { class: 'e' }), '노력'), el('span', {}, el('i', { class: 'c' }), '다음 관문'), gameTag()),
         el('div', { class: 'focus-head' }, el('h3', { text: set ? '집중 · 다섯 점' : '부모님이 정한 하루' }), el('span', { class: 'dots', id: 'focus-left' })),
         el('div', { class: 'focus', id: 'focus-rows' }, rows),
         el('p', { class: 'fnote', id: 'focus-note', text: set ? '' : '만 7세부터 직접 정할 수 있습니다.' }));
@@ -12555,6 +12382,7 @@ const UI = (() => {
     });
     const hw = S.health ? HEALTH.words(S) : [];
     $('health-words').textContent = hw.length ? `건강 기록 · ${hw.join(', ')}` : '';
+    renderTalents(panel);
     const alloc = S.focusNext || S.focus.alloc, used = Object.values(alloc).reduce((a, b) => a + b, 0);
 
     const top = SIM.stats.topFocus(S);
@@ -12569,6 +12397,31 @@ const UI = (() => {
     const note = $('focus-note');
     if (set) { note.textContent = S.focusNext ? '다음 달부터 적용' : ''; note.classList.toggle('on', !!S.focusNext); }
   }
+  // 재능 · 노력: each talent as far as it has shown itself, its effort stacked on top, and the next gate's cutoff
+  function renderTalents(panel) {
+    const T = S.talent, fz = T.frozen;
+    $('tal-note').textContent = fz ? `노력 고정 · 만 ${fz.age}세 첫 직장부터` : STATE.age(S) < 6 ? '노력은 만 6세부터 쌓인다' : '점수 = 재능 + 노력 (최대 100)';
+    for (const row of panel.querySelectorAll('.trow')) {
+      const k = row.dataset.k, kn = TALENT.known(S, k), eff = TALENT.effortOf(S, k), raw = fz ? eff : T.eff[k];
+      const mid = kn.step >= 4 ? kn.lo : kn.step ? (kn.lo + kn.hi) / 2 : 0;
+      const [t, r, e] = row.querySelectorAll('i'), cut = row.querySelector('b');
+      t.style.width = mid + '%';
+      r.hidden = kn.step >= 4;
+      r.style.left = kn.lo + '%'; r.style.width = (kn.hi - kn.lo) + '%';
+      e.style.left = mid + '%'; e.style.width = raw + '%';
+      const g = TALENT.shown(S, k) ? TALENT.nextGate(S, k) : null, ok = g && TALENT.meets(S, g);
+      cut.hidden = !g;
+      if (g) { cut.style.left = g.cut + '%'; cut.className = ok ? 'met' : ''; cut.title = `${g.name} · ${TALENT.label(S, g)}`; }
+      const tw = row.querySelector('.tw'), name = TALENT.NAME[k];
+      const tText = kn.step === 0 ? '재능 아직 모름' : kn.step === 1 ? `재능 ${kn.word}` : kn.step < 4 ? `재능 ${kn.lo}~${kn.hi}` : `재능 ${kn.lo}`;
+      const sum = kn.step >= 4 ? ` = 점수 ${kn.lo + eff}` : '';
+      tw.replaceChildren(el('b', { text: tText }), ` · 노력 ${eff}${sum}`,
+        g ? el('div', {}, `다음 관문 · ${g.name} (${TALENT.label(S, g)})`, ok ? el('span', { class: 'ok', text: ' · 충족' }) : null) : null);
+      const pts = T.pts[k] || 0, pace = T.pace[k] || 1;
+      row.title = fz ? `${name} · 첫 직장 이후 노력은 관문에 쓰이지 않습니다` : `${name} · 이번 달 집중 ${pts}점 · 노력이 쌓이는 속도 ×${pace} (가구 소득·사교육·지역, 게임 설정)${pts < 0.3 ? ' · 점수를 주지 않으면 노력이 조금씩 줄어든다' : ''}`;
+      row.querySelector('.tbar').setAttribute('aria-label', `${name} ${tText}, 노력 ${eff}${g ? `, 다음 관문 ${g.name} ${g.cut}` : ''}`);
+    }
+  }
   function adjustFocus(k, d) {
     if (!S) return;
     const cur = Object.assign({}, S.focusNext || S.focus.alloc);
@@ -12577,7 +12430,7 @@ const UI = (() => {
     if (d < 0 && !(cur[k] > 0)) return;
     cur[k] = (cur[k] || 0) + d;
     S.focusNext = cur;
-    renderStatus(); renderPrep();
+    renderStatus();
   }
 
   // ---------- event cards, recap strip, stage card ----------
@@ -12672,11 +12525,7 @@ const UI = (() => {
       if (C.job) jobs.push(`${ymOf(C.job.start)} – 재직 중 · ${C.job.emp} ${C.job.title}${JOBS.rankTitle(C.job) ? ' ' + JOBS.rankTitle(C.job) : ''}`);
       if (jobs.length) rows.push(row('경력', el('div', {}, jobs.slice(-6).map(t => el('div', { text: t }))), jobs.length > 6 ? el('div', { class: 'sub', text: `그 밖에 ${jobs.length - 6}곳` }) : null));
       const certs = C.spec.certs;
-      // prep patch §3.9: results with their dates (scores show how long they stay valid)
-      const PR = S.prep ? S.prep.results.filter(r => r.pass && PREP.BY[r.key] && PREP.BY[r.key].kind !== 'exam') : [];
-      const lines = PR.slice(-8).map(r => `${r.y}.${pad2(r.m)} · ${r.name} ${r.label}${r.exp ? ` (${ymOf(r.exp)}까지 유효)` : ''}`);
-      const other = certs.filter(n => !PR.some(r => PREP.BY[r.key].cert === n));
-      if (lines.length || other.length || C.spec.lang >= 100) rows.push(row('자격·어학', el('div', {}, lines.map(x => el('div', { text: x })), other.length ? el('div', { text: other.join(', ') }) : null,
+      if (certs.length || C.spec.lang >= 100) rows.push(row('자격·어학', el('div', {}, certs.length ? el('div', { text: certs.join(', ') }) : null,
         C.spec.lang >= 100 ? el('div', { class: 'sub', text: `어학 실력 추정 ${Math.round(C.spec.lang)}점 (토익 환산)` }) : null), gameTag()));
     }
     $('panel-history').replaceChildren(
@@ -12891,89 +12740,6 @@ const UI = (() => {
       panel.replaceChildren(el('h2', { text: '일기' }), tabs, el('p', { class: 'sub', text: '생일마다 한 줄.' }), d.length ? el('ul', { class: 'diary' }, d.map(x => el('li', {}, el('span', { class: 'a', text: `${x.age}세` }), x.text))) : el('p', { class: 'sub', text: '첫 생일이 지나면 첫 줄이 생긴다.' }));
     }
   }
-  // ---------- 준비 panel (prep patch §3.9) ----------
-  let prepKey = '';
-  function editPrep(fn) { if (!S || !S.prep) return; S.prep.auto = false; fn(); S.prep.sig = ''; renderPrep(true); }
-  function methodsFor(p) {
-    const minor = STATE.age(S) < 19 || ['mid', 'high'].includes(PREP.stageOf(S)), q = S.family.quintile;
-    return Object.keys(PREP.METHODS).filter(k => k !== 'boarding' || PREP.stageOf(S) === 'retake' || p.method === 'boarding')
-      .map(k => ({ k, dis: k === 'tutor' && (minor ? q < 4 : MONEY.liquid(S) < 3000) && p.method !== 'tutor' }));
-  }
-  function prepCard(p, f) {
-    const D = PREP.BY[p.key], I = PREP.INT, b = PREP.band(p.m), minor = STATE.age(S) < 19 || ['mid', 'high'].includes(PREP.stageOf(S));
-    const sel = el('select', { 'aria-label': `${D.name} 방법`, onchange: ev => editPrep(() => { p.method = ev.target.value; }) },
-      methodsFor(p).map(m => el('option', { value: m.k, selected: p.method === m.k, disabled: m.dis, text: `${PREP.METHODS[m.k].name}${m.dis ? ' (형편상 어려움)' : ''}` })));
-    const seg = el('div', { class: 'pseg', role: 'group', 'aria-label': `${D.name} 강도` }, Object.keys(I).map(k => el('button', { type: 'button', 'aria-pressed': String(p.int === k), disabled: k === 'full' && !PREP.fullOk(S) && p.int !== 'full', title: k === 'full' ? '몰입은 시험·재수·취업 준비에 전념할 때만' : '', text: I[k].name, onclick: () => editPrep(() => { p.int = k; }) })));
-    const cost = PREP.methodCost(S, p), next = PREP.nextTest(S, p), fc = PREP.forecast(S, p);
-    const fcCls = !fc ? '' : /낮음/.test(fc) ? 'lo' : /반반/.test(fc) ? 'mid' : /높음/.test(fc) ? 'hi' : '';
-    const yrs = Math.floor((S.clock.y * 12 + S.clock.m - p.since) / 12) + 1;
-    return el('div', { class: 'pcard' },
-      el('div', { class: 'pcard-h' }, el('b', { text: D.name }), el('button', { type: 'button', text: '그만두기', 'aria-label': `${D.name} 그만두기`, onclick: () => editPrep(() => { S.prep.mem[p.key] = p.m; S.prep.list = S.prep.list.filter(x => x !== p); }) })),
-      el('div', { class: 'pbar', role: 'img', 'aria-label': `준비도 ${PREP.BANDS[b]}` }, [0, 1, 2, 3].map(i => el('i', { class: i <= b ? 'on' : '' }))),
-      el('div', { class: 'pband' }, el('span', {}, '준비도 ', el('b', { text: PREP.BANDS[b] })), el('span', { text: D.use })),
-      el('div', { class: 'prow' }, sel, seg),
-      el('div', { class: 'pmeta' }, `주 ${Math.round(I[p.int].h * f)}시간 · 월 `, el('b', { text: `${cost}만 원` }), minor ? ' (부모님 부담)' : '', gameTag()),
-      next || p.mock || p.last ? el('div', { class: 'pmeta', text: [next ? `다음 시험 ${next}` : '', p.mock ? `최근 ${D.kind === 'suneung' ? '모의평가' : '기출 풀이'} ${p.mock.t}` : '', p.last ? `지난 결과 ${p.last.t}` : ''].filter(Boolean).join(' · ') }) : null,
-      fc ? el('div', { class: 'pfore ' + fcCls, text: fc }) : null,
-      D.kind === 'exam' ? el('div', { class: 'pmeta', text: `수험 ${yrs}년차 · 누적 지출 ${MONEY.won(Math.round(p.spent))} 원` }) : null);
-  }
-  function renderPrep(force) {
-    if (!S || !S.prep) return;
-    const P = S.prep, panel = $('panel-prep'), age = STATE.age(S);
-    const key = JSON.stringify([P.auto, P.list.map(p => [p.key, p.method, p.int, PREP.band(p.m), p.mock && p.mock.t, p.last && p.last.t]), P.results.length, PREP.points(S), S.focusNext, S.clock.y, S.clock.m >= 6]);
-    if (!force && key === prepKey) return;
-    prepKey = key;
-    if (age < 12) { panel.replaceChildren(el('h2', { text: '준비' }), el('p', { class: 'sub', text: '중학생이 되면 시험과 자격증을 준비할 수 있다.' })); return; }
-    const hrs = PREP.hours(S), lim = PREP.limit(S), pts = PREP.points(S);
-    const modeSeg = el('div', { class: 'pseg', role: 'group', 'aria-label': '준비 방식' },
-      el('button', { type: 'button', 'aria-pressed': String(P.auto), text: '알아서 준비', onclick: () => { P.auto = true; P.sig = ''; PREP.apply(S, PREP.plan(S)); renderPrep(true); } }),
-      el('button', { type: 'button', 'aria-pressed': String(!P.auto), text: '직접 정하기', onclick: () => { P.auto = false; renderPrep(true); } }));
-    const R = P.results.slice(-8).reverse();
-    const anyCert = P.list.some(p => PREP.BY[p.key].cert) || S.career.spec.certs.length;
-    const note = P.list.some(p => PREP.BY[p.key].kind === 'exam') ? DATA.STATS.civilPrep : P.list.some(p => p.key === 'jip') ? DATA.STATS.jipPass : age < 19 ? DATA.STATS.privateEdHigh : DATA.STATS.youthFirstJob;
-    panel.replaceChildren(...[
-      el('h2', { text: '준비' }),
-      el('p', { class: 'prep-top' }, '공부에 쓰는 시간 ', el('b', { text: `주 ${hrs.H}시간` }), ` (집중 ${pts}점 × ${PREP.H_PER_POINT}시간) · 계획 주 ${hrs.want}시간 · 항목 ${P.list.length}/${lim}`),
-      hrs.want > hrs.H && P.list.length ? el('p', { class: 'prep-warn', text: '계획보다 시간이 모자라 그만큼 덜 공부하게 됩니다. 「상태」의 집중 배분에서 공부·스펙·시험 공부를 늘리세요.' }) : null,
-      modeSeg,
-      el('div', { class: 'prep-cards' }, P.list.length ? P.list.map(p => prepCard(p, hrs.f)) : [el('p', { class: 'sub', text: '준비하는 항목이 없다.' })]),
-      anyCert ? el('p', { class: 'sub', text: '직무와 관련된 자격증이 더 도움이 됩니다. 관련 없는 자격증은 서류에 거의 보탬이 되지 않습니다.' }) : null,
-      el('button', { class: 'link-btn', type: 'button', text: '준비 항목 추가', disabled: P.list.length >= lim, onclick: openPrepAdd }),
-      R.length ? el('h3', { text: '시험 결과' }) : null,
-      R.length ? el('ul', { class: 'presults' }, R.map(r => el('li', { class: r.pass ? '' : 'no' }, el('span', { class: 'when', text: `${r.y}.${pad2(r.m)}` }), ` ${r.name} · ${r.label}${r.exp ? ` (${ymOf(r.exp)}까지 유효)` : ''}`))) : null,
-      realNote(note)].filter(Boolean));
-  }
-  function openPrepAdd() {
-    if (!S || !S.prep) return;
-    const wasPaused = SIM.clock.status().paused;
-    SIM.clock.pause();
-    const close = () => { closeOverlay(); if (!wasPaused) SIM.clock.resume(); };
-    const P = S.prep, lim = PREP.limit(S), have = new Set(P.list.map(p => p.key)), avail = PREP.available(S).filter(d => !have.has(d.key));
-    const groups = [...new Set(avail.map(d => d.group))];
-    const add = d => editPrep(() => { P.list.push(PREP.newProj(S, { key: d.key, method: STATE.age(S) < 19 ? 'academy' : 'online', int: 'steady' })); close(); });
-    openOverlay(el('div', { class: 'paper card', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'pa-h' },
-      el('h2', { id: 'pa-h', class: 'form-title', text: '준비 항목 추가' }),
-      el('p', { class: 'form-sub', text: `지금 ${P.list.length}/${lim}개 준비 중 · 필요 시간과 비용은 게임 설정입니다` }),
-      el('div', { class: 'padd-list' }, groups.length ? groups.map(g => el('div', { class: 'padd-g' }, el('h3', { text: g }),
-        avail.filter(d => d.group === g).map(d => el('div', { class: 'padd-row' },
-          el('div', {}, el('b', { text: d.name }), el('div', { class: 'sub', text: [d.use, `준비 약 ${d.need}시간`, d.fee ? `응시료 약 ${d.fee}만 원` : '', d.kind === 'exam' ? '1월 원서 · 8월 발표' : ''].filter(Boolean).join(' · ') }),
-            d.anchor && DATA.STATS[d.anchor] ? el('div', { class: 'sub', text: `실제 대한민국 · ${DATA.STATS[d.anchor].text}` }) : null),
-          el('button', { class: 'pbtn', type: 'button', text: '추가', disabled: P.list.length >= lim, onclick: () => add(d) }))))) : [el('p', { class: 'sub', text: '지금 시기에 더 준비할 수 있는 항목이 없다.' })]),
-      el('div', { class: 'card-actions' }, el('button', { class: 'pbtn primary', type: 'button', text: '닫기', 'data-esc': '1', onclick: close }))));
-  }
-  // test results arrive as paper slips with a stamp or a score (§3.9)
-  function prepSlip(r) {
-    const box = $('toast');
-    const x = el('button', { class: 'slip-x', type: 'button', 'aria-label': '닫기', text: '×' });
-    const slip = el('div', { class: 'slip paper', role: 'status' },
-      el('div', {}, el('div', { class: 'slip-h', text: r.name }), el('div', { class: 'slip-list', text: `${r.y}년 ${r.m}월 · ${r.score ? `${r.score}점` : r.label}${r.exp ? ` · ${ymOf(r.exp)}까지 유효` : ''}` })),
-      el('span', { class: 'stamp on ' + (r.pass ? 'ok' : 'no'), text: r.score ? `${r.score}점` : r.label }), x);
-    x.onclick = () => slip.remove();
-    box.prepend(slip);
-    while (box.children.length > 3) box.lastChild.remove();
-    setTimeout(() => slip.remove(), 7000);
-    announce(`${r.name} ${r.score ? r.score + '점' : r.label}`);
-  }
   // ---------- small choices on the stage (Amendment 2 §2.4) ----------
   let smallShown = null;
   function showSmall() {
@@ -13149,8 +12915,6 @@ const UI = (() => {
     if (info.stage) { if (!reduced()) stageScene.landmark('gate', { name: info.stage.name }); else stageCard(info.stage.name); }
     const ff = SIM.clock.status().ff;
     if (info.yearEnded || S.clock.m === 1) { renderMoney(); renderMemory(); }
-    if (S.prep && S.prep.news.length && !ff) for (const r of S.prep.news.splice(0)) prepSlip(r);
-    else if (S.prep) S.prep.news.length = 0;
     showSmall();
     emptying();
     for (const ev of info.events) {
@@ -13264,7 +13028,7 @@ const UI = (() => {
     closeOverlay();
     fn();
     setSaveStatus(SAVE.save(S, reason) ? 'saved' : SAVE.available ? 'fail' : 'off');
-    histKey = ''; renderTop(); renderStatus(); renderWork(); renderMoney(); renderMemory(); renderPrep(true); renderTimelineDots();
+    histKey = ''; renderTop(); renderStatus(); renderWork(); renderMoney(); renderMemory(); renderTimelineDots();
 
 
     if (SIM.blocked(S)) onPending();
@@ -13589,8 +13353,10 @@ const UI = (() => {
     $('sr-alert').textContent = `연간 점검. 순자산 ${MONEY.won(d.nw)} 원.`;
   }
   // ---- 원서: a ruled paper form with filters, a counter and a two-step submit ----
-  const TAG_CLS = { 상향: 'up', 적정: 'mid', 안정: 'safe', 배정: 'fix' };
+  const TAG_CLS = { 상향: 'up', 적정: 'mid', 안정: 'safe', 배정: 'fix', '합격선 이상': 'safe', 미달: 'up' };
   const tagEl = t => el('span', { class: 'tag ' + (TAG_CLS[t] || 'fix'), text: t });
+  // the player's own numbers as the forms show them (only what the reveals have shown)
+  const scoreLine = k => (k ? [k] : TALENT.KEYS).map(x => { const kn = TALENT.known(S, x), e = TALENT.effortOf(S, x); return `${TALENT.NAME[x]} ${kn.step >= 4 ? `점수 ${kn.lo + e} (재능 ${kn.lo} + 노력 ${e})` : kn.step ? `재능 ${kn.step === 1 ? kn.word : kn.lo + '~' + kn.hi} + 노력 ${e}` : `노력 ${e}`}`; }).join(' · ') + '.';
   const JH_NAME = { 교과: '학생부교과', 종합: '학생부종합', 논술: '논술', 실기: '실기', 지역: '지역인재', 과기원: '과기원 일반', 특수: '1차 시험·체력·면접', 일반: '일반전형', 정시: '수능', 전문대정시: '수능' };
   function formFoot(foot, chosenBox, opts) {
     // opts: { canSubmit, submitLabel, onSubmit(), alts: [{label, msg, run}], onFlow(), summary() }
@@ -13624,7 +13390,7 @@ const UI = (() => {
             : el('button', { class: 'pick', type: 'button', disabled: !!r.dis, text: on ? '빼기' : '지원', onclick: () => { sel[r.phase] = on ? null : r.type; draw(); } });
           return el('tr', { class: (on ? 'sel' : '') + (r.dis ? ' dis' : '') },
             el('td', { class: 'c-uni' }, r.name), el('td', { text: r.phase + '고' }), el('td', { text: r.region }),
-            el('td', {}, tagEl(r.tag)), el('td', {}, r.dis ? `${r.note} — ${r.dis}` : r.note), el('td', { class: 'c-act' }, act));
+            el('td', {}, tagEl(r.tag)), el('td', {}, r.dis ? `${r.note} — ${r.dis}` : r.why ? `${r.note} — ${r.why}` : r.note), el('td', { class: 'c-act' }, act));
         }))));
       chosen.replaceChildren(...keys().map(t => el('span', { class: 'chip-sel', text: DATA.HS_TYPES[t].name })));
       ff.render();
@@ -13639,7 +13405,7 @@ const UI = (() => {
     openOverlay(el('div', { class: 'paper appform', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'af-h' },
       el('div', { class: 'af-head' }, el('h2', { id: 'af-h', class: 'form-title', text: '고등학교 입학 원서' }), count),
       el('p', { class: 'af-intro', text: `중학교 3학년 가을. 전기고(과학고·영재학교·예고·체고·특성화·마이스터고)와 후기고(자사고·외고·국제고) 가운데 한 곳씩 지원할 수 있다. 전기고에 붙으면 그 학교로 가고, 후기고에 떨어지면 집 가까운 일반고에 배정된다. 중학교 성적은 교내 상위 약 ${Math.round(ADMISSIONS.midPct(S))}%.` }),
-      body, el('p', { class: 'af-note', text: '배치와 학비는 실제 발표치가 아닌 게임 설정 추정입니다.' }), realNote(DATA.STATS.privateEdHigh), foot), 'full');
+      body, el('p', { class: 'af-note', text: `${scoreLine('study')} 합격선과 재능 기준은 고정입니다. 기준 이상이면 붙고, 못 미치면 떨어집니다. 기준과 학비는 게임 설정입니다.` }), realNote(DATA.STATS.privateEdHigh), foot), 'full');
     draw();
   }
   function uniForm(item) {
@@ -13681,13 +13447,14 @@ const UI = (() => {
       if (f.jh !== '전체') { if (f.jh === '6장 밖' ? !r.outside : susi ? JH_NAME[r.j] !== f.jh : (r.gun + (r.gun === '전문대' ? '' : '군')) !== f.jh) return false; }
       if (f.tag !== '전체' && r.tag !== f.tag) return false;
       if (f.q && !(p.uni + ' ' + p.dept).includes(f.q)) return false;
-      if (f.hide && r.P < 0.02 && !sel.has(r.id)) return false;
+      if (f.hide && r.P < 1 && !sel.has(r.id)) return false;
       if (f.fit && near(r) > Math.log(2.5) && !sel.has(r.id)) return false;
       return true;
     };
     const note = r => {
       const p = r.p, bits = [];
-      if (r.min != null) bits.push(`${A.minText(r.min)} · 충족 가능성 ${r.meet >= 0.7 ? '높음' : r.meet >= 0.35 ? '보통' : '낮음'}`);
+      bits.push(r.gate);
+      if (r.why) bits.push(r.why);
       if (r.dis) bits.push(r.dis);
       if (susi && r.outside) bits.push('6장 제한 밖');
       if (r.j === '종합' && p.band < 15) bits.push('면접');
@@ -13722,18 +13489,17 @@ const UI = (() => {
     // 「성적에 맞춰 간다」 (user request): show only programmes near the student's level and fill a balanced set —
     // 수시 two 상향, two 적정, two 안정 (best 전형 per programme); 정시 one per 군 near an even chance
     const fitPick = () => {
-      const ok = all.filter(r => !r.dis && !r.outside && (r.meet == null || r.meet >= 0.35) && (!tf || tf.includes(r.p.field)) && r.P >= 0.08);
+      const ok = all.filter(r => !r.dis && !r.outside && (!tf || tf.includes(r.p.field)) && r.P >= 1);
       sel.clear();
       if (susi) {
         const best = new Map();
         for (const r of ok) { const b = best.get(r.p.key); if (!b || b.P < r.P) best.set(r.p.key, r); }
         const pool = [...best.values()].sort((a, b) => near(a) - near(b));
-        const take = (lo, hi, n) => { for (const r of pool) { if (n <= 0) break; if (r.P >= lo && r.P < hi && !sel.has(r.id)) { sel.set(r.id, r); n--; } } return n; };
-        let left = take(0.15, 0.35, 2) + take(0.35, 0.7, 2) + take(0.7, 1, 2);
-        for (const r of pool) { if (left <= 0) break; if (!sel.has(r.id)) { sel.set(r.id, r); left--; } }
+        // the six hardest programmes whose gates are met
+        for (const r of pool.sort((a, b) => a.p.band - b.p.band)) { if (sel.size >= 6) break; sel.set(r.id, r); }
       } else {
         for (const g of ['가', '나', '다']) {
-          const cand = ok.filter(r => r.gun === g).sort((a, b) => Math.abs(a.P - 0.55) - Math.abs(b.P - 0.55) || near(a) - near(b));
+          const cand = ok.filter(r => r.gun === g).sort((a, b) => a.p.band - b.p.band);
           if (cand[0]) sel.set(cand[0].id, cand[0]);
         }
       }
@@ -13747,9 +13513,9 @@ const UI = (() => {
       sela('지역', 'region', ['전체', '우리 지역', '서울', '경기·인천', '비수도권']),
       sela('계열', 'field', [tf ? '내 계열' : null, '전체', '인문', '사회', '교육', '공학', '자연', '의약', '예체능'].filter(Boolean)),
       sela(susi ? '전형' : '모집군', 'jh', susi ? ['전체', '학생부교과', '학생부종합', '논술', '실기', '지역인재', '6장 밖'] : ['전체', '가군', '나군', '다군', '전문대']),
-      sela('배치', 'tag', ['전체', '상향', '적정', '안정']),
+      sela('배치', 'tag', ['전체', '합격선 이상', '미달']),
       el('input', { type: 'search', placeholder: '대학·학과 검색', 'aria-label': '대학·학과 검색', oninput: ev => { f.q = ev.target.value.trim(); f.n = 40; draw(); } }),
-      el('label', {}, el('input', { type: 'checkbox', checked: true, onchange: ev => { f.hide = ev.target.checked; draw(); } }), '가능성 아주 낮은 곳 숨기기'),
+      el('label', {}, el('input', { type: 'checkbox', checked: true, onchange: ev => { f.hide = ev.target.checked; draw(); } }), '합격선 미달 숨기기'),
       fitBtn);
     const submit = (keys, skip, how) => finishPending(item, () => A.resolveApply(S, item, { keys, skip, how }), 'apply');
     const alts = susi ? [
@@ -13770,8 +13536,9 @@ const UI = (() => {
       },
     });
     const yr = c.y + 1;
-    const intro = susi ? `${yr}학년도 수시 모집. ${pr.g != null ? `내신 평균 ${pr.g.toFixed(2)}등급, ` : ''}생활기록부 ${A.recordWord(S.edu.record)}, 모의고사로 본 전국 위치 상위 약 ${A.fmtPct(pr.nat)}%.`
-      : `${yr}학년도 정시 모집. 수능 전국 상위 ${A.fmtPct(c.sPct)}%. 가·나·다군에서 한 곳씩, 전문대는 따로 ${LIM.jungsi.college}곳까지 지원할 수 있다.`;
+    const intro = (susi ? `${yr}학년도 수시 모집. ${pr.g != null ? `내신 평균 ${pr.g.toFixed(2)}등급, ` : ''}생활기록부 ${A.recordWord(S.edu.record)}, 모의고사로 본 전국 위치 상위 약 ${A.fmtPct(pr.nat)}%.`
+      : `${yr}학년도 정시 모집. 수능 전국 상위 ${A.fmtPct(c.sPct)}%. 가·나·다군에서 한 곳씩, 전문대는 따로 ${LIM.jungsi.college}곳까지 지원할 수 있다.`)
+      + ` 대학과 학과마다 합격선(재능 + 노력)과 재능 기준이 정해져 있다. 기준 이상이면 합격한다. ${scoreLine('study')}`;
     openOverlay(el('div', { class: 'paper appform', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'af-h' },
       el('div', { class: 'af-head' }, el('h2', { id: 'af-h', class: 'form-title', text: susi ? '수시 모집 원서' : '정시 모집 원서' }), count),
       el('p', { class: 'af-intro', text: intro }),
@@ -13793,6 +13560,8 @@ const UI = (() => {
     const f = { region: '전체', size: '전체', type: '전체', q: '' };
     const body = el('div', { class: 'af-body' }), count = el('span', { class: 'af-count' }), chosen = el('div', { class: 'chosen' }), foot = el('div', { class: 'af-foot' });
     const odds = p => J.stageOdds(S, p, Math.max(1, sel.size)).reduce((a, b) => a * b, 1);
+    // the first job is a fixed gate on talent + effort (TALENT); later moves follow the work system's odds
+    const first = !c.firstJob, gateNote = id => { const g = TALENT.jobGate(id, S); return g ? ` · ${TALENT.label(S, g)}${TALENT.shortfall(S, g) ? ` — ${TALENT.shortfall(S, g)}` : ''}` : ' · 기준 없음'; };
     const pass = p => {
       if (f.region === '우리 지역' && p.region !== here) return false;
       if (f.region === '서울' && p.region !== '서울') return false;
@@ -13814,8 +13583,8 @@ const UI = (() => {
           const on = sel.has(p.k), P = odds(p);
           return el('tr', { class: on ? 'sel' : '' }, empCell(p), el('td', { text: p.title }),
             el('td', { text: `${p.type === '정규' ? '정규직' : '계약직'}${p.exp ? ' · 경력 우대' : ''}` }), el('td', { text: p.region }),
-            el('td', {}, tagEl(oddsTag(P))),
-            el('td', { class: 'sub', text: `연봉 약 ${J.won(p.pay * 12)} 원 · ${J.stagesOf(p.job).join(' → ')}${p.region !== here ? ' · 이사 필요' : ''}` }),
+            el('td', {}, tagEl(first ? (P >= 1 ? '합격선 이상' : '미달') : oddsTag(P))),
+            el('td', { class: 'sub', text: `연봉 약 ${J.won(p.pay * 12)} 원 · ${J.stagesOf(p.job).join(' → ')}${p.region !== here ? ' · 이사 필요' : ''}${first ? gateNote(p.job) : ''}` }),
             el('td', { class: 'c-act' }, el('button', { class: 'pick', type: 'button', disabled: !on && sel.size >= LIM, text: on ? '빼기' : '담기', onclick: () => toggle(p) })));
         }))),
         !list.length ? el('p', { class: 'af-note', style: 'padding:12px', text: '조건에 맞는 공고가 없습니다. 필터를 바꿔 보세요.' }) : null);
@@ -13841,7 +13610,7 @@ const UI = (() => {
     const who = c.job ? `${c.job.emp}에 다니며 다른 자리를 알아보는 중 (중고신입·경력직).` : S.edu.stage === 'univ' ? '졸업을 앞둔 마지막 학기의 공채 시즌.' : months >= 1 ? `구직 ${STATE.span(months)}째.` : '첫 구직 시즌.';
     openOverlay(el('div', { class: 'paper appform', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'af-h' },
       el('div', { class: 'af-head' }, el('h2', { id: 'af-h', class: 'form-title', text: `${S.clock.y}년 ${S.clock.m}월 입사 원서` }), count),
-      el('p', { class: 'af-intro', text: `${who} 이번 시즌 공고 ${all.length}건 가운데 ${LIM}곳까지 지원할 수 있다. 적게 골라 정성껏 쓸수록 한 곳 한 곳의 가능성이 올라간다.` }),
+      el('p', { class: 'af-intro', text: `${who} 이번 시즌 공고 ${all.length}건 가운데 ${LIM}곳까지 지원할 수 있다. ${c.firstJob ? '적게 골라 정성껏 쓸수록 한 곳 한 곳의 가능성이 올라간다.' : `첫 직장은 직무마다 정해진 기준(재능 + 노력)으로 뽑는다. 기준 이상이면 합격이다. ${scoreLine()}`}` }),
       el('p', { class: 'spec-line', text: [STATE.EDU_LABEL[lv] || '', g ? `학점 ${g.toFixed(2)}` : '', sp.lang >= 100 ? `어학 ${Math.round(sp.lang)}점` : '', sp.certs.length ? `자격증 ${sp.certs.length}개` : '', sp.intern ? `인턴 ${sp.intern}개월` : '', J.expYears(S) >= 1 ? `경력 ${Math.floor(J.expYears(S))}년` : ''].filter(Boolean).join(' · ') }),
       filters, body,
       el('p', { class: 'af-note' }, '연봉·경쟁 배치·전형 단계는 게임 설정 추정입니다. 「가상 회사」는 실제 회사가 아닙니다.'), realNote(DATA.STATS.startPay),
@@ -13916,7 +13685,7 @@ const UI = (() => {
         el('tbody', {}, keys.map(k => {
           const e = J.EXAMS[k], on = sel.has(k), P = J.examChance(S, k);
           return el('tr', { class: on ? 'sel' : '' }, el('td', { class: 'c-uni', text: e.name }), el('td', { text: J.J(e.job).name }),
-            el('td', {}, tagEl(oddsTag(P))), el('td', { class: 'sub', text: [EXAM_NOTE[k] || '', e.phys ? '체력 시험 포함' : ''].filter(Boolean).join(' · ') || '필기 → 면접' }),
+            el('td', {}, tagEl(P >= 1 ? '합격선 이상' : '미달')), el('td', { class: 'sub', text: [EXAM_NOTE[k] || '', e.phys ? '체력 시험 포함' : '', TALENT.label(S, TALENT.EXAM[k]), TALENT.shortfall(S, TALENT.EXAM[k])].filter(Boolean).join(' · ') || '필기 → 면접' }),
             el('td', { class: 'c-act' }, el('button', { class: 'pick', type: 'button', disabled: !on && sel.size >= LIM, text: on ? '빼기' : '담기', onclick: () => toggle(k) })));
         }))));
       chosen.replaceChildren(...[...sel].map(k => el('button', { class: 'chip-sel', type: 'button', title: '빼기', text: `${J.EXAMS[k].name} ×`, onclick: () => toggle(k) })));
@@ -13933,7 +13702,7 @@ const UI = (() => {
     const ex = c.exam;
     openOverlay(el('div', { class: 'paper appform', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'ef-h' },
       el('div', { class: 'af-head' }, el('h2', { id: 'ef-h', class: 'form-title', text: `${S.clock.y}년 시험 응시 원서` }), count),
-      el('p', { class: 'af-intro', text: `준비 ${S.clock.y - ex.since + 1}년째, 지금까지 ${ex.attempts}번 응시했다. 시험 공부에 쓴 시간과 타고난 적성, 응시 경험이 합격 가능성을 바꾼다. 한 해에 ${LIM}개까지 응시할 수 있다.` }),
+      el('p', { class: 'af-intro', text: `준비 ${S.clock.y - ex.since + 1}년째, 지금까지 ${ex.attempts}번 응시했다. 시험마다 합격선과 재능 기준이 정해져 있다. ${scoreLine('study')} 시험 공부에 쓴 집중 점수는 공부 노력이 된다. 한 해에 ${LIM}개까지 응시할 수 있다.` }),
       body,
       el('p', { class: 'af-note' }, '합격 가능성 배치는 게임 설정 추정입니다.'), realNote(DATA.STATS.civil9),
       foot), 'full');
@@ -14183,8 +13952,9 @@ const HARNESS = (() => {
     work.corp = c.history.some(h => DATA.JOB_X[h.id].ladder === 'corp' && DATA.JOB_X[h.id].hire === 'corp') || !!(c.job && DATA.JOB_X[c.job.id].hire === 'corp');
     work.mainExit = longest && longest.months >= 60 ? { age: longest.age, invol: ['layoff', 'early', 'contract', 'closed'].includes(longest.reason) } : null;
     work.mil = c.mil.done && c.mil.branch !== 'doc' ? c.mil.months : null;
-    // prep patch §3.10: tests sat, exam passes with their preparation years, graduation → first job
-    work.prep = { tests: s.prep.tests.slice(), passes: s.prep.results.filter(r => r.prepY != null).map(r => ({ key: r.key, y: r.prepY })) };
+    // talent + effort: the roll, the effort frozen at the first job, and the gates passed
+    work.talent = { t: Object.assign({}, p.talents), frozen: s.talent.frozen ? Object.assign({}, s.talent.frozen.eff) : null, snu: e.entries.some(x => /^서울대/.test(ADMISSIONS.prog(x.p).uni) && !ADMISSIONS.prog(x.p).med),
+      med: e.entries.some(x => ADMISSIONS.prog(x.p).mk === 'md'), hs: e.hs ? e.hs.type : null, nine: (c.history.concat(c.job ? [c.job] : [])).some(h => h.id === 23 || h.id === 24) };
     work.toJob = c.gradAt != null && c.firstJob ? (c.firstJob.y * 12 + c.firstJob.m) - c.gradAt : null;
     return { seed: s.seed, sex: p.sex, birth: p.birth, death: p.death, months: p.death.months, age: p.death.months / 12, perYear, secs, born, evYear, repeats, heavy, total, people, edu, work, hl, mo, cause: p.death.cause, emo: { mem: s.mem.list.length, diary: s.mem.diary.length, keep: s.mem.keep.seen.length, stops: MEMORY.stops(s).length, age: p.death.age }, market: { hist: s.market.hist.map(h => h.ch), crashes: s.market.crashes.length, bears: s.market.bears.length, years: s.market.hist.length }, ever: Object.assign({}, s.money.ever), firstHome: s.money.firstHomeY && s.money.formedY ? s.money.firstHomeY - s.money.formedY : null, fam: { first: s.love.first, births: s.love.births, divorces: s.love.divorces, married50: s.love.first && s.love.first.age <= 50, kids: s.love.births.length }, down: Object.assign({}, s.down && s.down.ever), victim: !!(s.money.ever.fraud || s.money.ever.scam) || s.log.some(e => e.kind === 'event' && VICTIM.includes(e.id)), arts: ARTS.sample(s) };
   }
@@ -14278,7 +14048,7 @@ const HARNESS = (() => {
       ...moneyRows(lives, row, within, share, mean),
       ...healthRows(lives, row, within, share, mean),
       ...workRows(lives, row, within, share, mean),
-      ...prepRows(lives, row, within, share, mean, n),
+      ...talentRows(lives, row, within, share, mean, n),
       ...artsRows(lives, row, within, share, mean),
     ];
     const pass = rows.every(r => r.판정 !== '벗어남');
@@ -14419,18 +14189,18 @@ const HARNESS = (() => {
       row('남성 병역 이행 (30세 이상 생존)', pc(share(mil, l => l.work.mil != null) * 100), '면제·대체 약 5% (게임 설정)', null),
     ];
   }
-  // prep patch §3.10 — exams, certificates, the first job, and whether effort shows in the 수능
-  function prepRows(lives, row, within, share, mean, n) {
-    const pass9 = lives.flatMap(l => l.work.prep.passes.filter(x => x.key === 'ex_9n' || x.key === 'ex_9l').map(x => x.y));
-    const jip = lives.flatMap(l => l.work.prep.tests.filter(x => x.key === 'jip')), jip90 = jip.filter(x => x.hrs >= 90);
-    const pj = share(jip, x => x.pass) * 100, pj90 = share(jip90, x => x.pass) * 100;
+  // talent + effort — the roll's shape, the hardest gates, the first job, and whether effort shows in the 수능
+  function talentRows(lives, row, within, share, mean, n) {
+    const all = lives.flatMap(l => Object.values(l.work.talent.t)), adults = lives.filter(l => l.age >= 20), pc = v => v.toFixed(2) + '%';
+    const mid = share(all, t => t >= 20 && t <= 30) * 100, high = share(all, t => t >= 45) * 100;
     const toJob = lives.map(l => l.work.toJob).filter(v => v != null && v >= 0 && v < 120), tj = mean(toJob);
     const eff = effort(Math.min(40, Math.max(12, Math.round(n / 50))));
     return [
-      row('9급 합격자의 평균 준비 기간', `${mean(pass9).toFixed(2)}년 (${pass9.length}명)`, '1.5~2.0년 (준비 패치 §3.10)', pass9.length < 10 ? null : mean(pass9) >= 1.5 && mean(pass9) <= 2.0),
-      row('정보처리기사 합격률 · 90시간 이상 준비', `${pj.toFixed(1)}% (${jip.length}회) · ${pj90.toFixed(1)}% (${jip90.length}회)`, '20~35% · 55~75% (준비 패치 §3.10)', jip.length < 30 ? null : pj >= 20 && pj <= 35 && pj90 >= 55 && pj90 <= 75),
+      row('재능 분포: 20~30 · 45 이상', `${mid.toFixed(1)}% · ${pc(high)} (${all.length}개)`, '대부분 20~30 · 45 이상 드묾 (게임 설정)', mid >= 45 && high < 1.5),
+      row('의대 입학 · 서울대 입학 (20세 이상)', `${pc(share(adults, l => l.work.talent.med) * 100)} · ${pc(share(adults, l => l.work.talent.snu) * 100)} (${adults.length}명)`, '참고 (의대 재능 48·점수 99, 서울대 44·92)', null),
+      row('9급 공무원이 된 삶 (20세 이상)', `${pc(share(adults, l => l.work.talent.nine) * 100)}`, '참고 (재능 25·점수 70)', null),
       row('졸업 후 첫 일자리까지', `${tj.toFixed(1)}개월 (${toJob.length}명)`, '11.2 ± 3개월 (청년층 부가조사 2026)', within(tj, [11.2, 3])),
-      row('수능 과목 준비: 가볍게→꾸준히 · 꾸준히→몰입', `상위 %가 ${eff.ls.toFixed(1)} · ${eff.sf.toFixed(1)}%p 좋아짐 (${eff.k}명)`, '10~20%p · 그보다 작게 (준비 패치 §3.10)', eff.ls >= 10 && eff.ls <= 20 && eff.sf > 0 && eff.sf < eff.ls),
+      row('공부에 1점 → 3점 (같은 삶)', `수능 상위 %가 ${eff.d.toFixed(1)}%p 좋아짐 · 공부 노력 ${eff.e1.toFixed(0)} → ${eff.e3.toFixed(0)} (${eff.k}명)`, '참고 (노력이 관문을 움직인다)', null),
     ];
   }
   // arts patch §11 — who takes an arts or sports path, how far they get, what they earn, and how they leave.
@@ -14469,24 +14239,24 @@ const HARNESS = (() => {
       row('예체능의 길에서 사무직으로 옮긴 비율 (30세 이상)', `${pc(office)} · 결정 7을 거치지 않은 경우 ${sideDoor}명`, '25% 미만, 「계속할까」 결정으로만 (§11)', A30.length < 40 ? (sideDoor === 0 ? null : false) : office < 25 && sideDoor === 0),
     ];
   }
-  // the same lives (same seeds, so the same aptitude and luck) sit the first 수능 at three intensities
+  // the same lives (same seeds, so the same talents) give one or three focus points to study through school
   function effort(k) {
-    const run = (seed, force) => {
+    const run = (seed, n) => {
       const s = STATE.create(seed);
-      s.meta.prepForce = force;
       for (let g = 0; g < 260 && s.person.alive && !s.edu.sittings.length; g++) {
+        if (s.focus.set === 'child') { s.focus.alloc = { study: n, rest: 5 - n }; s.focusNext = null; }
         SIM.tickMonth(s);
-        for (let n = 0; s.pending.length && n < 30; n++) { const it = s.pending.shift(); if (it.kind === 'death') continue; AUTO[it.kind](s, it); }
+        for (let i = 0; s.pending.length && i < 30; i++) { const it = s.pending.shift(); if (it.kind === 'death') continue; AUTO[it.kind](s, it); }
       }
-      return s.edu.sittings.length ? s.edu.sittings[0].pct : null;
+      return s.edu.sittings.length ? { pct: s.edu.sittings[0].pct, e: s.talent.eff.study } : null;
     };
-    let ls = 0, sf = 0, m = 0;
+    let d = 0, e1 = 0, e3 = 0, m = 0;
     for (let i = 0; m < k && i < k * 4; i++) {
-      const seed = RNG.hash32('effort:' + i), a = run(seed, 'light'), b = run(seed, 'steady'), c = run(seed, 'full');
-      if (a == null || b == null || c == null) continue;
-      ls += a - b; sf += b - c; m++;
+      const seed = RNG.hash32('effort:' + i), a = run(seed, 1), b = run(seed, 3);
+      if (!a || !b) continue;
+      d += a.pct - b.pct; e1 += a.e; e3 += b.e; m++;
     }
-    return { ls: ls / Math.max(1, m), sf: sf / Math.max(1, m), k: m };
+    return { d: d / Math.max(1, m), e1: e1 / Math.max(1, m), e3: e3 / Math.max(1, m), k: m };
   }
   function runOne(seed) {
 
