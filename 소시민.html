@@ -10772,7 +10772,7 @@ const RENDER = (() => {
     const sw = Math.max(0.12, hm * F.sr * (1 + F.wb * 0.12)), sd = sw * 0.56, aw = sw * 0.2, hip = sw * 0.86, lw = hip * 0.46;
     const stride = walk ? 0.16 + F.stride * 0.1 : 0, swingA = walk ? 0.08 + F.swing * 0.14 : 0;
     const bob = walk ? Math.abs(Math.cos(ph)) * F.bounce * 0.018 * hm : Math.max(0, Math.sin(ph)) * 0.006 * hm;
-    const lean = F.drop * 0.07 + (F.pose === 'phone' ? 0.05 : 0), sk = F.skin, topC = F.outer != null ? F.outer : F.top;
+    const lean = F.drop * 0.07 + (F.pose === 'phone' ? 0.05 : 0) + (F.bow || 0), sk = F.skin, topC = F.outer != null ? F.outer : F.top;
     const rotY = F.facing === 'front' ? Math.PI : F.facing === 'side' ? -Math.PI / 2 : 0;
     M.push(mmul(mT(x, 0, z), mRY(rotY)));
     // legs swing from the hips; shorts and skirts, shoes
@@ -11437,9 +11437,10 @@ void main() {
           Cu.face([A0, B0, B1, A1], [A0[0], A0[1], zc + 5], c);
         }
       }
-      // the old self, in a column of light
-      M.push(mT(0, 0, 0)); person3(M, o.F, o.hm, C[0], C[2], o.t * 1.2, {}); M.pop();
-      const spots = new Float32Array(40); spots.set([C[0], C[2], 1.1, 1], 0);
+      // the old self, in a column of light; a bow as the curtain closes (o.bow, radians), then fading away (o.me)
+      const Pm = new Mesh();
+      Pm.push(mT(0, 0, 0)); person3(Pm, Object.assign({}, o.F, { bow: o.bow || 0 }), o.hm, C[0], C[2], o.t * 1.2, {}); Pm.pop();
+      const fade = o.fade == null ? 1 : o.fade, spots = new Float32Array(40); spots.set([C[0], C[2], 1.1, fade], 0);
       gl.viewport(0, 0, w, h);
       gl.clearColor(0.02, 0.02, 0.03, 1); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
       gl.uniformMatrix4fv(U.uVP, false, this.vp);
@@ -11447,13 +11448,15 @@ void main() {
       gl.uniform3fv(U.uL, (() => { const v = [0, 0.75, 0.66], l = Math.hypot(...v); return v.map(x => x / l); })());
       gl.uniform3fv(U.uSun, [0.62, 0.5, 0.4]); gl.uniform3fv(U.uAmb, [0.42, 0.4, 0.48]);
       gl.uniform3fv(U.uFog, [0.02, 0.02, 0.03]); gl.uniform2f(U.uFogR, 1e4, 2e4);
-      gl.uniform4fv(U.uGlow, [1, 0.86, 0.6, 1]);
+      gl.uniform4fv(U.uGlow, [fade, 0.86 * fade, 0.6 * fade, 1]);
       gl.uniform3fv(U.uSpotC, [1.25, 1.08, 0.84]); gl.uniform4fv(U.uSpot, spots);
       gl.enable(gl.DEPTH_TEST); gl.depthMask(true);
-      const fade = o.fade == null ? 1 : o.fade;
-      gl.uniform1f(U.uDim, 0.4 * fade); this.draw(Hs, fade);
-      gl.uniform1f(U.uDim, 0.32 * fade); this.draw(M, fade);
-      gl.uniform1f(U.uDim, 0.95 * fade); this.draw(Cu, fade);   // the curtain catches the stage light
+      // going dark dims the light, never the opacity, so the closed curtain keeps hiding the house
+      gl.uniform1f(U.uDim, 0.4 * fade); this.draw(Hs);
+      gl.uniform1f(U.uDim, 0.32 * fade); this.draw(M);
+      gl.uniform1f(U.uDim, 0.95 * fade); this.draw(Cu);   // the curtain catches the stage light
+      const me = o.me == null ? 1 : o.me;
+      if (me > 0.01) { gl.uniform1f(U.uDim, 0.32 * fade); if (me < 1) gl.depthMask(false); this.draw(Pm, me); gl.depthMask(true); }
       gl.uniform1f(U.uDim, 1);
     }
     proj(p) {
@@ -13445,8 +13448,9 @@ const UI = (() => {
   }
 
   // ---- the last scene: from the old self's face to their back, the house applauding, the curtain closing ----
-  const THEATRE = { dur: 12.5, fadeIn: [0, 1], swing: [1, 4.6], clap: 3.6, close: [6.6, 9.4], out: [11, 12.5] };
-  const span01 = (t, [a, b]) => Math.max(0, Math.min(1, (t - a) / (b - a)));
+  // the curtain closes while the old self bows; they straighten, fade slowly away, and the picture goes dark
+  const THEATRE = { dur: 14.4, fadeIn: [0, 1], swing: [1, 4.6], clap: 3.6, close: [6.6, 9.4], bowDown: [7, 8], bowUp: [8.9, 9.9], gone: [10.2, 12.7], out: [12.9, 14.2] };
+  const span01 = (t, [a, b]) => Math.max(0, Math.min(1, (t - a) / (b - a))), smoothT = x => x * x * (3 - 2 * x);
   function theatre(seq, t) {
     let T = seq.th;
     if (!T) {
@@ -13465,7 +13469,8 @@ const UI = (() => {
     if (!T.clapped && t >= THEATRE.clap) { T.clapped = true; SOUND.applause(7.5); }
     if (T.st) {
       T.box.style.opacity = String(span01(t, THEATRE.fadeIn));
-      T.st.finale({ W: innerWidth, H: innerHeight, pix: innerWidth < 760 ? 2 : 3, t, swing: span01(t, THEATRE.swing), close, F: T.F, hm: T.hm, crowd: 0.82, clap: t >= THEATRE.clap && t < THEATRE.close[1] + 1, fade });
+      const bow = 0.85 * (smoothT(span01(t, THEATRE.bowDown)) - smoothT(span01(t, THEATRE.bowUp)));
+      T.st.finale({ W: innerWidth, H: innerHeight, pix: innerWidth < 760 ? 2 : 3, t, swing: span01(t, THEATRE.swing), close, bow, me: 1 - span01(t, THEATRE.gone), F: T.F, hm: T.hm, crowd: 0.82, clap: t >= THEATRE.clap && t < THEATRE.close[1] + 1, fade });
       return true;
     }
     T.box.style.opacity = String(fade);

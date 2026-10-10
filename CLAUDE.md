@@ -108,7 +108,8 @@ The portraits, the family panel and the ending photographs still use the 2D figu
 The road back ends on the same theatre (UI `theatre`, `Stage3.finale`): the old self, facing the player as the last
 stretch of road ends, stands on the stage in a spotlight; the camera swings round behind them so the raked house and
 its audience come into view, the house applauds (`SOUND.applause`) and the curtain closes across the proscenium in
-front of them, then the picture fades to the obituary. Timings live in `THEATRE`. Without WebGL two velvet panels close
+front of them while they bow (`F.bow`, a forward lean of the torso in `person3`); they straighten, fade slowly away,
+the light goes down (dimmed, never made transparent, so the curtain keeps hiding the house) and the obituary follows. Timings live in `THEATRE`. Without WebGL two velvet panels close
 over the road. This replaced the old 「새벽」 and 「길은 이어진다」 phases.
 
 The birth stage (UI `playStage`) is a theatre drawn by `RENDER.stage3()` (`Stage3`, same shader with `uDim` and
