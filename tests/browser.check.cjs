@@ -1,5 +1,5 @@
 // Browser check for Stage 6.6: an arts life loaded from the save slot shows the 「활동」 tab, the money panel's
-// art segments and the roadside without page errors; a 고2 shows the talent + effort bars in 「상태」. Run: node tests/browser.check.cjs [out-dir]
+// art segments and the roadside without page errors; a 고2 shows the talent + effort bars in the first tab, 「재능」. Run: node tests/browser.check.cjs [out-dir]
 // Uses the pre-installed Chromium (PLAYWRIGHT_BROWSERS_PATH) and a global or local playwright.
 const path = require('path'), fs = require('fs');
 const { load, findHtml } = require('./load.cjs');
@@ -62,7 +62,7 @@ function arts(field) {
     await page.screenshot({ path: path.join(out, `arts-${field}.png`) });
     await page.close();
   }
-  // the 상태 panel of a 고2: five talents as revealed, effort stacked on top, and the next cutoff marked
+  // the 재능 panel of a 고2 (the first tab): five talents as revealed, effort stacked on top, and the next cutoff marked
   {
     const s = STATE.create(RNG.hash32('1:talent'));
     for (let g = 0; s.person.alive && g < 1700 && !(STATE.age(s) >= 17 && s.clock.m === 6 && !s.pending.length); g++) {
@@ -77,14 +77,14 @@ function arts(field) {
     await page.goto('file://' + findHtml());
     await page.click('#btn-continue');
     await page.waitForTimeout(1200);
-    await page.evaluate(() => document.querySelector('.tabs [data-tab="status"]').click());
+    await page.evaluate(() => document.querySelector('.tabs [data-tab="talent"]').click());
     await page.waitForTimeout(300);
     const t = await page.evaluate(() => ({ rows: document.querySelectorAll('#tal-rows .trow').length, cuts: [...document.querySelectorAll('#tal-rows .tbar b')].filter(b => !b.hidden).length,
-      text: document.querySelector('#tal-rows').textContent, prepTab: !!document.querySelector('.tabs [data-tab="prep"]') }));
-    const good = t.rows === 5 && t.cuts >= 1 && /노력/.test(t.text) && /다음 관문/.test(t.text) && !t.prepTab;
+      text: document.querySelector('#tal-rows').textContent, prepTab: ['prep', 'memory', 'codex'].some(k => !!document.querySelector(`.tabs [data-tab="${k}"]`)), first: document.querySelector('.tabs [data-tab]').dataset.tab }));
+    const good = t.rows === 5 && t.cuts >= 1 && /노력/.test(t.text) && /다음 관문/.test(t.text) && !t.prepTab && t.first === 'talent';
     console.log(`talent: ${t.rows} rows · ${t.cuts} cutoffs marked · ${good ? 'ok' : 'MISSING'} · ${t.text.slice(0, 140)}`);
     ok = ok && good;
-    await (await page.$('#panel-status')).screenshot({ path: path.join(out, 'talent-status.png') });
+    await (await page.$('#panel-talent')).screenshot({ path: path.join(out, 'talent-panel.png') });
     await page.close();
   }
   await browser.close();

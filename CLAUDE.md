@@ -71,7 +71,8 @@ DOWN · TALENT · ARTS · MEMORY · REPORT · SAVE · RENDER · SOUND · UI · H
   out for more pay (`hopeUniv` 330, `hopeCollege` 260); the age-12 path choice rises steeply above talent 40; idol and
   acting are chosen and practised on 표현 first; arts `fadeBase` 0.075, `leave` 0.38 and `resolve` from 54 re-centre
   the path population.
-- UI: 「상태」 shows each talent as revealed (a hatched range until exact), effort stacked on it, and the next relevant
+- UI: the tabs are 재능 · 상태 · 돈 · 가족 · 직업 · 이력 · 기록 (기억 and 도감 tabs were removed; 도감 stays as the top-bar
+  button, and memories still feed the ending). 「재능」 (the first tab, open by default) shows each talent as revealed (a hatched range until exact), effort stacked on it, and the next relevant
   cutoff as a tick (`TALENT.nextGate`: high schools, then universities, arts gates on a path, then exams and jobs). Forms
   show each gate's numbers once the talent has shown itself (`TALENT.label`) and tag rows 「합격선 이상」 or 「미달」.
 

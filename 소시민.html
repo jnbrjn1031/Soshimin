@@ -443,10 +443,7 @@ canvas.pixel{image-rendering:pixelated; image-rendering:crisp-edges; display:blo
 .hold li .v{font-family:var(--mono)}
 .panel details summary{cursor:pointer; font-size:var(--fs-s); color:var(--muted); margin:2px 0}
 /* 재능 · 노력 (talent + effort) */
-.tal-head{margin:18px 0 8px}
-.tal-head h3{margin:0}
-.tal-head .sub{display:block; font-size:var(--fs-xs); margin-top:2px}
-.tal{display:grid; gap:9px}
+.tal{display:grid; gap:9px; margin-top:10px}
 .trow{display:grid; grid-template-columns:4.6em minmax(0,1fr); gap:2px 8px; align-items:center; font-size:var(--fs-s)}
 .trow .tname small{display:block; color:var(--muted); font-size:var(--fs-xs); line-height:1.2}
 .tbar{position:relative; height:10px; background:#2C3340; border-radius:2px}
@@ -466,12 +463,6 @@ canvas.pixel{image-rendering:pixelated; image-rendering:crisp-edges; display:blo
 .tlegend i.c{width:2px; background:var(--accent)}
 .slip .stamp{flex:none}
 /* 기억 · 일기 */
-.mem-list{list-style:none; margin:0; padding:0; display:grid; gap:8px}
-.mem-list li{display:grid; grid-template-columns:18px 1fr; gap:8px; font-size:var(--fs-s); align-items:start}
-.mem-list .when{font-size:var(--fs-xs); color:var(--muted)}
-.mem-list .txt{font-family:var(--serif)}
-.diary{list-style:none; margin:0; padding:0; display:grid; gap:6px; font-family:var(--sans); font-size:var(--fs-s)}
-.diary .a{font-family:var(--mono); font-size:var(--fs-xs); color:var(--muted); margin-right:6px}
 /* small choices on the stage (Amendment 2 §2.4): no pause, a quiet default */
 .small-prompt{position:absolute; left:50%; bottom:14px; transform:translateX(-50%); z-index:6; display:flex; gap:8px; align-items:center; padding:8px 10px; font-size:var(--fs-s); max-width:92%; animation:rise .32s var(--ease-in)}
 .small-prompt p{margin:0; font-family:var(--serif)}
@@ -572,11 +563,9 @@ html.big .overlay, html.big .sheet, html.big .ev-stack, html.big .toast, html.bi
 .codex-list{display:grid; gap:10px; margin-top:16px}
 .codex-list .real-note{margin:0}
 .codex-card{width:min(680px,100%); max-height:90dvh; overflow-y:auto}
-#panel-codex input,.codex-card input{width:100%; padding:10px; font-size:var(--fs-body); margin:6px 0; border:1px solid var(--line); border-radius:3px}
+.codex-card input{width:100%; padding:10px; font-size:var(--fs-body); margin:6px 0; border:1px solid var(--line); border-radius:3px}
 .codex-card input{background:var(--paper); color:var(--paper-ink); border-color:var(--paper-line)}
-#panel-codex input{background:var(--frame); color:var(--text)}
-.codex-card label,#panel-codex label{font-size:var(--fs-s)}
-@media (min-width:1100px){#panel-codex{display:none}}
+.codex-card label{font-size:var(--fs-s)}
 @media (max-width:1099px){
   #screen-play{height:auto; min-height:100dvh; grid-template-rows:56px auto auto}
   .play{grid-template-columns:minmax(0,1fr); grid-template-areas:"stage" "sheet"}
@@ -705,25 +694,24 @@ html.big .overlay, html.big .sheet, html.big .ev-stack, html.big .toast, html.bi
     <div id="ev-dock" class="ev-dock hud" role="region" aria-label="사건"><p class="ev-dock-h">사건</p></div>
     <div id="sheet" class="sheet hud">
       <div class="tabs hud" role="tablist" aria-label="정보">
+        <button type="button" role="tab" data-tab="talent" aria-selected="true">재능</button>
         <button type="button" role="tab" data-tab="status" aria-selected="false">상태</button>
         <button type="button" role="tab" data-tab="money" aria-selected="false">돈</button>
-        <button type="button" role="tab" data-tab="family" aria-selected="true">가족</button>
+        <button type="button" role="tab" data-tab="family" aria-selected="false">가족</button>
         <button type="button" role="tab" data-tab="work" aria-selected="false">직업</button>
         <button type="button" role="tab" data-tab="history" aria-selected="false">이력</button>
-        <button type="button" role="tab" data-tab="memory" aria-selected="false">기억</button>
         <button type="button" role="tab" data-tab="log" aria-selected="false">기록</button>
         <button type="button" class="sheet-close" id="sheet-close" aria-label="정보 창 닫기">▾</button>
       </div>
       <aside class="col-left">
+        <section id="panel-talent" class="panel hud active" data-tab="talent" role="tabpanel" aria-label="재능"></section>
         <section id="panel-status" class="panel hud" data-tab="status" role="tabpanel" aria-label="상태"></section>
         <section id="panel-history" class="panel hud" data-tab="history" role="tabpanel" aria-label="이력"></section>
-        <section id="panel-memory" class="panel hud" data-tab="memory" role="tabpanel" aria-label="기억"></section>
         <section id="panel-log" class="panel hud" data-tab="log" role="tabpanel" aria-label="기록"></section>
-        <section id="panel-codex" class="panel hud" data-tab="codex" role="tabpanel" aria-label="도감"></section>
       </aside>
       <aside class="col-right">
         <section id="panel-money" class="panel hud" data-tab="money" role="tabpanel" aria-label="돈"></section>
-        <section id="panel-family" class="panel hud active" data-tab="family" role="tabpanel" aria-label="가족·집"></section>
+        <section id="panel-family" class="panel hud" data-tab="family" role="tabpanel" aria-label="가족·집"></section>
         <section id="panel-work" class="panel hud" data-tab="work" role="tabpanel" aria-label="직업"></section>
       </aside>
     </div>
@@ -12084,7 +12072,7 @@ const UI = (() => {
     renderStatus();
     renderFamily();
     renderWork();
-    renderMoney(); renderMemory(); renderMarket();
+    renderMoney(); renderMarket();
     $('ev-stack').replaceChildren(); $('recap-slot').replaceChildren();
     renderLog();
     renderTop();
@@ -12110,7 +12098,6 @@ const UI = (() => {
   function renderFrame() {
     if (!S || endSeq) return;
     if (performance.now() - noteScanAt > 500) { noteScanAt = performance.now(); collectVisibleNotes(); }
-    if (codexKey !== S.seen.join('|')) renderCodex();
     if (turnWait != null && !turnShown && S.person.alive && !SIM.blocked(S) && $('overlay').hidden && !birthSeq) showTurn();
     $('btn-codex').disabled = !$('overlay').hidden || !!birthSeq;
     const now = performance.now(), dt = Math.min(0.1, (now - lastT) / 1000);
@@ -12358,12 +12345,6 @@ const UI = (() => {
         el('div', { class: 'stats', id: 'stat-rows' }, DATA.STAT_DEFS.map(d => el('div', { class: 'stat', 'data-k': d.key },
           icon(d.icon, '#9AA3AE'), el('span', { text: d.name }), el('span', { class: 'bar' }, el('i')), el('span', { class: 'w' })))),
         el('p', { class: 'sub', id: 'health-words' }),
-        el('div', { class: 'tal-head' }, el('h3', { text: '재능 · 노력' }), el('span', { class: 'sub', id: 'tal-note' })),
-        el('div', { class: 'tal', id: 'tal-rows' }, DATA.TALENTS.map(d => el('div', { class: 'trow', 'data-k': d.key, style: `--tc:${d.color}` },
-          el('span', { class: 'tname' }, d.name, el('small', { text: d.sub })),
-          el('span', { class: 'tbar', role: 'img' }, el('i', { class: 't' }), el('i', { class: 'r' }), el('i', { class: 'e' }), el('b')),
-          el('span', { class: 'tw' })))),
-        el('p', { class: 'tlegend' }, el('span', {}, el('i'), '재능'), el('span', {}, el('i', { class: 'e' }), '노력'), el('span', {}, el('i', { class: 'c' }), '다음 관문'), gameTag()),
         el('div', { class: 'focus-head' }, el('h3', { text: set ? '집중 · 다섯 점' : '부모님이 정한 하루' }), el('span', { class: 'dots', id: 'focus-left' })),
         el('div', { class: 'focus', id: 'focus-rows' }, rows),
         el('p', { class: 'fnote', id: 'focus-note', text: set ? '' : '만 7세부터 직접 정할 수 있습니다.' }));
@@ -12382,7 +12363,7 @@ const UI = (() => {
     });
     const hw = S.health ? HEALTH.words(S) : [];
     $('health-words').textContent = hw.length ? `건강 기록 · ${hw.join(', ')}` : '';
-    renderTalents(panel);
+    renderTalents();
     const alloc = S.focusNext || S.focus.alloc, used = Object.values(alloc).reduce((a, b) => a + b, 0);
 
     const top = SIM.stats.topFocus(S);
@@ -12398,7 +12379,17 @@ const UI = (() => {
     if (set) { note.textContent = S.focusNext ? '다음 달부터 적용' : ''; note.classList.toggle('on', !!S.focusNext); }
   }
   // 재능 · 노력: each talent as far as it has shown itself, its effort stacked on top, and the next gate's cutoff
-  function renderTalents(panel) {
+  function renderTalents() {
+    const panel = $('panel-talent');
+    if (!panel.querySelector('#tal-rows')) panel.replaceChildren(
+      el('h2', { text: '재능' }),
+      el('p', { class: 'sub', id: 'tal-note' }),
+      el('div', { class: 'tal', id: 'tal-rows' }, DATA.TALENTS.map(d => el('div', { class: 'trow', 'data-k': d.key, style: `--tc:${d.color}` },
+        el('span', { class: 'tname' }, d.name, el('small', { text: d.sub })),
+        el('span', { class: 'tbar', role: 'img' }, el('i', { class: 't' }), el('i', { class: 'r' }), el('i', { class: 'e' }), el('b')),
+        el('span', { class: 'tw' })))),
+      el('p', { class: 'tlegend' }, el('span', {}, el('i'), '재능'), el('span', {}, el('i', { class: 'e' }), '노력'), el('span', {}, el('i', { class: 'c' }), '다음 관문'), gameTag()),
+      el('p', { class: 'sub', text: '노력은 「상태」의 집중 다섯 점에서 쌓입니다. 학교·대학·시험·첫 직장·팀은 모두 재능 + 노력의 정해진 합격선으로 뽑습니다.' }));
     const T = S.talent, fz = T.frozen;
     $('tal-note').textContent = fz ? `노력 고정 · 만 ${fz.age}세 첫 직장부터` : STATE.age(S) < 6 ? '노력은 만 6세부터 쌓인다' : '점수 = 재능 + 노력 (최대 100)';
     for (const row of panel.querySelectorAll('.trow')) {
@@ -12667,7 +12658,7 @@ const UI = (() => {
   function renderMarket() { const m = $('market'); if (!S || !S.market) return; const v = marketView(); if (v) m.replaceChildren(...v); }
 
   // ---------- 돈 panel (visual spec §8.3, Amendment 1 §1.11) ----------
-  let moneyTab = 'flow', memTab = 'mem';
+  let moneyTab = 'flow';
   const W = n => MONEY.won(Math.round(n));
   const IN_SEG = [['wage', '근로소득', '#7E9A77'], ['biz', '사업소득', '#B3C2A0'], ['art', '예술·선수 수입', '#9B7BB8'], ['adj', '분야 안의 일', '#B79FCB'], ['side', '아르바이트', '#C9A34E'], ['spouse', '배우자 소득', '#7FA3C0'], ['pension', '연금', '#C98F96'], ['basic', '기초연금', '#E7C3C3'], ['aid', '복지 급여', '#B7BDC4'], ['allowance', '부모님 용돈', '#F2D3A8']];
   const OUT_SEG = [['housing', '주거비', '#B9714F'], ['living', '생활비', '#8A93A0'], ['kids', '자녀', '#E0A96D'], ['care', '돌봄·부양', '#C98F96'], ['insurance', '보험', '#5E6878'], ['debt', '대출 상환', '#7A4B3A']];
@@ -12724,22 +12715,6 @@ const UI = (() => {
     kids.push(realNote(moneyTab === 'bs' ? DATA.STATS.wealth : moneyTab === 'flow' ? DATA.STATS.propensity : DATA.STATS.rates));
     panel.replaceChildren(...kids.filter(Boolean));
   }
-  // ---------- 기억 · 일기 (Amendment 2 §2.1–§2.2) ----------
-  const MEM_ICON = { heart: 'heart', two: 'two', family: 'family', school: 'school', book: 'book', coin: 'coin', house: 'family', gift: 'gift', flower: 'flower', baby: 'family', ring: 'heart', star: 'sun', road: 'book', snow: 'cloud', rain: 'cloud', wave: 'sun', leaf: 'flower', moon: 'sun', bowl: 'sun', sun: 'sun' };
-  function renderMemory() {
-    if (!S || !S.mem) return;
-    const M = S.mem, panel = $('panel-memory');
-    const tabs = el('div', { class: 'mtabs', role: 'group', 'aria-label': '기억 보기' }, [['mem', '기억'], ['diary', '일기']].map(([k, t]) => el('button', { type: 'button', 'aria-pressed': String(memTab === k), text: t, onclick: () => { memTab = k; renderMemory(); } })));
-    const who = ids => ids.map(id => S.people.find(p => p.id === id)).filter(Boolean).map(p => p.role === 'friend' ? STATE.givenOf(p) : p.label).join(', ');
-    if (memTab === 'mem') {
-      const list = M.list.slice().sort((a, b) => b.y - a.y || b.m - a.m).slice(0, 80);
-      panel.replaceChildren(el('h2', { text: '기억' }), tabs, list.length ? el('ul', { class: 'mem-list' }, list.map(m => el('li', {}, icon(MEM_ICON[m.icon] || 'sun', m.w >= 80 ? '#C9A34E' : '#9AA3AE'),
-        el('div', {}, el('div', { class: 'txt', text: m.text }), el('div', { class: 'when', text: [`${m.y}년 ${m.season}`, `만 ${m.age}세`, who(m.who)].filter(Boolean).join(' · ') }))))) : el('p', { class: 'sub', text: '아직 남은 기억이 없다.' }));
-    } else {
-      const d = M.diary.slice().reverse();
-      panel.replaceChildren(el('h2', { text: '일기' }), tabs, el('p', { class: 'sub', text: '생일마다 한 줄.' }), d.length ? el('ul', { class: 'diary' }, d.map(x => el('li', {}, el('span', { class: 'a', text: `${x.age}세` }), x.text))) : el('p', { class: 'sub', text: '첫 생일이 지나면 첫 줄이 생긴다.' }));
-    }
-  }
   // ---------- small choices on the stage (Amendment 2 §2.4) ----------
   let smallShown = null;
   function showSmall() {
@@ -12748,7 +12723,7 @@ const UI = (() => {
     const box = $('small');
     if (!item) { if (smallShown) { box.hidden = true; smallShown = null; } return; }
     if (smallShown === item.id) return;
-    const done = warm => { const i = S.pending.indexOf(item); if (i < 0) return; S.pending.splice(i, 1); FAMILY.resolveSmall(S, item, warm); box.hidden = true; smallShown = null; renderMemory(); showSmall(); };
+    const done = warm => { const i = S.pending.indexOf(item); if (i < 0) return; S.pending.splice(i, 1); FAMILY.resolveSmall(S, item, warm); box.hidden = true; smallShown = null; showSmall(); };
     if (SIM.clock.status().ff || birthSeq) { done(FAMILY.autoSmall(S, item)); return; }
     smallShown = item.id;
     const t = el('i', { class: 't', style: 'width:100%' });
@@ -12781,7 +12756,6 @@ const UI = (() => {
     $('panel-log').replaceChildren(el('h2', { text: '기록' }), el('ol', { class: 'logs' }, items));
     if (from > 0) for (const e of fresh) if (e.kind !== 'birth' && e.kind !== 'event') announce(e.text);
   }
-  let codexKey = '';
   function collectVisibleNotes() {
     if (!S) return;
     const before = S.seen.length;
@@ -12804,11 +12778,6 @@ const UI = (() => {
       el('p', { class: 'sub', text: '실제 대한민국의 자료를 다시 읽습니다. 게임의 미래에도 이 기준 자료를 사용하며, 게임 설정과 추정은 실제 통계와 구별합니다.' }),
       el('label', { for: prefix + '-search', text: '통계 찾기' }), input, list];
   }
-  function renderCodex() {
-    if (!S) return;
-    codexKey = S.seen.join('|');
-    $('panel-codex').replaceChildren(...codexContent('codex-panel'));
-  }
   function openCodex() {
     if (!S || !$('overlay').hidden) return;
     collectVisibleNotes();
@@ -12827,7 +12796,6 @@ const UI = (() => {
   }
   function bindTabs() {
     const tabs = document.querySelector('.tabs');
-    tabs.insertBefore(el('button', { type: 'button', role: 'tab', 'data-tab': 'codex', 'aria-selected': 'false', text: '도감' }), $('sheet-close'));
     $('sheet-close').addEventListener('click', () => $('sheet').classList.remove('open'));
     for (const b of document.querySelectorAll('.tabs button[data-tab]')) {
       b.addEventListener('click', () => {
@@ -12835,7 +12803,7 @@ const UI = (() => {
         for (const x of document.querySelectorAll('.tabs button[data-tab]')) x.setAttribute('aria-selected', String(x === b));
         for (const p of document.querySelectorAll('.panel')) p.classList.toggle('active', p.dataset.tab === tab);
         if (layout === 'phone') sheet.classList.toggle('open', was ? !sheet.classList.contains('open') : true);
-        collectVisibleNotes(); renderCodex();
+        collectVisibleNotes();
       });
     }
     const buttons = [...tabs.querySelectorAll('[data-tab]')];
@@ -12914,7 +12882,7 @@ const UI = (() => {
     if (info.birthday != null && !reduced()) stageScene.landmark('stone', { age: info.birthday });
     if (info.stage) { if (!reduced()) stageScene.landmark('gate', { name: info.stage.name }); else stageCard(info.stage.name); }
     const ff = SIM.clock.status().ff;
-    if (info.yearEnded || S.clock.m === 1) { renderMoney(); renderMemory(); }
+    if (info.yearEnded || S.clock.m === 1) renderMoney();
     showSmall();
     emptying();
     for (const ev of info.events) {
@@ -13028,7 +12996,7 @@ const UI = (() => {
     closeOverlay();
     fn();
     setSaveStatus(SAVE.save(S, reason) ? 'saved' : SAVE.available ? 'fail' : 'off');
-    histKey = ''; renderTop(); renderStatus(); renderWork(); renderMoney(); renderMemory(); renderTimelineDots();
+    histKey = ''; renderTop(); renderStatus(); renderWork(); renderMoney(); renderTimelineDots();
 
 
     if (SIM.blocked(S)) onPending();
