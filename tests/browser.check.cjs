@@ -1,4 +1,4 @@
-// Browser check for Stage 6.6: an arts life loaded from the save slot shows the 「활동」 tab, the money panel's
+// Browser check for Stage 6.6: an arts life loaded from the save slot shows the 「예체능」 tab, the money panel's
 // art segments and the roadside without page errors; a 고2 shows the talent + effort bars in the first tab, 「재능」. Run: node tests/browser.check.cjs [out-dir]
 // Uses the pre-installed Chromium (PLAYWRIGHT_BROWSERS_PATH) and a global or local playwright.
 const path = require('path'), fs = require('fs');
@@ -43,7 +43,7 @@ function arts(field) {
     await page.evaluate(() => document.querySelector('.tabs [data-tab="work"]').click());
     await page.waitForTimeout(300);
     const tab = await page.textContent('.tabs [data-tab="work"]'), panel = await page.textContent('#panel-work');
-    const good = tab.trim() === '활동' && panel.includes('실력') && panel.includes('인지도');
+    const good = tab.trim() === '예체능' && panel.includes('실력') && panel.includes('인지도');
     console.log(`${field}: tab 「${tab.trim()}」 · ${good ? 'ok' : 'MISSING'} · ${panel.slice(0, 90).replace(/\s+/g, ' ')}`);
     ok = ok && good;
     // the road is drawn in 3D (the canvas holds two render pixels per design pixel) and is not blank
@@ -81,6 +81,17 @@ function arts(field) {
     await page.waitForTimeout(300);
     const t = await page.evaluate(() => ({ rows: document.querySelectorAll('#tal-rows .trow').length, cuts: [...document.querySelectorAll('#tal-rows .tbar b')].filter(b => !b.hidden).length,
       text: document.querySelector('#tal-rows').textContent, prepTab: ['prep', 'memory', 'codex'].some(k => !!document.querySelector(`.tabs [data-tab="${k}"]`)), first: document.querySelector('.tabs [data-tab]').dataset.tab }));
+    // 활동: the second tab lists what can be started now, and starting one shows its turns
+    await page.evaluate(() => document.querySelector('.tabs [data-tab="acts"]').click());
+    await page.waitForTimeout(200);
+    await page.click('#panel-acts .link-btn');
+    await page.waitForTimeout(200);
+    await page.click('.aadd-row .pbtn');
+    await page.waitForTimeout(200);
+    const acts = await page.evaluate(() => ({ second: document.querySelectorAll('.tabs [data-tab]')[1].dataset.tab, cards: document.querySelectorAll('#panel-acts .acard').length, turns: document.querySelectorAll('#panel-acts .aturns i').length }));
+    console.log(`acts: second tab ${acts.second} · ${acts.cards} running · ${acts.turns} turns`);
+    ok = ok && acts.second === 'acts' && acts.cards === 1 && acts.turns >= 2 && acts.turns <= 5;
+    await (await page.$('#panel-acts')).screenshot({ path: path.join(out, 'acts-panel.png') });
     const good = t.rows === 5 && t.cuts >= 1 && /노력/.test(t.text) && /다음 관문/.test(t.text) && !t.prepTab && t.first === 'talent';
     console.log(`talent: ${t.rows} rows · ${t.cuts} cutoffs marked · ${good ? 'ok' : 'MISSING'} · ${t.text.slice(0, 140)}`);
     ok = ok && good;

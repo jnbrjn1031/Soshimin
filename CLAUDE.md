@@ -25,8 +25,9 @@ DOWN · TALENT · ARTS · MEMORY · REPORT · SAVE · RENDER · SOUND · UI · H
   `DATA.STATS` (text and source).
 - Real organisations appear only in neutral or happy moments. Every bad turn with an organisation uses a fictional
   one marked `· 가상`. Real people are never named.
-- `DATA.SAVE_VERSION` is 11. Bump it (and add a migration in SAVE if possible) when the shape of the state changes. Saves
-  from 8–10 go through `TALENT.migrate` (talents from the old traits, effort estimated by age, `s.prep` dropped).
+- `DATA.SAVE_VERSION` is 12. Bump it (and add a migration in SAVE if possible) when the shape of the state changes. Saves
+  from 8–11 go through `TALENT.migrate` (talents from the old traits, effort estimated by age, `s.prep` dropped,
+  an empty `s.acts`).
 
 ## Talent + effort (TALENT)
 
@@ -71,7 +72,15 @@ DOWN · TALENT · ARTS · MEMORY · REPORT · SAVE · RENDER · SOUND · UI · H
   out for more pay (`hopeUniv` 330, `hopeCollege` 260); the age-12 path choice rises steeply above talent 40; idol and
   acting are chosen and practised on 표현 first; arts `fadeBase` 0.075, `leave` 0.38 and `resolve` from 54 re-centre
   the path population.
-- UI: the tabs are 재능 · 상태 · 돈 · 가족 · 직업 · 이력 · 기록 (기억 and 도감 tabs were removed; 도감 stays as the top-bar
+- 활동 (`s.acts`, `TALENT.ACTS`): multi-year effort projects the player starts from the 「활동」 tab, up to four at once
+  (`ACT_MAX`). One turn is one year; each runs 2–5 turns by difficulty and is open only in its stages of life
+  (`stageOf`: 초등·중등·고등·재수·대학·취업 준비·시험 준비·직장인): 내신 관리, 수능 준비, 특목·자사고 대비, 논술, 학생부·면접,
+  실기 입시, 학점, 토익·어학, 자격증, 인턴, 포트폴리오, NCS, 공무원·전문직 시험, 선수 훈련, 오디션 …. While running, each
+  adds `ACT_PTS` (0.8) focus points to its talent's effort, costs a monthly fee (the parents pay for a minor) and a
+  little stress; on completion it adds `ACT_DONE` (2) effort and its record (어학 점수, 자격증, 인턴, 수상). An activity
+  stops when its stage ends. Automatic lives start none, so the harness numbers are unchanged.
+- UI: the tabs are 재능 · 활동 · 상태 · 돈 · 가족 · 직업 · 이력 · 기록 (for a person on an arts path the 직업 tab reads
+  「예체능」) (기억 and 도감 tabs were removed; 도감 stays as the top-bar
   button, and memories still feed the ending). 「재능」 (the first tab, open by default) shows each talent as revealed (a hatched range until exact), effort stacked on it, and the next relevant
   cutoff as a tick (`TALENT.nextGate`: high schools, then universities, arts gates on a path, then exams and jobs). Forms
   show each gate's numbers once the talent has shown itself (`TALENT.label`) and tag rows 「합격선 이상」 or 「미달」.
@@ -102,7 +111,7 @@ type, university, career status, job and employer). An adult walker keeps the st
 
 ```
 node --test tests/*.test.cjs        # node checks (about 1 minute; talent.test.cjs covers the roll, reveals, effort and gates)
-node tests/browser.check.cjs [dir]  # loads three arts lives and a 고2 in Chromium (SwiftShader WebGL): 「활동」, the 3D road, 「상태」's talent bars
+node tests/browser.check.cjs [dir]  # loads three arts lives and a 고2 in Chromium (SwiftShader WebGL): 「예체능」, the 3D road, 「재능」's bars, starting an 활동
 node tests/build-artifact.cjs       # parses the script and writes dist/soshimin-play.html (dist/ is not committed)
 ```
 
@@ -122,7 +131,7 @@ Done:
 - §8: 98 field event templates across the eight fields and every stage: 94 in the `arts` category (weighted in
   `DATA.EVENT_BANDS`) and 4 later-life ones in `people` and `health` so they do not crowd the years after a path. MEMORY keeps arts moments more often (kind `arts`), the road back reserves two stops for them,
   REPORT adds the path's stations, a §9 row and an epitaph, and a 예체능 childhood dream counts as achieved.
-- §10 UI: the work tab becomes 「활동」 for a person on a path (stage, 실력 bars, 인지도 with the audience number,
+- §10 UI: the work tab becomes 「예체능」 for a person on a path (stage, 실력 bars, 인지도 with the audience number,
   contract, the next audition or game, works, the income split). The money panel shows art and in-field segments and
   the split line. Road: `stage`, `gallery`, `studio`, `stadium` and `crowd` sprites, a field-specific roadside mix,
   a crowd that grows with a breakthrough and thins with a fade, and props on the walker (instrument case, sketchbook,

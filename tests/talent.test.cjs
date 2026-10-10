@@ -107,3 +107,30 @@ test('an older save gains talents and effort', () => {
   for (const k of TALENT.KEYS) { assert.equal(s.talent.rev[k], 4); assert.ok(Number.isFinite(TALENT.score(s, k))); }
   SIM.tickMonth(s);
 });
+
+test('활동: up to four at once, one turn a year, effort while running, a bonus and a record at the end', () => {
+  const s = live(seedOf(13), s => STATE.age(s) >= 16 && s.edu.stage === 'high');
+  assert.equal(TALENT.stageOf(s), 'high');
+  const keys = TALENT.actAvail(s).map(d => d.key);
+  for (const k of ['naesinH', 'suneung', 'nonsul', 'record']) assert.ok(keys.includes(k), k);
+  for (const k of ['naesinH', 'suneung', 'nonsul', 'record']) assert.ok(TALENT.actStart(s, k), k);
+  assert.ok(!TALENT.actStart(s, 'silgiH'), 'a fifth is refused');
+  for (const d of TALENT.ACTS) assert.ok(d.turns >= 2 && d.turns <= 5, d.key);
+  // running activities count as focus points on their talent
+  assert.ok(TALENT.points(s).study >= 2 * TALENT.ACT_PTS);
+  const e0 = s.talent.eff.expr;
+  for (let g = 0; g < 24; g++) { SIM.tickMonth(s); s.pending.length = 0; }
+  const done = s.acts.done.find(r => r.key === 'nonsul');
+  assert.ok(done && done.ok && done.turns === 2, 'the two-turn 논술 finished after two years');
+  assert.ok(s.talent.eff.expr > e0, 'expr effort grew');
+  assert.ok(s.acts.list.some(a => a.key === 'suneung' && a.m === 24), 'the three-turn 수능 is two turns in');
+  // leaving high school stops the high-school activities
+  for (let g = 0; g < 18 && TALENT.stageOf(s) === 'high'; g++) { SIM.tickMonth(s); s.pending.length = 0; }
+  SIM.tickMonth(s);   // the activity hook runs before ADMISSIONS changes the stage, so it notices a month later
+  assert.ok(!s.acts.list.some(a => a.key === 'naesinH'), '내신 stops with high school');
+});
+
+test('automatic lives start no 활동 (the calibration stays where it was)', () => {
+  const s = live(seedOf(14), s => STATE.age(s) >= 25);
+  assert.equal(s.acts.list.length + s.acts.done.length, 0);
+});
